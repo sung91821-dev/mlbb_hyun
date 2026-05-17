@@ -1,108 +1,674 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
+<!--
+  MLBB 밴픽 - Stellar 디자인 통합
+  Based on Stellar by HTML5 UP (html5up.net | @ajlkn)
+  CCA 3.0 license (html5up.net/license)
+-->
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <title>MLBB 밴픽</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>MLBB 밴픽 도우미</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    body { margin: 0; padding: 0; background: #fff; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    .wrap { padding: 8px; font-size: 13px; max-width: 480px; margin: 0 auto; }
-    .section-label { font-size: 10px; color: #888; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; margin: 6px 0 3px; }
-    .pos-row { display: grid; grid-template-columns: repeat(5,1fr); gap: 3px; margin-bottom: 8px; }
-    .pos-btn { height: 34px; font-size: 10px; font-weight: 500; border-radius: 6px; border: 1px solid #ddd; background: #f5f5f5; color: #888; cursor: pointer; line-height: 1.2; padding: 2px; }
-    .pos-btn.active { background: #fff; color: #111; border-color: #999; }
-    .slot-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 3px; margin-bottom: 6px; }
-    .slot { height: 40px; border-radius: 6px; border: 1px dashed #ccc; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 9px; color: #aaa; cursor: pointer; position: relative; overflow: hidden; background: #f9f9f9; }
-    .slot.filled { border-style: solid; border-color: #999; background: #fff0f0; }
-    .slot.filled .sname { font-size: 8px; font-weight: 500; color: #222; text-align: center; line-height: 1.2; padding: 1px 2px; }
-    .slot.filled .sw { font-size: 9px; font-weight: 500; color: #c0392b; }
-    .slot .remove { position: absolute; top: 1px; right: 3px; font-size: 10px; color: #aaa; cursor: pointer; line-height: 1; }
-    input[type=text], input[type=search] { width: 100%; height: 30px; font-size: 12px; padding: 0 8px; border-radius: 6px; border: 1px solid #ddd; background: #fff; color: #111; margin-bottom: 5px; outline: none; }
-    input[type=text]:focus, input[type=search]:focus { border-color: #999; }
-    .hero-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 3px; max-height: 90px; overflow-y: auto; margin-bottom: 6px; }
-    .hero-btn { padding: 3px 2px; font-size: 9px; border-radius: 4px; border: 1px solid #e0e0e0; background: #fff; color: #111; cursor: pointer; text-align: center; line-height: 1.2; }
-    .hero-btn:active { background: #f0f0f0; }
-    .tab-row { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; margin-bottom: 8px; }
-    .tab-btn { height: 28px; font-size: 11px; border-radius: 6px; border: 1px solid #ddd; background: #f5f5f5; color: #888; cursor: pointer; }
-    .tab-btn.active { background: #fff; color: #111; border-color: #999; font-weight: 500; }
-    .calc-btn { width: 100%; height: 34px; font-size: 13px; font-weight: 500; border-radius: 8px; border: 1px solid #ddd; background: #fff; color: #111; cursor: pointer; margin-bottom: 6px; }
-    .calc-btn:active { background: #f5f5f5; }
-    .rec-list { display: flex; flex-direction: column; gap: 4px; }
-    .rec-item { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 8px; border: 1px solid #e0e0e0; background: #fff; cursor: pointer; }
-    .rec-item:active { background: #f5f5f5; }
-    .rec-item.top { border-color: #27ae60; background: #f0fff5; }
-    .rec-score { font-size: 13px; font-weight: 500; color: #27ae60; min-width: 28px; text-align: center; }
-    .rec-name { font-size: 12px; font-weight: 500; color: #111; }
-    .rec-role { font-size: 10px; color: #888; }
-    .rec-counters { font-size: 9px; color: #888; line-height: 1.4; }
-    .combo-box { border-radius: 8px; border: 1px solid #aed6f1; background: #eaf4fb; padding: 10px 12px; margin-top: 6px; }
-    .combo-hero { font-size: 13px; font-weight: 500; color: #1a6fa8; margin-bottom: 4px; }
-    .combo-text { font-size: 12px; color: #222; line-height: 1.6; white-space: pre-wrap; }
-    .combo-empty { font-size: 12px; color: #888; font-style: italic; }
-    .empty-msg { font-size: 12px; color: #888; text-align: center; padding: 10px 0; }
-    .settings-panel { display: flex; flex-direction: column; gap: 6px; }
-    .setting-section { border-radius: 8px; border: 1px solid #e0e0e0; background: #fff; padding: 8px 10px; }
-    .setting-title { font-size: 11px; font-weight: 500; color: #111; margin-bottom: 6px; }
-    .weight-list { display: flex; flex-direction: column; gap: 4px; max-height: 160px; overflow-y: auto; }
-    .weight-row { display: flex; align-items: center; gap: 6px; }
-    .weight-row span { font-size: 11px; color: #111; flex: 1; }
-    .weight-row input[type=number] { width: 52px; height: 26px; font-size: 12px; padding: 0 6px; border-radius: 4px; border: 1px solid #ddd; background: #f5f5f5; color: #111; text-align: center; outline: none; }
-    .combo-select { width: 100%; height: 28px; font-size: 12px; padding: 0 6px; border-radius: 6px; border: 1px solid #ddd; background: #f5f5f5; color: #111; margin-bottom: 5px; }
-    .combo-input { width: 100%; min-height: 80px; font-size: 12px; padding: 6px 8px; border-radius: 6px; border: 1px solid #ddd; background: #f5f5f5; color: #111; resize: vertical; line-height: 1.5; outline: none; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
-    .save-btn { width: 100%; height: 30px; font-size: 12px; border-radius: 6px; border: 1px solid #ddd; background: #fff; color: #111; cursor: pointer; margin-top: 4px; }
-    .saved-tag { font-size: 10px; color: #27ae60; margin-left: 4px; }
+    /* ── Stellar 기반 전역 스타일 ── */
+    @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-primary: #49bf9d;
+      --color-secondary: #2e3141;
+      --color-bg: #1b1f2a;
+      --color-bg2: #242837;
+      --color-text: #c8ccd8;
+      --color-text-light: #ffffff;
+      --color-border: rgba(255,255,255,0.08);
+      --color-accent1: #6fc3df;
+      --color-accent2: #e27689;
+      --color-accent3: #8ec07c;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: 'Source Sans Pro', sans-serif;
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    a { color: var(--color-primary); text-decoration: none; transition: color 0.2s; }
+    a:hover { color: #fff; }
+
+    h1,h2,h3,h4 { color: var(--color-text-light); font-weight: 600; line-height: 1.3; margin-bottom: 0.5em; }
+    h1 { font-size: 2.2rem; }
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.1rem; }
+
+    /* ── 헤더 (Stellar alt header) ── */
+    #header {
+      background: var(--color-bg2);
+      border-bottom: 1px solid var(--color-border);
+      padding: 3rem 2rem 2.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    #header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% -20%, rgba(73,191,157,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    #header .logo {
+      display: inline-block;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      font-size: 1.6rem;
+      color: #fff;
+    }
+    #header h1 { font-size: 2rem; margin-bottom: 0.3rem; letter-spacing: 0.05em; }
+    #header p { color: rgba(200,204,216,0.7); font-size: 0.95rem; }
+
+    /* ── 네비게이션 ── */
+    #nav {
+      background: var(--color-bg2);
+      border-bottom: 1px solid var(--color-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      text-align: center;
+      padding: 0;
+    }
+    #nav ul { list-style: none; display: inline-flex; gap: 0; }
+    #nav ul li a {
+      display: block;
+      padding: 1rem 1.4rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(200,204,216,0.7);
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+    #nav ul li a:hover,
+    #nav ul li a.active {
+      color: var(--color-primary);
+      border-bottom-color: var(--color-primary);
+    }
+
+    /* ── 메인 래퍼 ── */
+    #wrapper { max-width: 960px; margin: 0 auto; }
+    #main { padding: 0 1.5rem 3rem; }
+
+    /* ── 섹션 공통 ── */
+    section.main {
+      border-bottom: 1px solid var(--color-border);
+      padding: 3rem 0;
+    }
+    section.main:last-child { border-bottom: none; }
+    section.main .major h2 { color: var(--color-text-light); font-size: 1.6rem; }
+    section.main .major p { color: rgba(200,204,216,0.6); font-size: 0.9rem; margin-top: 0.3rem; }
+
+    /* ── 인트로 섹션 ── */
+    #intro .spotlight {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+    }
+    #intro .spotlight .content { flex: 1; }
+    #intro .spotlight .image {
+      flex-shrink: 0;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: var(--color-bg2);
+      border: 3px solid var(--color-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      color: var(--color-primary);
+    }
+    @media (max-width: 600px) {
+      #intro .spotlight { flex-direction: column; text-align: center; }
+      #intro .spotlight .image { width: 120px; height: 120px; font-size: 2.8rem; }
+    }
+
+    /* ── 기능 카드 ── */
+    .features {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .features li {
+      background: var(--color-bg2);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      padding: 1.5rem 1.2rem;
+      text-align: center;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .features li:hover { transform: translateY(-3px); border-color: var(--color-primary); }
+    .features li .icon {
+      font-size: 2rem;
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+    .features li .icon.style1 { color: var(--color-accent1); }
+    .features li .icon.style2 { color: var(--color-primary); }
+    .features li .icon.style3 { color: var(--color-accent2); }
+    .features li h3 { font-size: 1rem; margin-bottom: 0.4rem; }
+    .features li p { font-size: 0.85rem; color: rgba(200,204,216,0.6); }
+
+    /* ── 버튼 ── */
+    .button {
+      display: inline-block;
+      padding: 0.65rem 1.5rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 2px solid var(--color-primary);
+      color: var(--color-primary);
+      transition: all 0.2s;
+      cursor: pointer;
+      background: transparent;
+    }
+    .button:hover { background: var(--color-primary); color: #fff; }
+    .button.primary { background: var(--color-primary); color: #fff; }
+    .button.primary:hover { background: #3aad8a; border-color: #3aad8a; }
+
+    .actions { list-style: none; display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 1.2rem; }
+    .actions.special { justify-content: center; }
+
+    /* ──────────────────────────────
+       밴픽 앱 섹션
+    ────────────────────────────── */
+    #banbuck { padding-top: 0; }
+
+    .app-wrap {
+      background: var(--color-bg2);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    /* 탭 */
+    .tab-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 1.2rem;
+    }
+    .tab-btn {
+      height: 36px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      border-radius: 6px;
+      border: 1px solid var(--color-border);
+      background: transparent;
+      color: rgba(200,204,216,0.5);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .tab-btn.active {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: #fff;
+    }
+
+    /* 라벨 */
+    .section-label {
+      font-size: 10px;
+      color: rgba(200,204,216,0.4);
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin: 0.6rem 0 0.4rem;
+    }
+
+    /* 포지션 */
+    .pos-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4px;
+      margin-bottom: 1rem;
+    }
+    .pos-btn {
+      height: 36px;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 6px;
+      border: 1px solid var(--color-border);
+      background: transparent;
+      color: rgba(200,204,216,0.4);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .pos-btn.active {
+      background: rgba(73,191,157,0.15);
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    /* 슬롯 */
+    .slot-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4px;
+      margin-bottom: 0.8rem;
+    }
+    .slot {
+      height: 44px;
+      border-radius: 8px;
+      border: 1px dashed rgba(200,204,216,0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      color: rgba(200,204,216,0.3);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      background: rgba(255,255,255,0.02);
+      transition: border-color 0.2s;
+    }
+    .slot.filled {
+      border-style: solid;
+      border-color: rgba(73,191,157,0.4);
+      background: rgba(73,191,157,0.07);
+    }
+    .slot.filled .sname {
+      font-size: 8px;
+      font-weight: 600;
+      color: var(--color-text-light);
+      text-align: center;
+      line-height: 1.2;
+      padding: 1px 3px;
+    }
+    .slot.filled .sw { font-size: 9px; font-weight: 600; color: var(--color-primary); }
+    .slot .remove {
+      position: absolute;
+      top: 1px; right: 3px;
+      font-size: 10px;
+      color: rgba(200,204,216,0.4);
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    /* 검색 */
+    input[type=text], input[type=search] {
+      width: 100%;
+      height: 32px;
+      font-size: 13px;
+      padding: 0 10px;
+      border-radius: 6px;
+      border: 1px solid var(--color-border);
+      background: rgba(255,255,255,0.04);
+      color: var(--color-text-light);
+      margin-bottom: 6px;
+      outline: none;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    input[type=text]:focus, input[type=search]:focus { border-color: var(--color-primary); }
+    input::placeholder { color: rgba(200,204,216,0.3); }
+
+    /* 영웅 그리드 */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 3px;
+      max-height: 100px;
+      overflow-y: auto;
+      margin-bottom: 0.8rem;
+    }
+    .hero-grid::-webkit-scrollbar { width: 4px; }
+    .hero-grid::-webkit-scrollbar-track { background: transparent; }
+    .hero-grid::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+    .hero-btn {
+      padding: 4px 2px;
+      font-size: 9px;
+      border-radius: 4px;
+      border: 1px solid var(--color-border);
+      background: rgba(255,255,255,0.03);
+      color: var(--color-text);
+      cursor: pointer;
+      text-align: center;
+      line-height: 1.2;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    .hero-btn:hover { background: rgba(73,191,157,0.15); border-color: var(--color-primary); color: #fff; }
+
+    /* 계산 버튼 */
+    .calc-btn {
+      width: 100%;
+      height: 38px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 8px;
+      border: 1px solid var(--color-primary);
+      background: rgba(73,191,157,0.1);
+      color: var(--color-primary);
+      cursor: pointer;
+      margin-bottom: 0.8rem;
+      letter-spacing: 0.05em;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .calc-btn:hover { background: var(--color-primary); color: #fff; }
+
+    /* 추천 결과 */
+    .rec-list { display: flex; flex-direction: column; gap: 5px; }
+    .rec-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--color-border);
+      background: rgba(255,255,255,0.02);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .rec-item:hover { border-color: rgba(73,191,157,0.3); background: rgba(73,191,157,0.05); }
+    .rec-item.top { border-color: rgba(73,191,157,0.4); background: rgba(73,191,157,0.08); }
+    .rec-score { font-size: 14px; font-weight: 700; color: var(--color-primary); min-width: 30px; text-align: center; }
+    .rec-name { font-size: 13px; font-weight: 600; color: var(--color-text-light); }
+    .rec-role { font-size: 10px; color: rgba(200,204,216,0.5); }
+    .rec-counters { font-size: 9px; color: rgba(200,204,216,0.4); line-height: 1.4; }
+
+    /* 콤보 박스 */
+    .combo-box {
+      border-radius: 8px;
+      border: 1px solid rgba(111,195,223,0.3);
+      background: rgba(111,195,223,0.05);
+      padding: 1rem 1.2rem;
+      margin-top: 0.8rem;
+    }
+    .combo-hero { font-size: 14px; font-weight: 700; color: var(--color-accent1); margin-bottom: 6px; }
+    .combo-text { font-size: 13px; color: var(--color-text); line-height: 1.7; white-space: pre-wrap; }
+    .combo-empty { font-size: 12px; color: rgba(200,204,216,0.4); font-style: italic; }
+
+    .empty-msg { font-size: 13px; color: rgba(200,204,216,0.4); text-align: center; padding: 1rem 0; }
+
+    /* 설정 패널 */
+    .settings-panel { display: flex; flex-direction: column; gap: 0.8rem; }
+    .setting-section {
+      border-radius: 8px;
+      border: 1px solid var(--color-border);
+      background: rgba(255,255,255,0.02);
+      padding: 1rem 1.1rem;
+    }
+    .setting-title { font-size: 12px; font-weight: 600; color: var(--color-text-light); margin-bottom: 0.6rem; letter-spacing: 0.05em; }
+    .weight-list { display: flex; flex-direction: column; gap: 4px; max-height: 180px; overflow-y: auto; }
+    .weight-row { display: flex; align-items: center; gap: 8px; }
+    .weight-row span { font-size: 12px; color: var(--color-text); flex: 1; }
+    .weight-row input[type=number] {
+      width: 56px;
+      height: 28px;
+      font-size: 12px;
+      padding: 0 6px;
+      border-radius: 4px;
+      border: 1px solid var(--color-border);
+      background: rgba(255,255,255,0.04);
+      color: var(--color-text-light);
+      text-align: center;
+      outline: none;
+      font-family: inherit;
+    }
+    .combo-select {
+      width: 100%;
+      height: 30px;
+      font-size: 12px;
+      padding: 0 8px;
+      border-radius: 6px;
+      border: 1px solid var(--color-border);
+      background: rgba(255,255,255,0.04);
+      color: var(--color-text-light);
+      margin-bottom: 6px;
+      font-family: inherit;
+    }
+    .combo-input {
+      width: 100%;
+      min-height: 90px;
+      font-size: 12px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--color-border);
+      background: rgba(255,255,255,0.04);
+      color: var(--color-text-light);
+      resize: vertical;
+      line-height: 1.6;
+      outline: none;
+      font-family: inherit;
+    }
+    .combo-input:focus, .combo-select:focus { border-color: var(--color-primary); }
+    .save-btn {
+      width: 100%;
+      height: 32px;
+      font-size: 12px;
+      border-radius: 6px;
+      border: 1px solid var(--color-primary);
+      background: transparent;
+      color: var(--color-primary);
+      cursor: pointer;
+      margin-top: 6px;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .save-btn:hover { background: var(--color-primary); color: #fff; }
+    .saved-tag { font-size: 10px; color: var(--color-primary); margin-left: 6px; }
+
+    /* ── 푸터 ── */
+    #footer {
+      background: var(--color-bg2);
+      border-top: 1px solid var(--color-border);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    #footer p { font-size: 0.85rem; color: rgba(200,204,216,0.4); }
+    #footer a { color: rgba(200,204,216,0.5); }
+    #footer a:hover { color: var(--color-primary); }
+    .icons { list-style: none; display: flex; justify-content: center; gap: 1rem; margin-bottom: 1.5rem; }
+    .icons li a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--color-border);
+      color: rgba(200,204,216,0.5);
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .icons li a:hover { border-color: var(--color-primary); color: var(--color-primary); }
   </style>
 </head>
-<body>
-<div class="wrap">
-  <div class="tab-row">
-    <button class="tab-btn active" id="tab-main" onclick="showTab('main')">밴픽</button>
-    <button class="tab-btn" id="tab-settings" onclick="showTab('settings')">설정</button>
-  </div>
- 
-  <div id="panel-main">
-    <div class="section-label">내 포지션</div>
-    <div class="pos-row">
-      <button class="pos-btn active" id="pos-EXP" onclick="setPos('EXP')">EXP</button>
-      <button class="pos-btn" id="pos-MID" onclick="setPos('MID')">MID</button>
-      <button class="pos-btn" id="pos-JUNGLE" onclick="setPos('JUNGLE')">정글</button>
-      <button class="pos-btn" id="pos-GOLD" onclick="setPos('GOLD')">GOLD</button>
-      <button class="pos-btn" id="pos-ROAM" onclick="setPos('ROAM')">로밍</button>
-    </div>
- 
-    <div class="section-label">상대 팀 픽 <span style="font-size:9px;font-weight:400">(슬롯 탭 → 가중치 조정)</span></div>
-    <div class="slot-grid" id="enemy-slots"></div>
- 
-    <input type="search" id="search" placeholder="상대 영웅 검색...">
-    <div class="hero-grid" id="enemy-hero-grid"></div>
- 
-    <button class="calc-btn" onclick="calcRec()">카운터 점수 계산</button>
-    <div id="rec-area"><div class="empty-msg">포지션 선택 후 상대 픽을 입력하세요.</div></div>
-    <div id="combo-area"></div>
-  </div>
- 
-  <div id="panel-settings" style="display:none">
-    <div class="settings-panel">
-      <div class="setting-section">
-        <div class="setting-title">영웅별 가중치 설정</div>
-        <div class="section-label" style="margin-top:0;margin-bottom:6px">상대가 해당 영웅 픽 시 카운터 점수에 더해지는 값</div>
-        <input type="search" id="w-search" placeholder="영웅 검색..." oninput="renderWeightList()">
-        <div class="weight-list" id="weight-list"></div>
+<body class="is-preload">
+
+<div id="wrapper">
+
+  <!-- 헤더 -->
+  <header id="header">
+    <div class="logo"><i class="fas fa-crosshairs"></i></div>
+    <h1>MLBB 밴픽 도우미</h1>
+    <p>포지션별 카운터 픽 추천 &amp; 콤보 가이드</p>
+  </header>
+
+  <!-- 네비게이션 -->
+  <nav id="nav">
+    <ul>
+      <li><a href="#intro" class="active">소개</a></li>
+      <li><a href="#banbuck">밴픽</a></li>
+      <li><a href="#guide">사용법</a></li>
+    </ul>
+  </nav>
+
+  <!-- 메인 -->
+  <div id="main">
+
+    <!-- 인트로 -->
+    <section id="intro" class="main">
+      <div class="spotlight">
+        <div class="content">
+          <header class="major">
+            <h2>스마트한 밴픽으로<br>승률을 높이세요</h2>
+            <p>상대 팀 픽을 입력하면 포지션에 맞는 최적의 카운터 영웅을 추천해드립니다.</p>
+          </header>
+          <ul class="actions">
+            <li><a href="#banbuck" class="button primary">밴픽 시작하기</a></li>
+          </ul>
+        </div>
+        <div class="image"><i class="fas fa-shield-alt"></i></div>
       </div>
-      <div class="setting-section">
-        <div class="setting-title">영웅별 콤보 입력</div>
-        <select class="combo-select" id="combo-hero-select" onchange="loadComboText()"></select>
-        <textarea class="combo-input" id="combo-text-input" placeholder="콤보를 입력하세요...&#10;예) 스킬2 → 스킬1 → 궁 → 기본공격 반복"></textarea>
-        <button class="save-btn" onclick="saveCombo()">저장 <span class="saved-tag" id="saved-tag" style="display:none">저장됨 ✓</span></button>
+    </section>
+
+    <!-- 특징 -->
+    <section id="features-section" class="main special">
+      <header class="major">
+        <h2>주요 기능</h2>
+        <p>밴픽을 더 똑똑하게</p>
+      </header>
+      <ul class="features">
+        <li>
+          <span class="icon style1"><i class="fas fa-chess-knight"></i></span>
+          <h3>카운터 분석</h3>
+          <p>상대 픽 기반으로 카운터 점수를 계산해 최적의 픽을 추천합니다.</p>
+        </li>
+        <li>
+          <span class="icon style2"><i class="fas fa-sliders-h"></i></span>
+          <h3>가중치 설정</h3>
+          <p>특정 영웅의 위협도를 직접 조절해 맞춤형 추천을 받을 수 있습니다.</p>
+        </li>
+        <li>
+          <span class="icon style3"><i class="fas fa-book-open"></i></span>
+          <h3>콤보 저장</h3>
+          <p>영웅별 스킬 콤보를 직접 입력하고 저장해두세요.</p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 밴픽 앱 -->
+    <section id="banbuck" class="main">
+      <header class="major">
+        <h2>밴픽 계산기</h2>
+        <p>포지션 선택 후 상대 팀 픽을 입력하세요</p>
+      </header>
+
+      <div class="app-wrap">
+        <div class="tab-row">
+          <button class="tab-btn active" id="tab-main" onclick="showTab('main')">밴픽</button>
+          <button class="tab-btn" id="tab-settings" onclick="showTab('settings')">설정</button>
+        </div>
+
+        <!-- 밴픽 패널 -->
+        <div id="panel-main">
+          <div class="section-label">내 포지션</div>
+          <div class="pos-row">
+            <button class="pos-btn active" id="pos-EXP" onclick="setPos('EXP')">EXP</button>
+            <button class="pos-btn" id="pos-MID" onclick="setPos('MID')">MID</button>
+            <button class="pos-btn" id="pos-JUNGLE" onclick="setPos('JUNGLE')">정글</button>
+            <button class="pos-btn" id="pos-GOLD" onclick="setPos('GOLD')">GOLD</button>
+            <button class="pos-btn" id="pos-ROAM" onclick="setPos('ROAM')">로밍</button>
+          </div>
+
+          <div class="section-label">상대 팀 픽 <span style="font-size:9px;font-weight:400">(슬롯 탭 → 가중치 조정)</span></div>
+          <div class="slot-grid" id="enemy-slots"></div>
+
+          <input type="search" id="search" placeholder="상대 영웅 검색..." oninput="filterEnemyHeroes()">
+          <div class="hero-grid" id="enemy-hero-grid"></div>
+
+          <button class="calc-btn" onclick="calcRec()">카운터 점수 계산</button>
+          <div id="rec-area"><div class="empty-msg">포지션 선택 후 상대 픽을 입력하세요.</div></div>
+          <div id="combo-area"></div>
+        </div>
+
+        <!-- 설정 패널 -->
+        <div id="panel-settings" style="display:none">
+          <div class="settings-panel">
+            <div class="setting-section">
+              <div class="setting-title">영웅별 가중치 설정</div>
+              <div class="section-label" style="margin-top:0;margin-bottom:6px">상대가 해당 영웅 픽 시 카운터 점수에 더해지는 값</div>
+              <input type="search" id="w-search" placeholder="영웅 검색..." oninput="renderWeightList()">
+              <div class="weight-list" id="weight-list"></div>
+            </div>
+            <div class="setting-section">
+              <div class="setting-title">영웅별 콤보 입력</div>
+              <select class="combo-select" id="combo-hero-select" onchange="loadComboText()"></select>
+              <textarea class="combo-input" id="combo-text-input" placeholder="콤보를 입력하세요...&#10;예) 스킬2 → 스킬1 → 궁 → 기본공격 반복"></textarea>
+              <button class="save-btn" onclick="saveCombo()">저장 <span class="saved-tag" id="saved-tag" style="display:none">저장됨 ✓</span></button>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</div>
- 
+    </section>
+
+    <!-- 사용법 -->
+    <section id="guide" class="main special">
+      <header class="major">
+        <h2>사용 방법</h2>
+      </header>
+      <ul class="features">
+        <li>
+          <span class="icon style1"><i class="fas fa-map-marker-alt"></i></span>
+          <h3>1. 포지션 선택</h3>
+          <p>EXP, MID, 정글, GOLD, 로밍 중 내가 플레이할 포지션을 선택합니다.</p>
+        </li>
+        <li>
+          <span class="icon style2"><i class="fas fa-user-plus"></i></span>
+          <h3>2. 상대 픽 입력</h3>
+          <p>상대 팀이 고른 영웅을 검색해서 슬롯에 추가합니다. 최대 5명까지 가능합니다.</p>
+        </li>
+        <li>
+          <span class="icon style3"><i class="fas fa-star"></i></span>
+          <h3>3. 추천 확인</h3>
+          <p>계산 버튼을 눌러 카운터 점수가 높은 영웅 추천 목록을 확인합니다.</p>
+        </li>
+      </ul>
+      <footer class="major">
+        <ul class="actions special">
+          <li><a href="#banbuck" class="button primary">바로 시작하기</a></li>
+        </ul>
+      </footer>
+    </section>
+
+  </div><!-- /#main -->
+
+  <!-- 푸터 -->
+  <footer id="footer">
+    <ul class="icons">
+      <li><a href="#" class="icon brands"><i class="fab fa-discord"></i></a></li>
+      <li><a href="#" class="icon brands"><i class="fab fa-youtube"></i></a></li>
+      <li><a href="#" class="icon brands"><i class="fab fa-github"></i></a></li>
+    </ul>
+    <p class="copyright">&copy; MLBB 밴픽 도우미 &nbsp;|&nbsp; Design based on <a href="https://html5up.net">HTML5 UP Stellar</a></p>
+  </footer>
+
+</div><!-- /#wrapper -->
+
 <script>
 const COUNTERS={
   "Chou":["Argus","Badang","Paquito","Ruby","Jawhead","Phoveus"],
@@ -177,7 +743,7 @@ const COUNTERS={
   "Argus":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
   "Badang":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
 };
- 
+
 const POOLS={
   EXP:[{n:"Chou",r:"Fighter"},{n:"Aldous",r:"Fighter"},{n:"Fredrinn",r:"Fighter"},{n:"Julian",r:"Fighter"},{n:"Paquito",r:"Fighter"},{n:"Phoveus",r:"Fighter"},{n:"Martis",r:"Fighter"},{n:"Esmeralda",r:"Fighter"},{n:"Ruby",r:"Fighter"},{n:"Leomord",r:"Fighter"},{n:"Silvanna",r:"Fighter"},{n:"Sun",r:"Fighter"},{n:"Argus",r:"Fighter"},{n:"Badang",r:"Fighter"},{n:"Jawhead",r:"Fighter"},{n:"Edith",r:"Tank"},{n:"Hylos",r:"Tank"},{n:"Hilda",r:"Tank"},{n:"Carmilla",r:"Tank"},{n:"Grock",r:"Tank"}],
   MID:[{n:"Xavier",r:"Mage"},{n:"Kagura",r:"Mage"},{n:"Lunox",r:"Mage"},{n:"Cecilion",r:"Mage"},{n:"Chang'e",r:"Mage"},{n:"Valentina",r:"Mage"},{n:"Pharsa",r:"Mage"},{n:"Lylia",r:"Mage"},{n:"Vale",r:"Mage"},{n:"Harith",r:"Mage"},{n:"Eudora",r:"Mage"},{n:"Nana",r:"Mage"},{n:"Esmeralda",r:"Mage"},{n:"Fredrinn",r:"Fighter"}],
@@ -185,12 +751,11 @@ const POOLS={
   GOLD:[{n:"Claude",r:"Marksman"},{n:"Beatrix",r:"Marksman"},{n:"Wanwan",r:"Marksman"},{n:"Brody",r:"Marksman"},{n:"Clint",r:"Marksman"},{n:"Granger",r:"Marksman"},{n:"Melissa",r:"Marksman"},{n:"Natan",r:"Marksman"},{n:"Lesley",r:"Marksman"},{n:"Miya",r:"Marksman"},{n:"Layla",r:"Marksman"},{n:"Bruno",r:"Marksman"},{n:"Karrie",r:"Marksman"},{n:"Moskov",r:"Marksman"}],
   ROAM:[{n:"Atlas",r:"Tank"},{n:"Tigreal",r:"Tank"},{n:"Khufra",r:"Tank"},{n:"Franco",r:"Tank"},{n:"Gloo",r:"Tank"},{n:"Akai",r:"Tank"},{n:"Lolita",r:"Tank"},{n:"Hilda",r:"Tank"},{n:"Carmilla",r:"Tank"},{n:"Estes",r:"Support"},{n:"Rafaela",r:"Support"},{n:"Angela",r:"Support"},{n:"Floryn",r:"Support"},{n:"Mathilda",r:"Support"},{n:"Diggie",r:"Support"},{n:"Kaja",r:"Support"}],
 };
- 
+
 const ALL_ENEMY_NAMES = Object.keys(COUNTERS);
 let myPos="EXP", enemyPicks=[], enemyWeights={}, combos={};
- 
 ALL_ENEMY_NAMES.forEach(n=>{ enemyWeights[n]=1; });
- 
+
 function loadStorage(){
   try {
     const w=localStorage.getItem('mlbb_weights');
@@ -199,14 +764,12 @@ function loadStorage(){
     if(c) Object.assign(combos, JSON.parse(c));
   } catch(e){}
 }
- 
 function saveStorage(){
   try {
     localStorage.setItem('mlbb_weights', JSON.stringify(enemyWeights));
     localStorage.setItem('mlbb_combos', JSON.stringify(combos));
   } catch(e){}
 }
- 
 function showTab(t){
   document.getElementById("panel-main").style.display=t==="main"?"block":"none";
   document.getElementById("panel-settings").style.display=t==="settings"?"block":"none";
@@ -214,14 +777,12 @@ function showTab(t){
   document.getElementById("tab-settings").classList.toggle("active",t==="settings");
   if(t==="settings"){renderWeightList();renderComboSelect();}
 }
- 
 function setPos(p){
   myPos=p;
   ["EXP","MID","JUNGLE","GOLD","ROAM"].forEach(k=>{
     document.getElementById("pos-"+k).classList.toggle("active",k===p);
   });
 }
- 
 function renderSlots(){
   const el=document.getElementById("enemy-slots");
   el.innerHTML="";
@@ -231,7 +792,7 @@ function renderSlots(){
     slot.className="slot"+(h?" filled":"");
     if(h){
       const w=enemyWeights[h]??1;
-      slot.innerHTML=`<span class="sname">${h}</span><span class="sw">×${w}</span><span class="remove" onclick="removeEnemy(${i})">x</span>`;
+      slot.innerHTML=`<span class="sname">${h}</span><span class="sw">×${w}</span><span class="remove" onclick="removeEnemy(${i})">×</span>`;
       slot.onclick=(e)=>{ if(!e.target.classList.contains("remove")) editWeight(h); };
     } else {
       slot.innerHTML=`<span>+</span>`;
@@ -239,7 +800,6 @@ function renderSlots(){
     el.appendChild(slot);
   }
 }
- 
 function editWeight(hero){
   const cur=enemyWeights[hero]??1;
   const v=prompt(`${hero} 가중치 설정\n현재: ${cur}`, cur);
@@ -249,9 +809,7 @@ function editWeight(hero){
     renderSlots();
   }
 }
- 
 function removeEnemy(idx){ enemyPicks.splice(idx,1); renderSlots(); filterEnemyHeroes(); }
- 
 function addEnemy(name){
   if(enemyPicks.length<5 && !enemyPicks.includes(name)){
     enemyPicks.push(name);
@@ -259,7 +817,6 @@ function addEnemy(name){
     filterEnemyHeroes();
   }
 }
- 
 function filterEnemyHeroes(){
   const q=document.getElementById("search").value.toLowerCase();
   const grid=document.getElementById("enemy-hero-grid");
@@ -273,7 +830,6 @@ function filterEnemyHeroes(){
       grid.appendChild(btn);
     });
 }
- 
 function calcRec(){
   if(enemyPicks.length===0){
     document.getElementById("rec-area").innerHTML=`<div class="empty-msg">상대 팀 픽을 먼저 선택하세요.</div>`;
@@ -316,12 +872,11 @@ function calcRec(){
           </div>
           <div class="rec-counters">${ct}</div>
         </div>
-        <span style="font-size:10px;color:#aaa">${combos[name]?"콤보":"—"}</span>
+        <span style="font-size:10px;color:rgba(200,204,216,0.3)">${combos[name]?"콤보":"—"}</span>
       </div>`;
     }).join("")
   }</div>`;
 }
- 
 function showCombo(hero){
   const area=document.getElementById("combo-area");
   const combo=combos[hero];
@@ -332,7 +887,6 @@ function showCombo(hero){
       :`<div class="combo-empty">콤보 없음 — 설정 탭에서 입력하세요.</div>`}
   </div>`;
 }
- 
 function renderWeightList(){
   const q=document.getElementById("w-search")?.value.toLowerCase()||"";
   const el=document.getElementById("weight-list");
@@ -344,19 +898,16 @@ function renderWeightList(){
     el.appendChild(row);
   });
 }
- 
 function renderComboSelect(){
   const sel=document.getElementById("combo-hero-select");
   const allHeroes=[...new Set(Object.values(POOLS).flat().map(h=>h.n))].sort();
   sel.innerHTML=allHeroes.map(n=>`<option value="${n}">${n}${combos[n]?" ✓":""}</option>`).join("");
   loadComboText();
 }
- 
 function loadComboText(){
   const hero=document.getElementById("combo-hero-select").value;
   document.getElementById("combo-text-input").value=combos[hero]||"";
 }
- 
 function saveCombo(){
   const hero=document.getElementById("combo-hero-select").value;
   const text=document.getElementById("combo-text-input").value.trim();
@@ -368,11 +919,23 @@ function saveCombo(){
   setTimeout(()=>tag.style.display="none",1500);
   renderComboSelect();
 }
- 
+
+// 네비 활성화
+window.addEventListener('scroll', ()=>{
+  const sections=['intro','banbuck','guide'];
+  const links=document.querySelectorAll('#nav a');
+  let cur='intro';
+  sections.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el && window.scrollY >= el.offsetTop - 80) cur=id;
+  });
+  links.forEach(a=>a.classList.toggle('active', a.getAttribute('href')==='#'+cur));
+});
+
 loadStorage();
 renderSlots();
 filterEnemyHeroes();
 </script>
+
 </body>
 </html>
- 
