@@ -4,11 +4,11 @@
   Based on Stellar by HTML5 UP (html5up.net | @ajlkn)
   CCA 3.0 license (html5up.net/license)
 -->
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <title>MLBB 밴픽 도우미</title>
+  <title>MLBB Ban-Pick Helper</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     /* ── Stellar 기반 전역 스타일 ── */
@@ -209,32 +209,6 @@
       margin-top: 2rem;
     }
 
-    /* 탭 */
-    .tab-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
-      margin-bottom: 1.2rem;
-    }
-    .tab-btn {
-      height: 36px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      border-radius: 6px;
-      border: 1px solid var(--color-border);
-      background: transparent;
-      color: rgba(200,204,216,0.5);
-      cursor: pointer;
-      transition: all 0.2s;
-      font-family: inherit;
-    }
-    .tab-btn.active {
-      background: var(--color-primary);
-      border-color: var(--color-primary);
-      color: #fff;
-    }
-
     /* 라벨 */
     .section-label {
       font-size: 10px;
@@ -339,13 +313,31 @@
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 3px;
-      max-height: 100px;
-      overflow-y: auto;
       margin-bottom: 0.8rem;
     }
-    .hero-grid::-webkit-scrollbar { width: 4px; }
-    .hero-grid::-webkit-scrollbar-track { background: transparent; }
-    .hero-grid::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+    .epos-row {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+    .epos-btn {
+      height: 28px;
+      font-size: 10px;
+      font-weight: 600;
+      border-radius: 5px;
+      border: 1px solid var(--color-border);
+      background: transparent;
+      color: rgba(200,204,216,0.4);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .epos-btn.active {
+      background: rgba(111,195,223,0.15);
+      border-color: var(--color-accent1);
+      color: var(--color-accent1);
+    }
     .hero-btn {
       padding: 4px 2px;
       font-size: 9px;
@@ -372,12 +364,28 @@
       background: rgba(73,191,157,0.1);
       color: var(--color-primary);
       cursor: pointer;
-      margin-bottom: 0.8rem;
+      margin-bottom: 6px;
       letter-spacing: 0.05em;
       font-family: inherit;
       transition: all 0.2s;
     }
     .calc-btn:hover { background: var(--color-primary); color: #fff; }
+    .reset-btn {
+      width: 100%;
+      height: 32px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 8px;
+      border: 1px solid rgba(226,118,137,0.4);
+      background: transparent;
+      color: rgba(226,118,137,0.7);
+      cursor: pointer;
+      margin-bottom: 0.8rem;
+      letter-spacing: 0.05em;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .reset-btn:hover { background: rgba(226,118,137,0.15); border-color: var(--color-accent2); color: var(--color-accent2); }
 
     /* 추천 결과 */
     .rec-list { display: flex; flex-direction: column; gap: 5px; }
@@ -413,74 +421,6 @@
 
     .empty-msg { font-size: 13px; color: rgba(200,204,216,0.4); text-align: center; padding: 1rem 0; }
 
-    /* 설정 패널 */
-    .settings-panel { display: flex; flex-direction: column; gap: 0.8rem; }
-    .setting-section {
-      border-radius: 8px;
-      border: 1px solid var(--color-border);
-      background: rgba(255,255,255,0.02);
-      padding: 1rem 1.1rem;
-    }
-    .setting-title { font-size: 12px; font-weight: 600; color: var(--color-text-light); margin-bottom: 0.6rem; letter-spacing: 0.05em; }
-    .weight-list { display: flex; flex-direction: column; gap: 4px; max-height: 180px; overflow-y: auto; }
-    .weight-row { display: flex; align-items: center; gap: 8px; }
-    .weight-row span { font-size: 12px; color: var(--color-text); flex: 1; }
-    .weight-row input[type=number] {
-      width: 56px;
-      height: 28px;
-      font-size: 12px;
-      padding: 0 6px;
-      border-radius: 4px;
-      border: 1px solid var(--color-border);
-      background: rgba(255,255,255,0.04);
-      color: var(--color-text-light);
-      text-align: center;
-      outline: none;
-      font-family: inherit;
-    }
-    .combo-select {
-      width: 100%;
-      height: 30px;
-      font-size: 12px;
-      padding: 0 8px;
-      border-radius: 6px;
-      border: 1px solid var(--color-border);
-      background: rgba(255,255,255,0.04);
-      color: var(--color-text-light);
-      margin-bottom: 6px;
-      font-family: inherit;
-    }
-    .combo-input {
-      width: 100%;
-      min-height: 90px;
-      font-size: 12px;
-      padding: 8px 10px;
-      border-radius: 6px;
-      border: 1px solid var(--color-border);
-      background: rgba(255,255,255,0.04);
-      color: var(--color-text-light);
-      resize: vertical;
-      line-height: 1.6;
-      outline: none;
-      font-family: inherit;
-    }
-    .combo-input:focus, .combo-select:focus { border-color: var(--color-primary); }
-    .save-btn {
-      width: 100%;
-      height: 32px;
-      font-size: 12px;
-      border-radius: 6px;
-      border: 1px solid var(--color-primary);
-      background: transparent;
-      color: var(--color-primary);
-      cursor: pointer;
-      margin-top: 6px;
-      font-family: inherit;
-      transition: all 0.2s;
-    }
-    .save-btn:hover { background: var(--color-primary); color: #fff; }
-    .saved-tag { font-size: 10px; color: var(--color-primary); margin-left: 6px; }
-
     /* ── 푸터 ── */
     #footer {
       background: var(--color-bg2);
@@ -514,145 +454,60 @@
   <!-- 헤더 -->
   <header id="header">
     <div class="logo"><i class="fas fa-crosshairs"></i></div>
-    <h1>MLBB 밴픽 도우미</h1>
-    <p>포지션별 카운터 픽 추천 &amp; 콤보 가이드</p>
+    <h1>MLBB Ban-Pick Helper</h1>
+    <p>Counter pick recommendations &amp; combo guide by role</p>
   </header>
 
-  <!-- 네비게이션 -->
+  <!-- Nav -->
   <nav id="nav">
     <ul>
-      <li><a href="#intro" class="active">소개</a></li>
-      <li><a href="#banbuck">밴픽</a></li>
-      <li><a href="#guide">사용법</a></li>
+      <li><span style="display:block;padding:1rem 1.4rem;font-size:0.85rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-primary);">Ban-Pick</span></li>
     </ul>
   </nav>
 
-  <!-- 메인 -->
+  <!-- Main -->
   <div id="main">
-
-    <!-- 인트로 -->
-    <section id="intro" class="main">
-      <div class="spotlight">
-        <div class="content">
-          <header class="major">
-            <h2>스마트한 밴픽으로<br>승률을 높이세요</h2>
-            <p>상대 팀 픽을 입력하면 포지션에 맞는 최적의 카운터 영웅을 추천해드립니다.</p>
-          </header>
-          <ul class="actions">
-            <li><a href="#banbuck" class="button primary">밴픽 시작하기</a></li>
-          </ul>
-        </div>
-        <div class="image"><i class="fas fa-shield-alt"></i></div>
-      </div>
-    </section>
-
-    <!-- 특징 -->
-    <section id="features-section" class="main special">
-      <header class="major">
-        <h2>주요 기능</h2>
-        <p>밴픽을 더 똑똑하게</p>
-      </header>
-      <ul class="features">
-        <li>
-          <span class="icon style1"><i class="fas fa-chess-knight"></i></span>
-          <h3>카운터 분석</h3>
-          <p>상대 픽 기반으로 카운터 점수를 계산해 최적의 픽을 추천합니다.</p>
-        </li>
-        <li>
-          <span class="icon style2"><i class="fas fa-sliders-h"></i></span>
-          <h3>가중치 설정</h3>
-          <p>특정 영웅의 위협도를 직접 조절해 맞춤형 추천을 받을 수 있습니다.</p>
-        </li>
-        <li>
-          <span class="icon style3"><i class="fas fa-book-open"></i></span>
-          <h3>콤보 저장</h3>
-          <p>영웅별 스킬 콤보를 직접 입력하고 저장해두세요.</p>
-        </li>
-      </ul>
-    </section>
-
-    <!-- 밴픽 앱 -->
     <section id="banbuck" class="main">
       <header class="major">
-        <h2>밴픽 계산기</h2>
-        <p>포지션 선택 후 상대 팀 픽을 입력하세요</p>
+        <h2>Ban-Pick Calculator</h2>
+        <p>Select your role and enter the enemy team's picks</p>
       </header>
 
       <div class="app-wrap">
-        <div class="tab-row">
-          <button class="tab-btn active" id="tab-main" onclick="showTab('main')">밴픽</button>
-          <button class="tab-btn" id="tab-settings" onclick="showTab('settings')">설정</button>
-        </div>
 
-        <!-- 밴픽 패널 -->
+        <!-- Ban-Pick Panel -->
         <div id="panel-main">
-          <div class="section-label">내 포지션</div>
+          <div class="section-label">My Role</div>
           <div class="pos-row">
             <button class="pos-btn active" id="pos-EXP" onclick="setPos('EXP')">EXP</button>
             <button class="pos-btn" id="pos-MID" onclick="setPos('MID')">MID</button>
-            <button class="pos-btn" id="pos-JUNGLE" onclick="setPos('JUNGLE')">정글</button>
+            <button class="pos-btn" id="pos-JUNGLE" onclick="setPos('JUNGLE')">Jungle</button>
             <button class="pos-btn" id="pos-GOLD" onclick="setPos('GOLD')">GOLD</button>
-            <button class="pos-btn" id="pos-ROAM" onclick="setPos('ROAM')">로밍</button>
+            <button class="pos-btn" id="pos-ROAM" onclick="setPos('ROAM')">Roam</button>
           </div>
 
-          <div class="section-label">상대 팀 픽 <span style="font-size:9px;font-weight:400">(슬롯 탭 → 가중치 조정)</span></div>
+          <div class="section-label">Enemy Picks</div>
           <div class="slot-grid" id="enemy-slots"></div>
 
-          <input type="search" id="search" placeholder="상대 영웅 검색..." oninput="filterEnemyHeroes()">
+          <div class="section-label" style="margin-top:0.6rem">Filter by Enemy Role</div>
+          <div class="epos-row">
+            <button class="epos-btn active" id="epos-ALL"     onclick="setEnemyPos('ALL')">All</button>
+            <button class="epos-btn"        id="epos-EXP"     onclick="setEnemyPos('EXP')">EXP</button>
+            <button class="epos-btn"        id="epos-MID"     onclick="setEnemyPos('MID')">MID</button>
+            <button class="epos-btn"        id="epos-JUNGLE"  onclick="setEnemyPos('JUNGLE')">Jungle</button>
+            <button class="epos-btn"        id="epos-GOLD"    onclick="setEnemyPos('GOLD')">GOLD</button>
+            <button class="epos-btn"        id="epos-ROAM"    onclick="setEnemyPos('ROAM')">Roam</button>
+          </div>
+
+          <input type="search" id="search" placeholder="Search enemy hero..." oninput="filterEnemyHeroes()">
           <div class="hero-grid" id="enemy-hero-grid"></div>
 
-          <button class="calc-btn" onclick="calcRec()">카운터 점수 계산</button>
-          <div id="rec-area"><div class="empty-msg">포지션 선택 후 상대 픽을 입력하세요.</div></div>
+          <button class="calc-btn" onclick="calcRec()">Calculate Counter Score</button>
+          <button class="reset-btn" onclick="resetAll()">Reset All</button>
+          <div id="rec-area"><div class="empty-msg">Select your role and enter enemy picks.</div></div>
           <div id="combo-area"></div>
         </div>
-
-        <!-- 설정 패널 -->
-        <div id="panel-settings" style="display:none">
-          <div class="settings-panel">
-            <div class="setting-section">
-              <div class="setting-title">영웅별 가중치 설정</div>
-              <div class="section-label" style="margin-top:0;margin-bottom:6px">상대가 해당 영웅 픽 시 카운터 점수에 더해지는 값</div>
-              <input type="search" id="w-search" placeholder="영웅 검색..." oninput="renderWeightList()">
-              <div class="weight-list" id="weight-list"></div>
-            </div>
-            <div class="setting-section">
-              <div class="setting-title">영웅별 콤보 입력</div>
-              <select class="combo-select" id="combo-hero-select" onchange="loadComboText()"></select>
-              <textarea class="combo-input" id="combo-text-input" placeholder="콤보를 입력하세요...&#10;예) 스킬2 → 스킬1 → 궁 → 기본공격 반복"></textarea>
-              <button class="save-btn" onclick="saveCombo()">저장 <span class="saved-tag" id="saved-tag" style="display:none">저장됨 ✓</span></button>
-            </div>
-          </div>
-        </div>
       </div>
-    </section>
-
-    <!-- 사용법 -->
-    <section id="guide" class="main special">
-      <header class="major">
-        <h2>사용 방법</h2>
-      </header>
-      <ul class="features">
-        <li>
-          <span class="icon style1"><i class="fas fa-map-marker-alt"></i></span>
-          <h3>1. 포지션 선택</h3>
-          <p>EXP, MID, 정글, GOLD, 로밍 중 내가 플레이할 포지션을 선택합니다.</p>
-        </li>
-        <li>
-          <span class="icon style2"><i class="fas fa-user-plus"></i></span>
-          <h3>2. 상대 픽 입력</h3>
-          <p>상대 팀이 고른 영웅을 검색해서 슬롯에 추가합니다. 최대 5명까지 가능합니다.</p>
-        </li>
-        <li>
-          <span class="icon style3"><i class="fas fa-star"></i></span>
-          <h3>3. 추천 확인</h3>
-          <p>계산 버튼을 눌러 카운터 점수가 높은 영웅 추천 목록을 확인합니다.</p>
-        </li>
-      </ul>
-      <footer class="major">
-        <ul class="actions special">
-          <li><a href="#banbuck" class="button primary">바로 시작하기</a></li>
-        </ul>
-      </footer>
     </section>
 
   </div><!-- /#main -->
@@ -664,124 +519,265 @@
       <li><a href="#" class="icon brands"><i class="fab fa-youtube"></i></a></li>
       <li><a href="#" class="icon brands"><i class="fab fa-github"></i></a></li>
     </ul>
-    <p class="copyright">&copy; MLBB 밴픽 도우미 &nbsp;|&nbsp; Design based on <a href="https://html5up.net">HTML5 UP Stellar</a></p>
+    <p class="copyright">&copy; MLBB Ban-Pick Helper &nbsp;|&nbsp; Design based on <a href="https://html5up.net">HTML5 UP Stellar</a></p>
   </footer>
 
 </div><!-- /#wrapper -->
 
 <script>
 const COUNTERS={
-  "Chou":["Argus","Badang","Paquito","Ruby","Jawhead","Phoveus"],
-  "Ling":["Saber","Kaja","Chou","Franco","Jawhead","Lolita"],
-  "Lancelot":["Chou","Ruby","Kaja","Jawhead","Natalia","Saber"],
-  "Fanny":["Saber","Kaja","Franco","Jawhead","Chou","Lolita"],
-  "Gusion":["Chou","Ruby","Saber","Franco","Kaja","Jawhead"],
-  "Hayabusa":["Ruby","Chou","Saber","Kaja","Franco","Jawhead"],
-  "Benedetta":["Ruby","Chou","Jawhead","Franco","Kaja","Saber"],
-  "Karina":["Chou","Ruby","Jawhead","Saber","Lolita","Franco"],
-  "Selena":["Chou","Jawhead","Ruby","Franco","Kaja","Lolita"],
-  "Natalia":["Chou","Jawhead","Ruby","Lolita","Diggie","Kaja"],
-  "Helcurt":["Chou","Ruby","Franco","Jawhead","Kaja","Lolita"],
-  "Saber":["Lolita","Chou","Ruby","Jawhead","Khufra","Franco"],
+  // Fighters
+  "Alucard":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Alpha":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
   "Aldous":["Chou","Ruby","Franco","Jawhead","Khufra","Lolita"],
+  "Argus":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Arlott":["Ruby","Chou","Jawhead","Franco","Kaja","Lolita"],
+  "Aulus":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Badang":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Balmond":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Bane":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Barats":["Lunox","Xavier","Pharsa","Kagura","Cecilion","Chang'e"],
+  "Benedetta":["Ruby","Chou","Jawhead","Franco","Kaja","Saber"],
+  "Chou":["Argus","Badang","Paquito","Ruby","Jawhead","Phoveus"],
+  "Cici":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Dyrroth":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Esmeralda":["Lunox","Xavier","Pharsa","Kagura","Cecilion","Chang'e"],
   "Fredrinn":["Xavier","Lunox","Kagura","Pharsa","Chang'e","Cecilion"],
+  "Freya":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Guinevere":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Hilda":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Jawhead":["Chou","Ruby","Franco","Lolita","Khufra","Kaja"],
   "Julian":["Chou","Ruby","Jawhead","Kaja","Franco","Saber"],
+  "Kaja":["Chou","Ruby","Jawhead","Franco","Lolita","Khufra"],
+  "Khaleed":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Lapu-Lapu":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Leomord":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Lukas":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Martis":["Ruby","Chou","Jawhead","Kaja","Franco","Lolita"],
+  "Masha":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Minsitthar":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
   "Paquito":["Ruby","Chou","Jawhead","Franco","Kaja","Lolita"],
   "Phoveus":["Chou","Ruby","Jawhead","Lolita","Franco","Kaja"],
-  "Martis":["Ruby","Chou","Jawhead","Kaja","Franco","Lolita"],
-  "Esmeralda":["Lunox","Xavier","Pharsa","Kagura","Cecilion","Chang'e"],
+  "Roger":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
   "Ruby":["Chou","Jawhead","Saber","Franco","Aldous","Khufra"],
-  "Jawhead":["Chou","Ruby","Franco","Lolita","Khufra","Kaja"],
-  "Leomord":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
   "Silvanna":["Ruby","Chou","Jawhead","Kaja","Franco","Lolita"],
+  "Sora":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
   "Sun":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Atlas":["Lunox","Xavier","Pharsa","Kagura","Chang'e","Cecilion"],
-  "Tigreal":["Lunox","Xavier","Pharsa","Kagura","Cecilion","Chang'e"],
-  "Khufra":["Chou","Ruby","Jawhead","Lolita","Franco","Kaja"],
-  "Franco":["Chou","Ruby","Jawhead","Lolita","Khufra","Kaja"],
-  "Gloo":["Xavier","Lunox","Pharsa","Kagura","Chang'e","Cecilion"],
-  "Akai":["Chou","Ruby","Jawhead","Kaja","Franco","Lolita"],
-  "Edith":["Xavier","Lunox","Pharsa","Kagura","Cecilion","Chang'e"],
-  "Hylos":["Xavier","Lunox","Pharsa","Kagura","Cecilion","Chang'e"],
-  "Hilda":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Lolita":["Chou","Ruby","Jawhead","Franco","Kaja","Khufra"],
-  "Carmilla":["Xavier","Lunox","Pharsa","Kagura","Chang'e","Cecilion"],
-  "Grock":["Xavier","Lunox","Pharsa","Kagura","Cecilion","Chang'e"],
-  "Xavier":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Kagura":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Lunox":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Suyou":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Terizla":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Thamuz":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "X.Borg":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Yin":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Yu Zhong":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Zilong":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  // Assassins
+  "Aamon":["Chou","Jawhead","Ruby","Lolita","Diggie","Kaja"],
+  "Benedetta":["Ruby","Chou","Jawhead","Franco","Kaja","Saber"],
+  "Fanny":["Saber","Kaja","Franco","Jawhead","Chou","Lolita"],
+  "Gusion":["Chou","Ruby","Saber","Franco","Kaja","Jawhead"],
+  "Hanzo":["Chou","Jawhead","Ruby","Franco","Kaja","Lolita"],
+  "Harley":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Hayabusa":["Ruby","Chou","Saber","Kaja","Franco","Jawhead"],
+  "Helcurt":["Chou","Ruby","Franco","Jawhead","Kaja","Lolita"],
+  "Joy":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Karina":["Chou","Ruby","Jawhead","Saber","Lolita","Franco"],
+  "Lancelot":["Chou","Ruby","Kaja","Jawhead","Natalia","Saber"],
+  "Ling":["Saber","Kaja","Chou","Franco","Jawhead","Lolita"],
+  "Natalia":["Chou","Jawhead","Ruby","Lolita","Diggie","Kaja"],
+  "Nolan":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Saber":["Lolita","Chou","Ruby","Jawhead","Khufra","Franco"],
+  "Selena":["Chou","Jawhead","Ruby","Franco","Kaja","Lolita"],
+  "Yi Sun-shin":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  // Mages
+  "Alice":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Aurora":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
   "Cecilion":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
   "Chang'e":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Valentina":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Pharsa":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Lylia":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Vale":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Harith":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Cyclops":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
   "Eudora":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Gord":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Harith":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Kadita":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Kagura":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Lunox":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Luo Yi":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Lylia":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
   "Nana":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Claude":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Novaria":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Odette":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Pharsa":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Vale":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Valentina":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Valir":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Vexana":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Xavier":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Yve":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Zetian":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Zhask":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Zhuxin":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  // Marksmen
   "Beatrix":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Wanwan":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
   "Brody":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Bruno":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Claude":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
   "Clint":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
   "Granger":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Melissa":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Natan":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Lesley":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Miya":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Layla":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Bruno":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Hanabi":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Irithel":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Ixia":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
   "Karrie":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Kimmy":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Layla":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Lesley":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Melissa":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Miya":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
   "Moskov":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Estes":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Rafaela":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Natan":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Obsidia":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Popol and Kupa":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Wanwan":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  // Tanks
+  "Akai":["Chou","Ruby","Jawhead","Kaja","Franco","Lolita"],
+  "Atlas":["Lunox","Xavier","Pharsa","Kagura","Chang'e","Cecilion"],
+  "Baxia":["Xavier","Lunox","Pharsa","Kagura","Cecilion","Chang'e"],
+  "Belerick":["Xavier","Lunox","Pharsa","Kagura","Cecilion","Chang'e"],
+  "Carmilla":["Xavier","Lunox","Pharsa","Kagura","Chang'e","Cecilion"],
+  "Chip":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Edith":["Xavier","Lunox","Pharsa","Kagura","Cecilion","Chang'e"],
+  "Franco":["Chou","Ruby","Jawhead","Lolita","Khufra","Kaja"],
+  "Gatotkaca":["Xavier","Lunox","Pharsa","Kagura","Cecilion","Chang'e"],
+  "Gloo":["Xavier","Lunox","Pharsa","Kagura","Chang'e","Cecilion"],
+  "Grock":["Xavier","Lunox","Pharsa","Kagura","Cecilion","Chang'e"],
+  "Hylos":["Xavier","Lunox","Pharsa","Kagura","Cecilion","Chang'e"],
+  "Johnson":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Khufra":["Chou","Ruby","Jawhead","Lolita","Franco","Kaja"],
+  "Lolita":["Chou","Ruby","Jawhead","Franco","Kaja","Khufra"],
+  "Masha":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Minotaur":["Xavier","Lunox","Pharsa","Kagura","Cecilion","Chang'e"],
+  "Tigreal":["Lunox","Xavier","Pharsa","Kagura","Cecilion","Chang'e"],
+  "Uranus":["Xavier","Lunox","Pharsa","Kagura","Cecilion","Chang'e"],
+  "Suyou":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  // Supports
   "Angela":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Floryn":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Mathilda":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
   "Diggie":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Kaja":["Chou","Ruby","Jawhead","Franco","Lolita","Khufra"],
-  "Argus":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Badang":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Estes":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Faramis":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Floryn":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Kalea":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Marcel":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Mathilda":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Rafaela":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
 };
 
 const POOLS={
-  EXP:[{n:"Chou",r:"Fighter"},{n:"Aldous",r:"Fighter"},{n:"Fredrinn",r:"Fighter"},{n:"Julian",r:"Fighter"},{n:"Paquito",r:"Fighter"},{n:"Phoveus",r:"Fighter"},{n:"Martis",r:"Fighter"},{n:"Esmeralda",r:"Fighter"},{n:"Ruby",r:"Fighter"},{n:"Leomord",r:"Fighter"},{n:"Silvanna",r:"Fighter"},{n:"Sun",r:"Fighter"},{n:"Argus",r:"Fighter"},{n:"Badang",r:"Fighter"},{n:"Jawhead",r:"Fighter"},{n:"Edith",r:"Tank"},{n:"Hylos",r:"Tank"},{n:"Hilda",r:"Tank"},{n:"Carmilla",r:"Tank"},{n:"Grock",r:"Tank"}],
-  MID:[{n:"Xavier",r:"Mage"},{n:"Kagura",r:"Mage"},{n:"Lunox",r:"Mage"},{n:"Cecilion",r:"Mage"},{n:"Chang'e",r:"Mage"},{n:"Valentina",r:"Mage"},{n:"Pharsa",r:"Mage"},{n:"Lylia",r:"Mage"},{n:"Vale",r:"Mage"},{n:"Harith",r:"Mage"},{n:"Eudora",r:"Mage"},{n:"Nana",r:"Mage"},{n:"Esmeralda",r:"Mage"},{n:"Fredrinn",r:"Fighter"}],
-  JUNGLE:[{n:"Ling",r:"Assassin"},{n:"Lancelot",r:"Assassin"},{n:"Fanny",r:"Assassin"},{n:"Gusion",r:"Assassin"},{n:"Hayabusa",r:"Assassin"},{n:"Benedetta",r:"Assassin"},{n:"Karina",r:"Assassin"},{n:"Selena",r:"Assassin"},{n:"Natalia",r:"Assassin"},{n:"Helcurt",r:"Assassin"},{n:"Saber",r:"Assassin"},{n:"Chou",r:"Fighter"},{n:"Paquito",r:"Fighter"},{n:"Martis",r:"Fighter"},{n:"Silvanna",r:"Fighter"},{n:"Ruby",r:"Fighter"},{n:"Jawhead",r:"Fighter"},{n:"Akai",r:"Tank"},{n:"Hilda",r:"Tank"},{n:"Harith",r:"Mage"},{n:"Lunox",r:"Mage"},{n:"Vale",r:"Mage"}],
-  GOLD:[{n:"Claude",r:"Marksman"},{n:"Beatrix",r:"Marksman"},{n:"Wanwan",r:"Marksman"},{n:"Brody",r:"Marksman"},{n:"Clint",r:"Marksman"},{n:"Granger",r:"Marksman"},{n:"Melissa",r:"Marksman"},{n:"Natan",r:"Marksman"},{n:"Lesley",r:"Marksman"},{n:"Miya",r:"Marksman"},{n:"Layla",r:"Marksman"},{n:"Bruno",r:"Marksman"},{n:"Karrie",r:"Marksman"},{n:"Moskov",r:"Marksman"}],
-  ROAM:[{n:"Atlas",r:"Tank"},{n:"Tigreal",r:"Tank"},{n:"Khufra",r:"Tank"},{n:"Franco",r:"Tank"},{n:"Gloo",r:"Tank"},{n:"Akai",r:"Tank"},{n:"Lolita",r:"Tank"},{n:"Hilda",r:"Tank"},{n:"Carmilla",r:"Tank"},{n:"Estes",r:"Support"},{n:"Rafaela",r:"Support"},{n:"Angela",r:"Support"},{n:"Floryn",r:"Support"},{n:"Mathilda",r:"Support"},{n:"Diggie",r:"Support"},{n:"Kaja",r:"Support"}],
+  EXP:[
+    {n:"Aldous",r:"Fighter"},{n:"Alpha",r:"Fighter"},{n:"Alucard",r:"Fighter"},
+    {n:"Arlott",r:"Fighter"},{n:"Aulus",r:"Fighter"},{n:"Badang",r:"Fighter"},
+    {n:"Balmond",r:"Fighter"},{n:"Chou",r:"Fighter"},{n:"Cici",r:"Fighter"},
+    {n:"Dyrroth",r:"Fighter"},{n:"Esmeralda",r:"Fighter"},{n:"Fredrinn",r:"Fighter"},
+    {n:"Freya",r:"Fighter"},{n:"Guinevere",r:"Fighter"},{n:"Hilda",r:"Fighter"},
+    {n:"Jawhead",r:"Fighter"},{n:"Julian",r:"Fighter"},{n:"Khaleed",r:"Fighter"},
+    {n:"Lapu-Lapu",r:"Fighter"},{n:"Leomord",r:"Fighter"},{n:"Lukas",r:"Fighter"},
+    {n:"Martis",r:"Fighter"},{n:"Masha",r:"Fighter"},{n:"Minsitthar",r:"Fighter"},
+    {n:"Paquito",r:"Fighter"},{n:"Phoveus",r:"Fighter"},{n:"Roger",r:"Fighter"},
+    {n:"Ruby",r:"Fighter"},{n:"Silvanna",r:"Fighter"},{n:"Sora",r:"Fighter"},
+    {n:"Sun",r:"Fighter"},{n:"Terizla",r:"Fighter"},{n:"Thamuz",r:"Fighter"},
+    {n:"X.Borg",r:"Fighter"},{n:"Yin",r:"Fighter"},{n:"Yu Zhong",r:"Fighter"},
+    {n:"Zilong",r:"Fighter"},{n:"Edith",r:"Tank"},{n:"Gloo",r:"Tank"},
+    {n:"Grock",r:"Tank"},{n:"Hylos",r:"Tank"},{n:"Carmilla",r:"Tank"},
+    {n:"Barats",r:"Tank"},{n:"Baxia",r:"Tank"},
+  ],
+  MID:[
+    {n:"Alice",r:"Mage"},{n:"Aurora",r:"Mage"},{n:"Cecilion",r:"Mage"},
+    {n:"Chang'e",r:"Mage"},{n:"Cyclops",r:"Mage"},{n:"Eudora",r:"Mage"},
+    {n:"Gord",r:"Mage"},{n:"Harith",r:"Mage"},{n:"Kadita",r:"Mage"},
+    {n:"Kagura",r:"Mage"},{n:"Lunox",r:"Mage"},{n:"Luo Yi",r:"Mage"},
+    {n:"Lylia",r:"Mage"},{n:"Nana",r:"Mage"},{n:"Novaria",r:"Mage"},
+    {n:"Odette",r:"Mage"},{n:"Pharsa",r:"Mage"},{n:"Vale",r:"Mage"},
+    {n:"Valentina",r:"Mage"},{n:"Valir",r:"Mage"},{n:"Vexana",r:"Mage"},
+    {n:"Xavier",r:"Mage"},{n:"Yve",r:"Mage"},{n:"Zetian",r:"Mage"},
+    {n:"Zhask",r:"Mage"},{n:"Zhuxin",r:"Mage"},{n:"Esmeralda",r:"Mage"},
+    {n:"Harley",r:"Assassin"},{n:"Fredrinn",r:"Fighter"},
+  ],
+  JUNGLE:[
+    {n:"Aamon",r:"Assassin"},{n:"Benedetta",r:"Assassin"},{n:"Fanny",r:"Assassin"},
+    {n:"Gusion",r:"Assassin"},{n:"Hanzo",r:"Assassin"},{n:"Harley",r:"Assassin"},
+    {n:"Hayabusa",r:"Assassin"},{n:"Helcurt",r:"Assassin"},{n:"Joy",r:"Assassin"},
+    {n:"Karina",r:"Assassin"},{n:"Lancelot",r:"Assassin"},{n:"Ling",r:"Assassin"},
+    {n:"Natalia",r:"Assassin"},{n:"Nolan",r:"Assassin"},{n:"Saber",r:"Assassin"},
+    {n:"Selena",r:"Assassin"},{n:"Suyou",r:"Assassin"},{n:"Yi Sun-shin",r:"Assassin"},
+    {n:"Chou",r:"Fighter"},{n:"Fredrinn",r:"Fighter"},{n:"Hilda",r:"Fighter"},
+    {n:"Julian",r:"Fighter"},{n:"Leomord",r:"Fighter"},{n:"Martis",r:"Fighter"},
+    {n:"Paquito",r:"Fighter"},{n:"Roger",r:"Fighter"},{n:"Ruby",r:"Fighter"},
+    {n:"Silvanna",r:"Fighter"},{n:"Sora",r:"Fighter"},{n:"Sun",r:"Fighter"},
+    {n:"Akai",r:"Tank"},{n:"Baxia",r:"Tank"},{n:"Freya",r:"Fighter"},
+    {n:"Harith",r:"Mage"},{n:"Lunox",r:"Mage"},{n:"Vale",r:"Mage"},
+  ],
+  GOLD:[
+    {n:"Beatrix",r:"Marksman"},{n:"Brody",r:"Marksman"},{n:"Bruno",r:"Marksman"},
+    {n:"Claude",r:"Marksman"},{n:"Clint",r:"Marksman"},{n:"Granger",r:"Marksman"},
+    {n:"Hanabi",r:"Marksman"},{n:"Irithel",r:"Marksman"},{n:"Ixia",r:"Marksman"},
+    {n:"Karrie",r:"Marksman"},{n:"Kimmy",r:"Marksman"},{n:"Layla",r:"Marksman"},
+    {n:"Lesley",r:"Marksman"},{n:"Melissa",r:"Marksman"},{n:"Miya",r:"Marksman"},
+    {n:"Moskov",r:"Marksman"},{n:"Natan",r:"Marksman"},{n:"Obsidia",r:"Marksman"},
+    {n:"Popol and Kupa",r:"Marksman"},{n:"Wanwan",r:"Marksman"},
+    {n:"Yi Sun-shin",r:"Assassin"},
+  ],
+  ROAM:[
+    {n:"Akai",r:"Tank"},{n:"Atlas",r:"Tank"},{n:"Baxia",r:"Tank"},
+    {n:"Belerick",r:"Tank"},{n:"Carmilla",r:"Tank"},{n:"Chip",r:"Tank"},
+    {n:"Franco",r:"Tank"},{n:"Gatotkaca",r:"Tank"},{n:"Gloo",r:"Tank"},
+    {n:"Grock",r:"Tank"},{n:"Hylos",r:"Tank"},{n:"Johnson",r:"Tank"},
+    {n:"Khufra",r:"Tank"},{n:"Lolita",r:"Tank"},{n:"Minotaur",r:"Tank"},
+    {n:"Tigreal",r:"Tank"},{n:"Uranus",r:"Tank"},{n:"Hilda",r:"Tank"},
+    {n:"Angela",r:"Support"},{n:"Diggie",r:"Support"},{n:"Estes",r:"Support"},
+    {n:"Faramis",r:"Support"},{n:"Floryn",r:"Support"},{n:"Kalea",r:"Support"},
+    {n:"Kaja",r:"Support"},{n:"Marcel",r:"Support"},{n:"Mathilda",r:"Support"},
+    {n:"Rafaela",r:"Support"},{n:"Carmilla",r:"Support"},
+  ],
 };
 
 const ALL_ENEMY_NAMES = Object.keys(COUNTERS);
-let myPos="EXP", enemyPicks=[], enemyWeights={}, combos={};
-ALL_ENEMY_NAMES.forEach(n=>{ enemyWeights[n]=1; });
+let myPos="EXP", enemyPos="ALL", enemyPicks=[];
 
-function loadStorage(){
-  try {
-    const w=localStorage.getItem('mlbb_weights');
-    const c=localStorage.getItem('mlbb_combos');
-    if(w) Object.assign(enemyWeights, JSON.parse(w));
-    if(c) Object.assign(combos, JSON.parse(c));
-  } catch(e){}
-}
-function saveStorage(){
-  try {
-    localStorage.setItem('mlbb_weights', JSON.stringify(enemyWeights));
-    localStorage.setItem('mlbb_combos', JSON.stringify(combos));
-  } catch(e){}
-}
-function showTab(t){
-  document.getElementById("panel-main").style.display=t==="main"?"block":"none";
-  document.getElementById("panel-settings").style.display=t==="settings"?"block":"none";
-  document.getElementById("tab-main").classList.toggle("active",t==="main");
-  document.getElementById("tab-settings").classList.toggle("active",t==="settings");
-  if(t==="settings"){renderWeightList();renderComboSelect();}
-}
+// ═══════════════════════════════════════════════
+//  ADMIN SETTINGS — Edit only this section
+// ═══════════════════════════════════════════════
+
+// Hero Weights: higher = more threatening enemy
+// Default is 1. Increase for hard-to-deal-with heroes.
+const enemyWeights = {
+  "Fanny": 3,
+  "Ling": 2,
+  "Lancelot": 2,
+  "Gusion": 2,
+  "Hayabusa": 2,
+};
+// Fill remaining heroes with default weight 1
+ALL_ENEMY_NAMES.forEach(n => { if(!(n in enemyWeights)) enemyWeights[n] = 1; });
+
+// Hero Combos: skill rotation notes shown after picking a hero
+const combos = {
+  "Chou": "Skill 2 → Skill 1 → Ult → Basic Attack repeat",
+  "Ling": "Skill 1 (wall hop) → Skill 2 → Ult → Skill 2 spam",
+  "Fanny": "Cable → Skill 1 → Ult when surrounded",
+  "Gusion": "Skill 2 → Skill 1 → Skill 2 reset → Ult → Skill 1",
+  "Hayabusa": "Skill 1 × 3 → Skill 2 → Ult (track target)",
+};
+
+// ═══════════════════════════════════════════════
 function setPos(p){
   myPos=p;
   ["EXP","MID","JUNGLE","GOLD","ROAM"].forEach(k=>{
     document.getElementById("pos-"+k).classList.toggle("active",k===p);
   });
+}
+function setEnemyPos(p){
+  enemyPos=p;
+  ["ALL","EXP","MID","JUNGLE","GOLD","ROAM"].forEach(k=>{
+    document.getElementById("epos-"+k).classList.toggle("active",k===p);
+  });
+  filterEnemyHeroes();
 }
 function renderSlots(){
   const el=document.getElementById("enemy-slots");
@@ -793,20 +789,10 @@ function renderSlots(){
     if(h){
       const w=enemyWeights[h]??1;
       slot.innerHTML=`<span class="sname">${h}</span><span class="sw">×${w}</span><span class="remove" onclick="removeEnemy(${i})">×</span>`;
-      slot.onclick=(e)=>{ if(!e.target.classList.contains("remove")) editWeight(h); };
     } else {
       slot.innerHTML=`<span>+</span>`;
     }
     el.appendChild(slot);
-  }
-}
-function editWeight(hero){
-  const cur=enemyWeights[hero]??1;
-  const v=prompt(`${hero} 가중치 설정\n현재: ${cur}`, cur);
-  if(v!==null && !isNaN(parseFloat(v))){
-    enemyWeights[hero]=parseFloat(v);
-    saveStorage();
-    renderSlots();
   }
 }
 function removeEnemy(idx){ enemyPicks.splice(idx,1); renderSlots(); filterEnemyHeroes(); }
@@ -821,7 +807,12 @@ function filterEnemyHeroes(){
   const q=document.getElementById("search").value.toLowerCase();
   const grid=document.getElementById("enemy-hero-grid");
   grid.innerHTML="";
-  ALL_ENEMY_NAMES.filter(n=>!enemyPicks.includes(n)&&(!q||n.toLowerCase().includes(q)))
+  // 포지션별 enemy 영웅 목록 (POOLS 기반)
+  const posNames = enemyPos==="ALL"
+    ? ALL_ENEMY_NAMES
+    : (POOLS[enemyPos]||[]).map(h=>h.n).filter(n=>n in COUNTERS);
+  posNames
+    .filter(n=>!enemyPicks.includes(n)&&(!q||n.toLowerCase().includes(q)))
     .forEach(n=>{
       const btn=document.createElement("button");
       btn.className="hero-btn";
@@ -830,9 +821,25 @@ function filterEnemyHeroes(){
       grid.appendChild(btn);
     });
 }
+function resetAll(){
+  enemyPicks=[];
+  enemyPos="ALL";
+  myPos="EXP";
+  document.getElementById("search").value="";
+  ["EXP","MID","JUNGLE","GOLD","ROAM"].forEach(k=>{
+    document.getElementById("pos-"+k).classList.toggle("active",k==="EXP");
+  });
+  ["ALL","EXP","MID","JUNGLE","GOLD","ROAM"].forEach(k=>{
+    document.getElementById("epos-"+k).classList.toggle("active",k==="ALL");
+  });
+  renderSlots();
+  filterEnemyHeroes();
+  document.getElementById("rec-area").innerHTML=`<div class="empty-msg">Select your role and enter enemy picks.</div>`;
+  document.getElementById("combo-area").innerHTML="";
+}
 function calcRec(){
   if(enemyPicks.length===0){
-    document.getElementById("rec-area").innerHTML=`<div class="empty-msg">상대 팀 픽을 먼저 선택하세요.</div>`;
+    document.getElementById("rec-area").innerHTML=`<div class="empty-msg">Please select enemy picks first.</div>`;
     document.getElementById("combo-area").innerHTML="";
     return;
   }
@@ -852,17 +859,17 @@ function calcRec(){
   results.sort((a,b)=>b.score-a.score);
   const top8=results.slice(0,8);
   const topScore=top8[0]?.score||0;
-  const posLabel={"EXP":"EXP 레인","MID":"MID 레인","JUNGLE":"정글","GOLD":"GOLD 레인","ROAM":"로밍"}[myPos];
+  const posLabel={"EXP":"EXP Lane","MID":"MID Lane","JUNGLE":"Jungle","GOLD":"GOLD Lane","ROAM":"Roam"}[myPos];
   const area=document.getElementById("rec-area");
   document.getElementById("combo-area").innerHTML="";
   if(!top8.length||topScore===0){
-    area.innerHTML=`<div class="empty-msg">카운터 데이터가 부족합니다.</div>`;
+    area.innerHTML=`<div class="empty-msg">No counter data available.</div>`;
     return;
   }
-  area.innerHTML=`<div class="section-label" style="margin-bottom:6px">${posLabel} 추천 — 탭하면 콤보 확인</div><div class="rec-list">${
+  area.innerHTML=`<div class="section-label" style="margin-bottom:6px">${posLabel} Recommendations — tap to view combo</div><div class="rec-list">${
     top8.map(({name,role,score,countered},i)=>{
       const isTop=i<3&&score>0;
-      const ct=countered.length?`카운터: ${countered.join(", ")}`:`카운터 없음`;
+      const ct=countered.length?`Counters: ${countered.join(", ")}`:`No counters`;
       return `<div class="rec-item${isTop?" top":""}" onclick="showCombo('${name}')">
         <div class="rec-score">+${score}</div>
         <div style="flex:1;min-width:0">
@@ -872,7 +879,7 @@ function calcRec(){
           </div>
           <div class="rec-counters">${ct}</div>
         </div>
-        <span style="font-size:10px;color:rgba(200,204,216,0.3)">${combos[name]?"콤보":"—"}</span>
+        <span style="font-size:10px;color:rgba(200,204,216,0.3)">${combos[name]?"Combo":"—"}</span>
       </div>`;
     }).join("")
   }</div>`;
@@ -881,58 +888,18 @@ function showCombo(hero){
   const area=document.getElementById("combo-area");
   const combo=combos[hero];
   area.innerHTML=`<div class="combo-box">
-    <div class="combo-hero">${hero} 콤보</div>
+    <div class="combo-hero">${hero} Combo</div>
     ${combo
       ?`<div class="combo-text">${combo}</div>`
-      :`<div class="combo-empty">콤보 없음 — 설정 탭에서 입력하세요.</div>`}
+      :`<div class="combo-empty">No combo saved — add one in the Settings tab.</div>`}
   </div>`;
 }
-function renderWeightList(){
-  const q=document.getElementById("w-search")?.value.toLowerCase()||"";
-  const el=document.getElementById("weight-list");
-  el.innerHTML="";
-  ALL_ENEMY_NAMES.filter(n=>!q||n.toLowerCase().includes(q)).forEach(n=>{
-    const row=document.createElement("div");
-    row.className="weight-row";
-    row.innerHTML=`<span>${n}</span><input type="number" value="${enemyWeights[n]??1}" min="0" max="10" step="0.5" onchange="enemyWeights['${n}']=parseFloat(this.value)||0;saveStorage();">`;
-    el.appendChild(row);
-  });
-}
-function renderComboSelect(){
-  const sel=document.getElementById("combo-hero-select");
-  const allHeroes=[...new Set(Object.values(POOLS).flat().map(h=>h.n))].sort();
-  sel.innerHTML=allHeroes.map(n=>`<option value="${n}">${n}${combos[n]?" ✓":""}</option>`).join("");
-  loadComboText();
-}
-function loadComboText(){
-  const hero=document.getElementById("combo-hero-select").value;
-  document.getElementById("combo-text-input").value=combos[hero]||"";
-}
-function saveCombo(){
-  const hero=document.getElementById("combo-hero-select").value;
-  const text=document.getElementById("combo-text-input").value.trim();
-  if(text) combos[hero]=text;
-  else delete combos[hero];
-  saveStorage();
-  const tag=document.getElementById("saved-tag");
-  tag.style.display="inline";
-  setTimeout(()=>tag.style.display="none",1500);
-  renderComboSelect();
-}
-
-// 네비 활성화
+// Nav highlight
 window.addEventListener('scroll', ()=>{
-  const sections=['intro','banbuck','guide'];
   const links=document.querySelectorAll('#nav a');
-  let cur='intro';
-  sections.forEach(id=>{
-    const el=document.getElementById(id);
-    if(el && window.scrollY >= el.offsetTop - 80) cur=id;
-  });
-  links.forEach(a=>a.classList.toggle('active', a.getAttribute('href')==='#'+cur));
+  links.forEach(a=>a.classList.toggle('active', a.getAttribute('href')==='#banbuck'));
 });
 
-loadStorage();
 renderSlots();
 filterEnemyHeroes();
 </script>
