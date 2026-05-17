@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>MLBB 밴픽</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    body { margin: 0; padding: 0; background: #fff; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    .wrap { padding: 8px; font-size: 13px; max-width: 480px; margin: 0 auto; }
+    .section-label { font-size: 10px; color: #888; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; margin: 6px 0 3px; }
+    .pos-row { display: grid; grid-template-columns: repeat(5,1fr); gap: 3px; margin-bottom: 8px; }
+    .pos-btn { height: 34px; font-size: 10px; font-weight: 500; border-radius: 6px; border: 1px solid #ddd; background: #f5f5f5; color: #888; cursor: pointer; line-height: 1.2; padding: 2px; }
+    .pos-btn.active { background: #fff; color: #111; border-color: #999; }
+    .slot-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 3px; margin-bottom: 6px; }
+    .slot { height: 40px; border-radius: 6px; border: 1px dashed #ccc; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 9px; color: #aaa; cursor: pointer; position: relative; overflow: hidden; background: #f9f9f9; }
+    .slot.filled { border-style: solid; border-color: #999; background: #fff0f0; }
+    .slot.filled .sname { font-size: 8px; font-weight: 500; color: #222; text-align: center; line-height: 1.2; padding: 1px 2px; }
+    .slot.filled .sw { font-size: 9px; font-weight: 500; color: #c0392b; }
+    .slot .remove { position: absolute; top: 1px; right: 3px; font-size: 10px; color: #aaa; cursor: pointer; line-height: 1; }
+    input[type=text], input[type=search] { width: 100%; height: 30px; font-size: 12px; padding: 0 8px; border-radius: 6px; border: 1px solid #ddd; background: #fff; color: #111; margin-bottom: 5px; outline: none; }
+    input[type=text]:focus, input[type=search]:focus { border-color: #999; }
+    .hero-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 3px; max-height: 90px; overflow-y: auto; margin-bottom: 6px; }
+    .hero-btn { padding: 3px 2px; font-size: 9px; border-radius: 4px; border: 1px solid #e0e0e0; background: #fff; color: #111; cursor: pointer; text-align: center; line-height: 1.2; }
+    .hero-btn:active { background: #f0f0f0; }
+    .tab-row { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; margin-bottom: 8px; }
+    .tab-btn { height: 28px; font-size: 11px; border-radius: 6px; border: 1px solid #ddd; background: #f5f5f5; color: #888; cursor: pointer; }
+    .tab-btn.active { background: #fff; color: #111; border-color: #999; font-weight: 500; }
+    .calc-btn { width: 100%; height: 34px; font-size: 13px; font-weight: 500; border-radius: 8px; border: 1px solid #ddd; background: #fff; color: #111; cursor: pointer; margin-bottom: 6px; }
+    .calc-btn:active { background: #f5f5f5; }
+    .rec-list { display: flex; flex-direction: column; gap: 4px; }
+    .rec-item { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 8px; border: 1px solid #e0e0e0; background: #fff; cursor: pointer; }
+    .rec-item:active { background: #f5f5f5; }
+    .rec-item.top { border-color: #27ae60; background: #f0fff5; }
+    .rec-score { font-size: 13px; font-weight: 500; color: #27ae60; min-width: 28px; text-align: center; }
+    .rec-name { font-size: 12px; font-weight: 500; color: #111; }
+    .rec-role { font-size: 10px; color: #888; }
+    .rec-counters { font-size: 9px; color: #888; line-height: 1.4; }
+    .combo-box { border-radius: 8px; border: 1px solid #aed6f1; background: #eaf4fb; padding: 10px 12px; margin-top: 6px; }
+    .combo-hero { font-size: 13px; font-weight: 500; color: #1a6fa8; margin-bottom: 4px; }
+    .combo-text { font-size: 12px; color: #222; line-height: 1.6; white-space: pre-wrap; }
+    .combo-empty { font-size: 12px; color: #888; font-style: italic; }
+    .empty-msg { font-size: 12px; color: #888; text-align: center; padding: 10px 0; }
+    .settings-panel { display: flex; flex-direction: column; gap: 6px; }
+    .setting-section { border-radius: 8px; border: 1px solid #e0e0e0; background: #fff; padding: 8px 10px; }
+    .setting-title { font-size: 11px; font-weight: 500; color: #111; margin-bottom: 6px; }
+    .weight-list { display: flex; flex-direction: column; gap: 4px; max-height: 160px; overflow-y: auto; }
+    .weight-row { display: flex; align-items: center; gap: 6px; }
+    .weight-row span { font-size: 11px; color: #111; flex: 1; }
+    .weight-row input[type=number] { width: 52px; height: 26px; font-size: 12px; padding: 0 6px; border-radius: 4px; border: 1px solid #ddd; background: #f5f5f5; color: #111; text-align: center; outline: none; }
+    .combo-select { width: 100%; height: 28px; font-size: 12px; padding: 0 6px; border-radius: 6px; border: 1px solid #ddd; background: #f5f5f5; color: #111; margin-bottom: 5px; }
+    .combo-input { width: 100%; min-height: 80px; font-size: 12px; padding: 6px 8px; border-radius: 6px; border: 1px solid #ddd; background: #f5f5f5; color: #111; resize: vertical; line-height: 1.5; outline: none; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    .save-btn { width: 100%; height: 30px; font-size: 12px; border-radius: 6px; border: 1px solid #ddd; background: #fff; color: #111; cursor: pointer; margin-top: 4px; }
+    .saved-tag { font-size: 10px; color: #27ae60; margin-left: 4px; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="tab-row">
+    <button class="tab-btn active" id="tab-main" onclick="showTab('main')">밴픽</button>
+    <button class="tab-btn" id="tab-settings" onclick="showTab('settings')">설정</button>
+  </div>
+ 
+  <div id="panel-main">
+    <div class="section-label">내 포지션</div>
+    <div class="pos-row">
+      <button class="pos-btn active" id="pos-EXP" onclick="setPos('EXP')">EXP</button>
+      <button class="pos-btn" id="pos-MID" onclick="setPos('MID')">MID</button>
+      <button class="pos-btn" id="pos-JUNGLE" onclick="setPos('JUNGLE')">정글</button>
+      <button class="pos-btn" id="pos-GOLD" onclick="setPos('GOLD')">GOLD</button>
+      <button class="pos-btn" id="pos-ROAM" onclick="setPos('ROAM')">로밍</button>
+    </div>
+ 
+    <div class="section-label">상대 팀 픽 <span style="font-size:9px;font-weight:400">(슬롯 탭 → 가중치 조정)</span></div>
+    <div class="slot-grid" id="enemy-slots"></div>
+ 
+    <input type="search" id="search" placeholder="상대 영웅 검색...">
+    <div class="hero-grid" id="enemy-hero-grid"></div>
+ 
+    <button class="calc-btn" onclick="calcRec()">카운터 점수 계산</button>
+    <div id="rec-area"><div class="empty-msg">포지션 선택 후 상대 픽을 입력하세요.</div></div>
+    <div id="combo-area"></div>
+  </div>
+ 
+  <div id="panel-settings" style="display:none">
+    <div class="settings-panel">
+      <div class="setting-section">
+        <div class="setting-title">영웅별 가중치 설정</div>
+        <div class="section-label" style="margin-top:0;margin-bottom:6px">상대가 해당 영웅 픽 시 카운터 점수에 더해지는 값</div>
+        <input type="search" id="w-search" placeholder="영웅 검색..." oninput="renderWeightList()">
+        <div class="weight-list" id="weight-list"></div>
+      </div>
+      <div class="setting-section">
+        <div class="setting-title">영웅별 콤보 입력</div>
+        <select class="combo-select" id="combo-hero-select" onchange="loadComboText()"></select>
+        <textarea class="combo-input" id="combo-text-input" placeholder="콤보를 입력하세요...&#10;예) 스킬2 → 스킬1 → 궁 → 기본공격 반복"></textarea>
+        <button class="save-btn" onclick="saveCombo()">저장 <span class="saved-tag" id="saved-tag" style="display:none">저장됨 ✓</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<script>
+const COUNTERS={
+  "Chou":["Argus","Badang","Paquito","Ruby","Jawhead","Phoveus"],
+  "Ling":["Saber","Kaja","Chou","Franco","Jawhead","Lolita"],
+  "Lancelot":["Chou","Ruby","Kaja","Jawhead","Natalia","Saber"],
+  "Fanny":["Saber","Kaja","Franco","Jawhead","Chou","Lolita"],
+  "Gusion":["Chou","Ruby","Saber","Franco","Kaja","Jawhead"],
+  "Hayabusa":["Ruby","Chou","Saber","Kaja","Franco","Jawhead"],
+  "Benedetta":["Ruby","Chou","Jawhead","Franco","Kaja","Saber"],
+  "Karina":["Chou","Ruby","Jawhead","Saber","Lolita","Franco"],
+  "Selena":["Chou","Jawhead","Ruby","Franco","Kaja","Lolita"],
+  "Natalia":["Chou","Jawhead","Ruby","Lolita","Diggie","Kaja"],
+  "Helcurt":["Chou","Ruby","Franco","Jawhead","Kaja","Lolita"],
+  "Saber":["Lolita","Chou","Ruby","Jawhead","Khufra","Franco"],
+  "Aldous":["Chou","Ruby","Franco","Jawhead","Khufra","Lolita"],
+  "Fredrinn":["Xavier","Lunox","Kagura","Pharsa","Chang'e","Cecilion"],
+  "Julian":["Chou","Ruby","Jawhead","Kaja","Franco","Saber"],
+  "Paquito":["Ruby","Chou","Jawhead","Franco","Kaja","Lolita"],
+  "Phoveus":["Chou","Ruby","Jawhead","Lolita","Franco","Kaja"],
+  "Martis":["Ruby","Chou","Jawhead","Kaja","Franco","Lolita"],
+  "Esmeralda":["Lunox","Xavier","Pharsa","Kagura","Cecilion","Chang'e"],
+  "Ruby":["Chou","Jawhead","Saber","Franco","Aldous","Khufra"],
+  "Jawhead":["Chou","Ruby","Franco","Lolita","Khufra","Kaja"],
+  "Leomord":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Silvanna":["Ruby","Chou","Jawhead","Kaja","Franco","Lolita"],
+  "Sun":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Atlas":["Lunox","Xavier","Pharsa","Kagura","Chang'e","Cecilion"],
+  "Tigreal":["Lunox","Xavier","Pharsa","Kagura","Cecilion","Chang'e"],
+  "Khufra":["Chou","Ruby","Jawhead","Lolita","Franco","Kaja"],
+  "Franco":["Chou","Ruby","Jawhead","Lolita","Khufra","Kaja"],
+  "Gloo":["Xavier","Lunox","Pharsa","Kagura","Chang'e","Cecilion"],
+  "Akai":["Chou","Ruby","Jawhead","Kaja","Franco","Lolita"],
+  "Edith":["Xavier","Lunox","Pharsa","Kagura","Cecilion","Chang'e"],
+  "Hylos":["Xavier","Lunox","Pharsa","Kagura","Cecilion","Chang'e"],
+  "Hilda":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Lolita":["Chou","Ruby","Jawhead","Franco","Kaja","Khufra"],
+  "Carmilla":["Xavier","Lunox","Pharsa","Kagura","Chang'e","Cecilion"],
+  "Grock":["Xavier","Lunox","Pharsa","Kagura","Cecilion","Chang'e"],
+  "Xavier":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Kagura":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Lunox":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Cecilion":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Chang'e":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Valentina":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Pharsa":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Lylia":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Vale":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Harith":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Eudora":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Nana":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
+  "Claude":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Beatrix":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Wanwan":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Brody":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Clint":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Granger":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Melissa":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Natan":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Lesley":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Miya":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Layla":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Bruno":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Karrie":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Moskov":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Estes":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Rafaela":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Angela":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Floryn":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Mathilda":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Diggie":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Kaja":["Chou","Ruby","Jawhead","Franco","Lolita","Khufra"],
+  "Argus":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+  "Badang":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
+};
+ 
+const POOLS={
+  EXP:[{n:"Chou",r:"Fighter"},{n:"Aldous",r:"Fighter"},{n:"Fredrinn",r:"Fighter"},{n:"Julian",r:"Fighter"},{n:"Paquito",r:"Fighter"},{n:"Phoveus",r:"Fighter"},{n:"Martis",r:"Fighter"},{n:"Esmeralda",r:"Fighter"},{n:"Ruby",r:"Fighter"},{n:"Leomord",r:"Fighter"},{n:"Silvanna",r:"Fighter"},{n:"Sun",r:"Fighter"},{n:"Argus",r:"Fighter"},{n:"Badang",r:"Fighter"},{n:"Jawhead",r:"Fighter"},{n:"Edith",r:"Tank"},{n:"Hylos",r:"Tank"},{n:"Hilda",r:"Tank"},{n:"Carmilla",r:"Tank"},{n:"Grock",r:"Tank"}],
+  MID:[{n:"Xavier",r:"Mage"},{n:"Kagura",r:"Mage"},{n:"Lunox",r:"Mage"},{n:"Cecilion",r:"Mage"},{n:"Chang'e",r:"Mage"},{n:"Valentina",r:"Mage"},{n:"Pharsa",r:"Mage"},{n:"Lylia",r:"Mage"},{n:"Vale",r:"Mage"},{n:"Harith",r:"Mage"},{n:"Eudora",r:"Mage"},{n:"Nana",r:"Mage"},{n:"Esmeralda",r:"Mage"},{n:"Fredrinn",r:"Fighter"}],
+  JUNGLE:[{n:"Ling",r:"Assassin"},{n:"Lancelot",r:"Assassin"},{n:"Fanny",r:"Assassin"},{n:"Gusion",r:"Assassin"},{n:"Hayabusa",r:"Assassin"},{n:"Benedetta",r:"Assassin"},{n:"Karina",r:"Assassin"},{n:"Selena",r:"Assassin"},{n:"Natalia",r:"Assassin"},{n:"Helcurt",r:"Assassin"},{n:"Saber",r:"Assassin"},{n:"Chou",r:"Fighter"},{n:"Paquito",r:"Fighter"},{n:"Martis",r:"Fighter"},{n:"Silvanna",r:"Fighter"},{n:"Ruby",r:"Fighter"},{n:"Jawhead",r:"Fighter"},{n:"Akai",r:"Tank"},{n:"Hilda",r:"Tank"},{n:"Harith",r:"Mage"},{n:"Lunox",r:"Mage"},{n:"Vale",r:"Mage"}],
+  GOLD:[{n:"Claude",r:"Marksman"},{n:"Beatrix",r:"Marksman"},{n:"Wanwan",r:"Marksman"},{n:"Brody",r:"Marksman"},{n:"Clint",r:"Marksman"},{n:"Granger",r:"Marksman"},{n:"Melissa",r:"Marksman"},{n:"Natan",r:"Marksman"},{n:"Lesley",r:"Marksman"},{n:"Miya",r:"Marksman"},{n:"Layla",r:"Marksman"},{n:"Bruno",r:"Marksman"},{n:"Karrie",r:"Marksman"},{n:"Moskov",r:"Marksman"}],
+  ROAM:[{n:"Atlas",r:"Tank"},{n:"Tigreal",r:"Tank"},{n:"Khufra",r:"Tank"},{n:"Franco",r:"Tank"},{n:"Gloo",r:"Tank"},{n:"Akai",r:"Tank"},{n:"Lolita",r:"Tank"},{n:"Hilda",r:"Tank"},{n:"Carmilla",r:"Tank"},{n:"Estes",r:"Support"},{n:"Rafaela",r:"Support"},{n:"Angela",r:"Support"},{n:"Floryn",r:"Support"},{n:"Mathilda",r:"Support"},{n:"Diggie",r:"Support"},{n:"Kaja",r:"Support"}],
+};
+ 
+const ALL_ENEMY_NAMES = Object.keys(COUNTERS);
+let myPos="EXP", enemyPicks=[], enemyWeights={}, combos={};
+ 
+ALL_ENEMY_NAMES.forEach(n=>{ enemyWeights[n]=1; });
+ 
+function loadStorage(){
+  try {
+    const w=localStorage.getItem('mlbb_weights');
+    const c=localStorage.getItem('mlbb_combos');
+    if(w) Object.assign(enemyWeights, JSON.parse(w));
+    if(c) Object.assign(combos, JSON.parse(c));
+  } catch(e){}
+}
+ 
+function saveStorage(){
+  try {
+    localStorage.setItem('mlbb_weights', JSON.stringify(enemyWeights));
+    localStorage.setItem('mlbb_combos', JSON.stringify(combos));
+  } catch(e){}
+}
+ 
+function showTab(t){
+  document.getElementById("panel-main").style.display=t==="main"?"block":"none";
+  document.getElementById("panel-settings").style.display=t==="settings"?"block":"none";
+  document.getElementById("tab-main").classList.toggle("active",t==="main");
+  document.getElementById("tab-settings").classList.toggle("active",t==="settings");
+  if(t==="settings"){renderWeightList();renderComboSelect();}
+}
+ 
+function setPos(p){
+  myPos=p;
+  ["EXP","MID","JUNGLE","GOLD","ROAM"].forEach(k=>{
+    document.getElementById("pos-"+k).classList.toggle("active",k===p);
+  });
+}
+ 
+function renderSlots(){
+  const el=document.getElementById("enemy-slots");
+  el.innerHTML="";
+  for(let i=0;i<5;i++){
+    const h=enemyPicks[i];
+    const slot=document.createElement("div");
+    slot.className="slot"+(h?" filled":"");
+    if(h){
+      const w=enemyWeights[h]??1;
+      slot.innerHTML=`<span class="sname">${h}</span><span class="sw">×${w}</span><span class="remove" onclick="removeEnemy(${i})">x</span>`;
+      slot.onclick=(e)=>{ if(!e.target.classList.contains("remove")) editWeight(h); };
+    } else {
+      slot.innerHTML=`<span>+</span>`;
+    }
+    el.appendChild(slot);
+  }
+}
+ 
+function editWeight(hero){
+  const cur=enemyWeights[hero]??1;
+  const v=prompt(`${hero} 가중치 설정\n현재: ${cur}`, cur);
+  if(v!==null && !isNaN(parseFloat(v))){
+    enemyWeights[hero]=parseFloat(v);
+    saveStorage();
+    renderSlots();
+  }
+}
+ 
+function removeEnemy(idx){ enemyPicks.splice(idx,1); renderSlots(); filterEnemyHeroes(); }
+ 
+function addEnemy(name){
+  if(enemyPicks.length<5 && !enemyPicks.includes(name)){
+    enemyPicks.push(name);
+    renderSlots();
+    filterEnemyHeroes();
+  }
+}
+ 
+function filterEnemyHeroes(){
+  const q=document.getElementById("search").value.toLowerCase();
+  const grid=document.getElementById("enemy-hero-grid");
+  grid.innerHTML="";
+  ALL_ENEMY_NAMES.filter(n=>!enemyPicks.includes(n)&&(!q||n.toLowerCase().includes(q)))
+    .forEach(n=>{
+      const btn=document.createElement("button");
+      btn.className="hero-btn";
+      btn.textContent=n;
+      btn.onclick=()=>addEnemy(n);
+      grid.appendChild(btn);
+    });
+}
+ 
+function calcRec(){
+  if(enemyPicks.length===0){
+    document.getElementById("rec-area").innerHTML=`<div class="empty-msg">상대 팀 픽을 먼저 선택하세요.</div>`;
+    document.getElementById("combo-area").innerHTML="";
+    return;
+  }
+  const pool=POOLS[myPos];
+  const results=[];
+  pool.forEach(h=>{
+    if(enemyPicks.includes(h.n)) return;
+    let score=0; const countered=[];
+    enemyPicks.forEach(enemy=>{
+      if((COUNTERS[enemy]||[]).includes(h.n)){
+        score+=(enemyWeights[enemy]??1);
+        countered.push(`${enemy}(×${enemyWeights[enemy]??1})`);
+      }
+    });
+    results.push({name:h.n, role:h.r, score, countered});
+  });
+  results.sort((a,b)=>b.score-a.score);
+  const top8=results.slice(0,8);
+  const topScore=top8[0]?.score||0;
+  const posLabel={"EXP":"EXP 레인","MID":"MID 레인","JUNGLE":"정글","GOLD":"GOLD 레인","ROAM":"로밍"}[myPos];
+  const area=document.getElementById("rec-area");
+  document.getElementById("combo-area").innerHTML="";
+  if(!top8.length||topScore===0){
+    area.innerHTML=`<div class="empty-msg">카운터 데이터가 부족합니다.</div>`;
+    return;
+  }
+  area.innerHTML=`<div class="section-label" style="margin-bottom:6px">${posLabel} 추천 — 탭하면 콤보 확인</div><div class="rec-list">${
+    top8.map(({name,role,score,countered},i)=>{
+      const isTop=i<3&&score>0;
+      const ct=countered.length?`카운터: ${countered.join(", ")}`:`카운터 없음`;
+      return `<div class="rec-item${isTop?" top":""}" onclick="showCombo('${name}')">
+        <div class="rec-score">+${score}</div>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:6px">
+            <span class="rec-name">${name}</span>
+            <span class="rec-role">${role}</span>
+          </div>
+          <div class="rec-counters">${ct}</div>
+        </div>
+        <span style="font-size:10px;color:#aaa">${combos[name]?"콤보":"—"}</span>
+      </div>`;
+    }).join("")
+  }</div>`;
+}
+ 
+function showCombo(hero){
+  const area=document.getElementById("combo-area");
+  const combo=combos[hero];
+  area.innerHTML=`<div class="combo-box">
+    <div class="combo-hero">${hero} 콤보</div>
+    ${combo
+      ?`<div class="combo-text">${combo}</div>`
+      :`<div class="combo-empty">콤보 없음 — 설정 탭에서 입력하세요.</div>`}
+  </div>`;
+}
+ 
+function renderWeightList(){
+  const q=document.getElementById("w-search")?.value.toLowerCase()||"";
+  const el=document.getElementById("weight-list");
+  el.innerHTML="";
+  ALL_ENEMY_NAMES.filter(n=>!q||n.toLowerCase().includes(q)).forEach(n=>{
+    const row=document.createElement("div");
+    row.className="weight-row";
+    row.innerHTML=`<span>${n}</span><input type="number" value="${enemyWeights[n]??1}" min="0" max="10" step="0.5" onchange="enemyWeights['${n}']=parseFloat(this.value)||0;saveStorage();">`;
+    el.appendChild(row);
+  });
+}
+ 
+function renderComboSelect(){
+  const sel=document.getElementById("combo-hero-select");
+  const allHeroes=[...new Set(Object.values(POOLS).flat().map(h=>h.n))].sort();
+  sel.innerHTML=allHeroes.map(n=>`<option value="${n}">${n}${combos[n]?" ✓":""}</option>`).join("");
+  loadComboText();
+}
+ 
+function loadComboText(){
+  const hero=document.getElementById("combo-hero-select").value;
+  document.getElementById("combo-text-input").value=combos[hero]||"";
+}
+ 
+function saveCombo(){
+  const hero=document.getElementById("combo-hero-select").value;
+  const text=document.getElementById("combo-text-input").value.trim();
+  if(text) combos[hero]=text;
+  else delete combos[hero];
+  saveStorage();
+  const tag=document.getElementById("saved-tag");
+  tag.style.display="inline";
+  setTimeout(()=>tag.style.display="none",1500);
+  renderComboSelect();
+}
+ 
+loadStorage();
+renderSlots();
+filterEnemyHeroes();
+</script>
+</body>
+</html>
+ 
