@@ -2094,33 +2094,27 @@ document.addEventListener("fullscreenchange", ()=>{
 });
 
 
-// ── Visitor Counter (CountAPI) ──
+// ── Visitor Counter (counterapi.dev) ──
 (async function(){
-  const NS  = "mlbb-counter-pick"; // 고유 네임스페이스
-  const KEY_TOTAL = "total";
-  const KEY_TODAY = "today-" + new Date().toISOString().slice(0,10); // e.g. today-2026-05-25
+  const NS        = "mlbb-counter-pick";
+  const TODAY     = new Date().toISOString().slice(0,10);
+  const KEY_TOTAL = NS + "-total";
+  const KEY_TODAY = NS + "-" + TODAY;
+  const BASE      = "https://api.counterapi.dev/v1/";
 
   async function hit(key){
     try {
-      const r = await fetch("https://api.countapi.xyz/hit/" + NS + "/" + key);
+      const r = await fetch(BASE + key + "/up");
       const d = await r.json();
-      return d.value;
-    } catch(e){ return null; }
-  }
-  async function get(key){
-    try {
-      const r = await fetch("https://api.countapi.xyz/get/" + NS + "/" + key);
-      const d = await r.json();
-      return d.value;
+      return d.count ?? null;
     } catch(e){ return null; }
   }
 
-  // Hit both counters on load
   const [total, today] = await Promise.all([hit(KEY_TOTAL), hit(KEY_TODAY)]);
-  const fmtEl = document.getElementById("vc-today");
-  const totEl = document.getElementById("vc-total");
-  if(fmtEl && today !== null)  fmtEl.textContent = today.toLocaleString();
-  if(totEl && total !== null)  totEl.textContent = total.toLocaleString();
+  const todayEl = document.getElementById("vc-today");
+  const totalEl = document.getElementById("vc-total");
+  if(todayEl && today !== null) todayEl.textContent = today.toLocaleString();
+  if(totalEl && total !== null) totalEl.textContent = total.toLocaleString();
 })();
 
 renderSlots();
