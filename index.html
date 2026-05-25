@@ -8,7 +8,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <title>MLBB Ban-Pick Helper</title>
+  <title>MLBB Counter Pick Helper</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     /* ── Stellar 기반 전역 스타일 ── */
@@ -421,6 +421,235 @@
 
     .empty-msg { font-size: 13px; color: rgba(200,204,216,0.4); text-align: center; padding: 1rem 0; }
 
+    .combo-note-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--color-accent2);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+    .combo-note-text { font-size: 13px; color: var(--color-text); line-height: 1.7; white-space: pre-wrap; }
+
+
+    /* ── 콤보 아이콘 렌더링 ── */
+    .combo-icons {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin: 4px 0;
+    }
+    .ci-skill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .ci-skill.s1 { background: rgba(73,191,157,0.25); border: 1.5px solid var(--color-primary); color: var(--color-primary); }
+    .ci-skill.s2 { background: rgba(111,195,223,0.25); border: 1.5px solid var(--color-accent1); color: var(--color-accent1); }
+    .ci-skill.s3 { background: rgba(226,118,137,0.25); border: 1.5px solid var(--color-accent2); color: var(--color-accent2); }
+    .ci-skill.s4 { background: rgba(142,192,124,0.25); border: 1.5px solid var(--color-accent3); color: var(--color-accent3); }
+    .ci-skill.sD { background: rgba(200,204,216,0.12); border: 1.5px solid rgba(200,204,216,0.4); color: rgba(200,204,216,0.7); }
+    .ci-skill.sB { background: rgba(255,200,80,0.18); border: 1.5px solid rgba(255,200,80,0.7); color: rgba(255,200,80,1); font-size:10px; }
+    .ci-arrow {
+      color: rgba(200,204,216,0.35);
+      font-size: 12px;
+      line-height: 1;
+    }
+    .ci-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 7px;
+      border-radius: 10px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .ci-badge.flicker { background: rgba(226,118,137,0.18); border: 1px solid rgba(226,118,137,0.5); color: var(--color-accent2); }
+    .ci-badge.inspire { background: rgba(255,200,80,0.18); border: 1px solid rgba(255,200,80,0.5); color: rgba(255,200,80,1); }
+    .ci-badge.speed   { background: rgba(111,195,223,0.18); border: 1px solid rgba(111,195,223,0.5); color: var(--color-accent1); }
+    .ci-badge.stun    { background: rgba(73,191,157,0.18); border: 1px solid rgba(73,191,157,0.5); color: var(--color-primary); }
+    .ci-badge.freeze  { background: rgba(111,195,223,0.18); border: 1px solid rgba(111,195,223,0.5); color: var(--color-accent1); }
+    .ci-badge.dash    { background: rgba(142,192,124,0.18); border: 1px solid rgba(142,192,124,0.5); color: var(--color-accent3); }
+    .ci-badge.special { background: rgba(200,204,216,0.1); border: 1px solid rgba(200,204,216,0.3); color: rgba(200,204,216,0.7); }
+    .ci-badge.ult     { background: rgba(226,118,137,0.22); border: 1.5px solid var(--color-accent2); color: var(--color-accent2); font-size:9px; }
+    .ci-sep { color: rgba(200,204,216,0.2); font-size: 11px; margin: 0 2px; }
+    .combo-alt-row { margin-top: 5px; display: flex; align-items: center; flex-wrap: wrap; gap: 5px; }
+    .combo-alt-label { font-size: 9px; color: rgba(200,204,216,0.4); text-transform: uppercase; letter-spacing: 0.05em; margin-right: 2px; }
+
+    /* ── 콤보 에디터 ── */
+    .combo-editor-item {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 6px;
+    }
+    .combo-editor-item label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-accent1);
+      margin-bottom: 4px;
+      letter-spacing: 0.06em;
+    }
+    .combo-editor-item textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--color-border);
+      border-radius: 5px;
+      color: var(--color-text-light);
+      font-family: inherit;
+      font-size: 12px;
+      line-height: 1.5;
+      padding: 6px 8px;
+      resize: vertical;
+      min-height: 44px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .combo-editor-item textarea:focus { border-color: var(--color-primary); }
+    .combo-saved-badge {
+      font-size: 10px;
+      color: var(--color-primary);
+      margin-left: 6px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+
+    /* ── Combo Browser ── */
+    .cb-class-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+    .cb-tab {
+      padding: 5px 12px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      border-radius: 20px;
+      border: 1.5px solid var(--color-border);
+      background: transparent;
+      color: rgba(200,204,216,0.5);
+      cursor: pointer;
+      transition: all 0.18s;
+      font-family: inherit;
+    }
+    .cb-tab:hover { border-color: rgba(200,204,216,0.4); color: rgba(200,204,216,0.8); }
+    .cb-tab.active { background: rgba(73,191,157,0.18); border-color: var(--color-primary); color: var(--color-primary); }
+    .cb-tab[data-cls="Assassin"].active  { background: rgba(226,118,137,0.18); border-color: var(--color-accent2); color: var(--color-accent2); }
+    .cb-tab[data-cls="Mage"].active      { background: rgba(111,195,223,0.18); border-color: var(--color-accent1); color: var(--color-accent1); }
+    .cb-tab[data-cls="Marksman"].active  { background: rgba(255,200,80,0.18);  border-color: rgba(255,200,80,0.9); color: rgba(255,200,80,1); }
+    .cb-tab[data-cls="Tank"].active      { background: rgba(142,192,124,0.18); border-color: var(--color-accent3); color: var(--color-accent3); }
+    .cb-tab[data-cls="Support"].active   { background: rgba(200,150,255,0.18); border-color: rgba(200,150,255,0.8); color: rgba(200,150,255,1); }
+
+    .cb-hero-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+    .cb-hero-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 4px 6px;
+      border-radius: 8px;
+      border: 1.5px solid var(--color-border);
+      background: rgba(255,255,255,0.02);
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+      text-align: center;
+      gap: 3px;
+    }
+    .cb-hero-btn:hover { background: rgba(73,191,157,0.1); border-color: rgba(73,191,157,0.5); }
+    .cb-hero-btn.active { background: rgba(73,191,157,0.18); border-color: var(--color-primary); }
+    .cb-hero-btn .cb-hname {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--color-text-light);
+      line-height: 1.2;
+      word-break: break-word;
+    }
+    .cb-hero-btn .cb-hrole {
+      font-size: 8px;
+      color: rgba(200,204,216,0.4);
+      line-height: 1;
+    }
+    /* role dot colors */
+    .cb-hero-btn[data-role="Fighter"]  .cb-hrole { color: var(--color-primary); }
+    .cb-hero-btn[data-role="Assassin"] .cb-hrole { color: var(--color-accent2); }
+    .cb-hero-btn[data-role="Mage"]     .cb-hrole { color: var(--color-accent1); }
+    .cb-hero-btn[data-role="Marksman"] .cb-hrole { color: rgba(255,200,80,0.9); }
+    .cb-hero-btn[data-role="Tank"]     .cb-hrole { color: var(--color-accent3); }
+    .cb-hero-btn[data-role="Support"]  .cb-hrole { color: rgba(200,150,255,0.9); }
+
+    /* detail card */
+    .cb-detail-card {
+      border-radius: 10px;
+      border: 1px solid rgba(111,195,223,0.3);
+      background: rgba(111,195,223,0.04);
+      padding: 14px 14px 12px;
+      margin-top: 2px;
+      animation: cbFadeIn 0.18s ease;
+    }
+    @keyframes cbFadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
+    .cb-detail-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .cb-detail-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--color-bg2);
+      border: 2px solid var(--color-accent1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .cb-detail-name { font-size: 16px; font-weight: 700; color: var(--color-text-light); }
+    .cb-detail-role { font-size: 10px; color: rgba(200,204,216,0.5); margin-top: 1px; }
+    .cb-section-title {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.09em; text-transform: uppercase;
+      margin: 8px 0 5px;
+    }
+    .cb-section-title.combo-label { color: var(--color-accent1); }
+    .cb-section-title.note-label  { color: var(--color-accent2); }
+    .cb-note-text { font-size: 12px; color: var(--color-text); line-height: 1.7; }
+    .cb-counters-row {
+      display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px;
+    }
+    .cb-counter-chip {
+      font-size: 9px; font-weight: 600;
+      padding: 2px 8px; border-radius: 10px;
+      background: rgba(226,118,137,0.12);
+      border: 1px solid rgba(226,118,137,0.35);
+      color: rgba(226,118,137,0.9);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .cb-counter-chip:hover { background: rgba(226,118,137,0.25); }
+    .cb-empty { font-size: 12px; color: rgba(200,204,216,0.4); font-style: italic; }
+
     /* ── 푸터 ── */
     #footer {
       background: var(--color-bg2);
@@ -454,14 +683,16 @@
   <!-- 헤더 -->
   <header id="header">
     <div class="logo"><i class="fas fa-crosshairs"></i></div>
-    <h1>MLBB Ban-Pick Helper</h1>
+    <h1>MLBB Counter Pick Helper</h1>
     <p>Counter pick recommendations &amp; combo guide by role</p>
   </header>
 
   <!-- Nav -->
   <nav id="nav">
     <ul>
-      <li><span style="display:block;padding:1rem 1.4rem;font-size:0.85rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-primary);">Ban-Pick</span></li>
+      <li><a href="javascript:void(0)" id="nav-main" class="active" onclick="showPanel('main')">Ban-Pick</a></li>
+      <li><a href="javascript:void(0)" id="nav-combobrowser" onclick="showPanel('combobrowser')">📖 Combo Guide</a></li>
+
     </ul>
   </nav>
 
@@ -469,7 +700,7 @@
   <div id="main">
     <section id="banbuck" class="main">
       <header class="major">
-        <h2>Ban-Pick Calculator</h2>
+        <h2>Counter Pick Calculator</h2>
         <p>Select your role and enter the enemy team's picks</p>
       </header>
 
@@ -507,6 +738,16 @@
           <div id="rec-area"><div class="empty-msg">Select your role and enter enemy picks.</div></div>
           <div id="combo-area"></div>
         </div>
+
+        <!-- Combo Browser Panel -->
+        <div id="panel-combobrowser" style="display:none">
+          <div class="cb-class-tabs" id="cb-class-tabs"></div>
+          <input type="search" id="cb-search" placeholder="Search hero…" oninput="cbFilter()" style="margin-bottom:8px">
+          <div class="cb-hero-grid" id="cb-hero-grid"></div>
+          <div id="cb-detail"></div>
+        </div>
+
+
       </div>
     </section>
 
@@ -519,156 +760,12 @@
       <li><a href="#" class="icon brands"><i class="fab fa-youtube"></i></a></li>
       <li><a href="#" class="icon brands"><i class="fab fa-github"></i></a></li>
     </ul>
-    <p class="copyright">&copy; MLBB Ban-Pick Helper &nbsp;|&nbsp; Design based on <a href="https://html5up.net">HTML5 UP Stellar</a></p>
+    <p class="copyright">&copy; MLBB Counter Pick Helper &nbsp;|&nbsp; Design based on <a href="https://html5up.net">HTML5 UP Stellar</a></p>
   </footer>
 
 </div><!-- /#wrapper -->
 
 <script>
-const COUNTERS={
-  // Fighters
-  "Alucard":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Alpha":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Aldous":["Chou","Ruby","Franco","Jawhead","Khufra","Lolita"],
-  "Argus":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Arlott":["Ruby","Chou","Jawhead","Franco","Kaja","Lolita"],
-  "Aulus":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Badang":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Balmond":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Bane":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Barats":["Lunox","Xavier","Pharsa","Kagura","Cecilion","Chang'e"],
-  "Benedetta":["Ruby","Chou","Jawhead","Franco","Kaja","Saber"],
-  "Chou":["Argus","Badang","Paquito","Ruby","Jawhead","Phoveus"],
-  "Cici":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Dyrroth":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Esmeralda":["Lunox","Xavier","Pharsa","Kagura","Cecilion","Chang'e"],
-  "Fredrinn":["Xavier","Lunox","Kagura","Pharsa","Chang'e","Cecilion"],
-  "Freya":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Guinevere":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Hilda":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Jawhead":["Chou","Ruby","Franco","Lolita","Khufra","Kaja"],
-  "Julian":["Chou","Ruby","Jawhead","Kaja","Franco","Saber"],
-  "Kaja":["Chou","Ruby","Jawhead","Franco","Lolita","Khufra"],
-  "Khaleed":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Lapu-Lapu":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Leomord":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Lukas":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Martis":["Ruby","Chou","Jawhead","Kaja","Franco","Lolita"],
-  "Masha":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Minsitthar":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Paquito":["Ruby","Chou","Jawhead","Franco","Kaja","Lolita"],
-  "Phoveus":["Chou","Ruby","Jawhead","Lolita","Franco","Kaja"],
-  "Roger":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Ruby":["Chou","Jawhead","Saber","Franco","Aldous","Khufra"],
-  "Silvanna":["Ruby","Chou","Jawhead","Kaja","Franco","Lolita"],
-  "Sora":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Sun":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Suyou":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Terizla":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Thamuz":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "X.Borg":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Yin":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Yu Zhong":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Zilong":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  // Assassins
-  "Aamon":["Chou","Jawhead","Ruby","Lolita","Diggie","Kaja"],
-  "Benedetta":["Ruby","Chou","Jawhead","Franco","Kaja","Saber"],
-  "Fanny":["Saber","Kaja","Franco","Jawhead","Chou","Lolita"],
-  "Gusion":["Chou","Ruby","Saber","Franco","Kaja","Jawhead"],
-  "Hanzo":["Chou","Jawhead","Ruby","Franco","Kaja","Lolita"],
-  "Harley":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Hayabusa":["Ruby","Chou","Saber","Kaja","Franco","Jawhead"],
-  "Helcurt":["Chou","Ruby","Franco","Jawhead","Kaja","Lolita"],
-  "Joy":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Karina":["Chou","Ruby","Jawhead","Saber","Lolita","Franco"],
-  "Lancelot":["Chou","Ruby","Kaja","Jawhead","Natalia","Saber"],
-  "Ling":["Saber","Kaja","Chou","Franco","Jawhead","Lolita"],
-  "Natalia":["Chou","Jawhead","Ruby","Lolita","Diggie","Kaja"],
-  "Nolan":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Saber":["Lolita","Chou","Ruby","Jawhead","Khufra","Franco"],
-  "Selena":["Chou","Jawhead","Ruby","Franco","Kaja","Lolita"],
-  "Yi Sun-shin":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  // Mages
-  "Alice":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Aurora":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Cecilion":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Chang'e":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Cyclops":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Eudora":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Gord":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Harith":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Kadita":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Kagura":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Lunox":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Luo Yi":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Lylia":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Nana":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Novaria":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Odette":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Pharsa":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Vale":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Valentina":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Valir":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Vexana":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Xavier":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Yve":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Zetian":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Zhask":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  "Zhuxin":["Chou","Lancelot","Jawhead","Franco","Kaja","Natalia"],
-  // Marksmen
-  "Beatrix":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Brody":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Bruno":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Claude":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Clint":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Granger":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Hanabi":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Irithel":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Ixia":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Karrie":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Kimmy":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Layla":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Lesley":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Melissa":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Miya":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Moskov":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Natan":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Obsidia":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Popol and Kupa":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Wanwan":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  // Tanks
-  "Akai":["Chou","Ruby","Jawhead","Kaja","Franco","Lolita"],
-  "Atlas":["Lunox","Xavier","Pharsa","Kagura","Chang'e","Cecilion"],
-  "Baxia":["Xavier","Lunox","Pharsa","Kagura","Cecilion","Chang'e"],
-  "Belerick":["Xavier","Lunox","Pharsa","Kagura","Cecilion","Chang'e"],
-  "Carmilla":["Xavier","Lunox","Pharsa","Kagura","Chang'e","Cecilion"],
-  "Chip":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Edith":["Xavier","Lunox","Pharsa","Kagura","Cecilion","Chang'e"],
-  "Franco":["Chou","Ruby","Jawhead","Lolita","Khufra","Kaja"],
-  "Gatotkaca":["Xavier","Lunox","Pharsa","Kagura","Cecilion","Chang'e"],
-  "Gloo":["Xavier","Lunox","Pharsa","Kagura","Chang'e","Cecilion"],
-  "Grock":["Xavier","Lunox","Pharsa","Kagura","Cecilion","Chang'e"],
-  "Hylos":["Xavier","Lunox","Pharsa","Kagura","Cecilion","Chang'e"],
-  "Johnson":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Khufra":["Chou","Ruby","Jawhead","Lolita","Franco","Kaja"],
-  "Lolita":["Chou","Ruby","Jawhead","Franco","Kaja","Khufra"],
-  "Masha":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Minotaur":["Xavier","Lunox","Pharsa","Kagura","Cecilion","Chang'e"],
-  "Tigreal":["Lunox","Xavier","Pharsa","Kagura","Cecilion","Chang'e"],
-  "Uranus":["Xavier","Lunox","Pharsa","Kagura","Cecilion","Chang'e"],
-  "Suyou":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  // Supports
-  "Angela":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Diggie":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Estes":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Faramis":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Floryn":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Kalea":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Marcel":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Mathilda":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-  "Rafaela":["Chou","Ruby","Jawhead","Franco","Kaja","Lolita"],
-};
-
 const POOLS={
   EXP:[
     {n:"Aldous",r:"Fighter"},{n:"Alpha",r:"Fighter"},{n:"Alucard",r:"Fighter"},
@@ -737,35 +834,470 @@ const POOLS={
   ],
 };
 
-const ALL_ENEMY_NAMES = Object.keys(COUNTERS);
+// ═══════════════════════════════════════════════
+//  HERO DATA — 캐릭터별 모든 속성을 한 곳에서 편집
+//  counters : 이 영웅을 카운터하는 영웅 목록
+//  combo    : 스킬 콤보 순서
+//  note     : 추가 메모 (아이템, 매치업 팁 등)
+// ═══════════════════════════════════════════════
+const HEROES = {
+  // Source: mlbbhub.com Patch 2.1.70 (May 2026) + search data
+  // ★ = verified real data  ☆ = search/knowledge based
+
+  // ── Fighters ──
+  "Alucard":    { counters:["Argus","Khufra","Wanwan","Valir"],
+                  combo:"3 - 1 - 2 - 3",
+                  note:"Lifesteal hero. Avoid long 1v1 trades after lv4. CC interrupts his combo." },
+  "Alpha":      { counters:["Argus","Thamuz","Wanwan","Valir"],
+                  combo:"3 - 1 - 2",
+                  note:"Build Beta passive stacks before Ult. Ling hard counters Alpha." },
+  "Aldous":     { counters:["Argus","Akai","Obsidia","Julian"],
+                  combo:"3 - 3 target - 1 while moving - B - 2",
+                  note:"500+ stacks one-shots squishies. Ult reveals target on minimap. Deny stacks early." },
+  "Argus":      { counters:["Akai","Chou","Jawhead","Franco","Hylos","Yu Zhong"],
+                  combo:"1 - 2 - 1 - B - 3 - B",
+                  note:"Ult grants brief immortality — use it reactively, not as engage." },
+  "Arlott":     { counters:["Phoveus","Chou","Minsitthar","Hilda","Miya"],
+                  combo:"2 - 1 - 2 - 3 - 2",
+                  note:"S2 dash only activates if mark lands first. Ult range scales with marks consumed." },
+  "Aulus":      { counters:["Argus","Valir","Gatotkaca","Hayabusa","Yin"],
+                  combo:"3 - 1 - 2 - B",
+                  note:"Passive axe procs on every AA. Refresh S2 as soon as it's off cooldown." },
+  "Badang":     { counters:["Esmeralda","Aldous","Khaleed","Chou","Lunox","Nana","Phoveus"],
+                  combo:"2 - flicker - 1 - 3",
+                  note:"Ult deals full damage only when target is pinned to a wall. Purify counters him." },
+  "Balmond":    { counters:["Ruby","Jawhead","Claude","Esmeralda","Selena","Argus"],
+                  combo:"1 - 2 - 3",
+                  note:"Strong wave clear with S2. Ult executes targets below 50% HP." },
+  "Bane":       { counters:["Martis","Chou","Lylia"],
+                  combo:"2 - 3 - 1 - 2 - B",
+                  note:"Shark zones area. Hybrid build (spell vamp + tank) is cost-efficient." },
+  "Chou":       { counters:["Yu Zhong","Melissa","Uranus","Minsitthar","Phoveus"],
+                  combo:"1 - 1 - 1 - 2 - 3 - 3",
+                  note:"S2 grants brief CC immunity — use to dodge CC. Phoveus is his hardest counter in current meta." },
+  "Cici":       { counters:["Phoveus","Terizla","Baxia","X.Borg","Sun"],
+                  combo:"2 - 3 - 1",
+                  note:"Ult restores a S1 charge. Chain combos in teamfights for sustained damage." },
+  "Dyrroth":    { counters:["Badang","Martis","Thamuz","Guinevere"],
+                  combo:"2 - 2 - 3 - 1",
+                  note:"Every 3rd S1 is empowered. Passive shreds shields — hard counters Esmeralda." },
+  "Esmeralda":  { counters:["Dyrroth","Lunox","Karrie","Valir","Yu Zhong"],
+                  combo:"1 - 3 - 2 - 1",
+                  note:"Converts enemy shields into her own. Dyrroth S1 ignores shields — hardest counter." },
+  "Fredrinn":   { counters:["X-borg","Baxia","Lunox","Karrie","Alpha"],
+                  combo:"2 - 1 - 3 - 1 - 2 - 4",
+                  note:"Ult damage scales with stored crystal energy. Stack before teamfight." },
+  "Freya":      { counters:["Obsidia","Karrie","Guinevere","Phoveus","Minsitthar"],
+                  combo:"1 - B - 2 - 2 - inspire - 3 - B",
+                  note:"Sacred Orb stacks on AAs. Ult converts her to ranged temporarily." },
+  "Guinevere":  { counters:["Obsidia","Kagura","Benedetta","Argus","Minsitthar","Chou"],
+                  combo:"2 - flicker - 1 - B - 3 - 1",
+                  note:"Ult can only cast while target is airborne. Tight combo timing — practice in training." },
+  "Hilda":      { counters:["Angela","Claude","Valir","Gusion","Cici","Zhuxin"],
+                  combo:"1 - B - 2 - 2 - 2 - 3",
+                  note:"HP regen only works in bushes. Stack passive between fights. Great roam fighter." },
+  "Jawhead":    { counters:["Thamuz","Argus","Martis","Miya","Yu Zhong"],
+                  combo:"2 - flicker - 2 - 3 - 1 or 1 - 3 - 2 - 2",
+                  note:"Can throw allies as projectiles. Coordinate S2 with teammates. Lolita shield blocks S2." },
+  "Julian":     { counters:["Minsitthar","Akai","Zhuxin"],
+                  combo:"1 - 3 - 2 or 2 - 3 - 1 or 2 - 1 - 3",
+                  note:"Enhanced skills have no cooldown during Ult window. Heavy CC interrupts his combo." },
+  "Khaleed":    { counters:["Jawhead","Minsitthar","Ruby","Dyrroth","X-borg"],
+                  combo:"3 - B - 1 - move - 1 - move - 1 - 2",
+                  note:"Ult lets him reposition freely. Desert Power stacks on S1 hits." },
+  "Lapu-Lapu":  { counters:["Esmeralda","Karrie","X-borg","Lunox","Ruby"],
+                  combo:"2 - 3 - flicker - 2 - 1 - B - 3",
+                  note:"Transformed form has much higher damage. CC him before transformation." },
+  "Leomord":    { counters:["Valir","Minsitthar","Akai","Chou"],
+                  combo:"3 - 2 - 1 - 2 - 1 - B",
+                  note:"Mounted state has extended range and charge attack. Great chaser." },
+  "Lukas":      { counters:["Alpha","Sun","Minsitthar","Yu Zhong","Dyrroth","Jawhead","Clint","Fredrinn"],
+                  combo:"S1 → S2 → AA → Ult burst",
+                  note:"Builds momentum through AAs. Full momentum Ult deals massive single-target damage." },
+  "Martis":     { counters:["Akai","Diggie","Franco","Minsitthar","Phoveus"],
+                  combo:"2 - 1 - 2 - 3",
+                  note:"Ult grants CC immunity — use to escape burst then re-engage. Kill resets Ult." },
+  "Masha":      { counters:["Dyrroth","Sun","Argus"],
+                  combo:"1 - 3 - B - 2",
+                  note:"3 HP bars make her very tanky. Ult enables tower diving. Anti-heal counters her." },
+  "Minsitthar": { counters:["Akai","Diggie","Valir","Yu Zhong","Lylia"],
+                  combo:"1 - 3 - flicker - 2",
+                  note:"Ult blocks all dashes inside the field — shuts down Fanny, Ling, Lancelot completely." },
+  "Paquito":    { counters:["Minsitthar","Khufra","Phoveus"],
+                  combo:"2 - 2 - 1 - 3 - 2 or 3 - 2 - 1 - 3 - 3",
+                  note:"4-hit Champ Stance empowers next skill. Track stacks visually." },
+  "Phoveus":    { counters:["Dyrroth","Terizla","Lesley","Minsitthar","Uranus","Aurora"],
+                  combo:"1 - B - 3 - 2 - 1 - 3",
+                  note:"Ult teleports to enemies who dash nearby. Hard counter to all dash-heavy heroes." },
+  "Roger":      { counters:["Minsitthar","Lesley","Phoveus"],
+                  combo:"1 - 2 - 3 - 1 - 2 - B",
+                  note:"Human form for poke/slow, wolf form for chase/burst. Don't transform when you need escape." },
+  "Ruby":       { counters:["X-borg","Lapu-Lapu","Balmond"],
+                  combo:"1 - 3 - flicker - 2",
+                  note:"Skill lifesteal gives insane sustain. Ult pulls all nearby enemies — great peel." },
+  "Silvanna":   { counters:["Ling","Zhask","Argus","Akai","Kadita","Yu Zhong","Kagura"],
+                  combo:"3 - 1 - 2 - stun - freeze",
+                  note:"Ult creates a prison — target can't leave until she's killed or time expires." },
+  "Sora":       { counters:["Jawhead","Uranus","Yu Zhong"],
+                  combo:"2 - 3 - 2 - 1 - 3 or 2 - 3 - 1 - 2 - 3",
+                  note:"Paired summon mechanic. Ult gap closes then follow with S1+S2." },
+  "Sun":        { counters:["Ruby","Paquito","Martis","Dyrroth","X-borg"],
+                  combo:"2 - 3 or 4 - 2 - 3 - inspire",
+                  note:"Clones inherit AA damage. Identifying the real body is the key counter." },
+  "Suyou":      { counters:["Harith","Gusion","Odette","Ruby","Jawhead"],
+                  combo:"1 - flicker - 2 - 3 : kill and retreat or 3H - flicer - 2 - 1 : surprise or 1H - flicker - 2H - 3 : Init & control",
+                  note:"Mark-based mechanics reward patience before bursting. Strong gank and jungle clear." },
+  "Terizla":    { counters:["Valir","Dyrroth","Thamuz","Yu Zhong"],
+                  combo:"3 - 1 - 2 - 2 - 2",
+                  note:"Ult gathers enemies to center. Combo with AoE teammates like Odette or Pharsa." },
+  "Thamuz":     { counters:["Dyrroth","Esmeralda","Cici","Valir","X-borg"],
+                  combo:"1 - 3 - 2 - 1 - 1",
+                  note:"Scythe passive deals continuous burn. Anti-heal is the key counter item." },
+  "X.Borg":     { counters:["Dyrroth","Benedetta","Lylia"],
+                  combo:"1 - 2 - 1 - 3",
+                  note:"Armorless phase is his highest damage window. Ult explosion is very powerful." },
+  "Yin":        { counters:["Saber","Alpha","Paquito","Martis","Argus","Sun"],
+                  combo:"1 - 2 - B - 3 - 2 - 1",
+                  note:"Ult creates isolated 1v1 zone. Target their carry. Useless if target escapes." },
+  "Yu Zhong":   { counters:["Esmeralda","Masha","Valir"],
+                  combo:"1 - 3 - stun - 2 - 4",
+                  note:"Coil passive stacks on skill hits. Dragon form grants huge AoE and mobility." },
+  "Zilong":     { counters:["Kaja","Chou","Franco","Akai","Esmeralda","Masha"],
+                  combo:"3 - 2 - 1 - inspire - B",
+                  note:"Ult removes all slows and boosts speed — best escape and chase tool." },
+
+  // ── Assassins ──
+  "Aamon":      { counters:["Karina","Hayabusa","Yin","Gloo","Lolita","Hylos","Belerick","Jawhead"],
+                  combo:"2 - 1 - 3",
+                  note:"8 shard stacks = max damage. Farm stacks on minions before ganking." },
+  "Benedetta":  { counters:["Phoveus","Minsitthar","Khufra","Chou","Argus"],
+                  combo:"D - 3 - stun - 1 - 2",
+                  note:"Hold S2 for longer dash distance. Ult roots nearby enemies. Phoveus hard counters." },
+  "Fanny":      { counters:["Chou","Khufra","Franco","Helcurt","Hayabusa","Gusion","Saber"],
+                  combo:"Cable Tutorial : 2 - 2 - 3",
+                  note:"Highest skill cap in game. Energy management is key. Franco 55.2% WR counter (verified)." },
+  "Gusion":     { counters:["Martis","Minsitthar","Hayabusa"],
+                  combo:"2 - 3 - 1 - 2 - 1 - 2",
+                  note:"Dagger recall after Ult is the key reset mechanic. Eudora pre-debuff leads to one-shot." },
+  "Hanzo":      { counters:["Yin","Hayabusa","Argus","Harley","Karina","Natalia","Yi Sun-shin"],
+                  combo:"3 - 2 - b - 1 - b - 3",
+                  note:"Physical body is unprotected during Ult. Natalia stealth-kills the body — perfect counter." },
+  "Harley":     { counters:["Saber","Ling","Lancelot","Lolita","Kadita","Obsidia","Eudora"],
+                  combo:"2 - 3 - 1",
+                  note:"Hat recall amplifies damage. Ult seals HP — deal damage before ring expires." },
+  "Hayabusa":   { counters:["Sun","Saber","Khufra","Silvanna","Minsitthar","Helcurt","Ling"],
+                  combo:"2 - 1 - 2 - 2 - 2 - 1 - 3",
+                  note:"3 shadow clones before Ult = max damage. Saber suppression negates all shadow abilities." },
+  "Helcurt":    { counters:["Natalia","Hylos","Chou","Karina","Saber","Baxia"],
+                  combo:"3 - 1 - 2 - b",
+                  note:"Ult silences all enemies — immediately follow with S1 blink for surprise burst. Diggie Ult counters." },
+  "Joy":        { counters:["Franco","Minsitthar","Khufra","Hayabusa","Phoveus"],
+                  combo:"1 - 2 - 2 - 2 - 3",
+                  note:"Perfect rhythm timing on S1 is essential for max damage. CC during immunity frames stops her." },
+  "Karina":     { counters:["Aamon","Argus","Akai","Natalia","Eudora","Ruby"],
+                  combo:"1 - 3 - 2 - 3",
+                  note:"Ult resets on kill — chain across multiple squishy targets in teamfights." },
+  "Lancelot":   { counters:["Phoveus","Minsitthar","Khufra","Kaja","Franco","Saber","Chou","Alucard"],
+                  combo:"1 - 1 - 2 - 3",
+                  note:"Ult makes him invincible — time it to dodge enemy Ults. Angela pairing neutralizes counters." },
+  "Ling":       { counters:["Saber","Chou","Selena","Zilong","Jawhead","Yin"],
+                  combo:"3 - 2 - 2 - 2 - 1 - B",
+                  note:"Wall hopping is core mobility. Saber 50.5% WR counter (verified). Energy management is key." },
+  "Natalia":    { counters:["Saber","Karina","Martis","Hayabusa","Jawhead"],
+                  combo:"B - 2 - 1 - 1 - 3 - B",
+                  note:"AA silence from stealth shuts down mages and supports hard. Diggie Ult removes silence." },
+  "Nolan":      { counters:["Minsitthar","Granger","X-borg","Phoveus","Martis","Kaja"],
+                  combo:"B - 3 - 2 - 1",
+                  note:"Chain hits reward grouping enemies. Ult pierces through — aim at clusters." },
+  "Saber":      { counters:["Martis","Kagura","Miya","Argus","Valir"],
+                  combo:"1 → 2 → 3",
+                  note:"Ult suppresses one target briefly. Best used on enemy carry in teamfights." },
+  "Selena":     { counters:["Kadita","Lunox","Kagura","Gusion","Chou","Ling","Aldous"],
+                  combo:"2 - 1 - 3 - 2 - 2 - 2 - 2",
+                  note:"Abyssal S1 stun only activates if trap hits first. Pre-place traps in chokepoints." },
+  "Yi Sun-shin":{ counters:["Karina","Hayabusa","Lancelot","Alucard","Yu Zhong"],
+                  combo:"3 - 1 - 2 - b - 1",
+                  note:"Ult reveals all enemies globally — track fleeing targets. Can cast Ult from base." },
+
+  // ── Mages ──
+  "Alice":      { counters:["Lylia","Karrie","Alpha","Lesley","Lunox"],
+                  combo:"1 - 3 - 1 - 2",
+                  note:"Ult heals per enemy hit nearby. Farm Orbs from minions before fighting." },
+  "Aurora":     { counters:["Lunox","Nana","Pharsa"],
+                  combo:"2 - 1 - 3 - 2",
+                  note:"Passive freeze procs on 4 skill hits. Never Ult before enemy is frozen." },
+  "Cecilion":   { counters:["Kagura","Harley","Kadita","Helcurt","Layla"],
+                  combo:"3 - 2 - 1",
+                  note:"S1 has no cooldown cap — spam to permanently stack damage. Dive him early before he scales." },
+  "Chang'e":    { counters:["Saber","Lolita","Kagura"],
+                  combo:"2 - 1 - B - 3 - 2",
+                  note:"Ult grants CC immunity and transforms. Needs peel. Very fragile without a tank." },
+  "Cyclops":    { counters:["Martis","Kadita","Kagura","Lolita","Julian"],
+                  combo:"3 - 2 - 1",
+                  note:"S1 hits reduce cooldowns. Very fast rotation at full CDR. Good at sustained poke." },
+  "Eudora":     { counters:["Kagura","Kadita","Lylia","Saber","Yi Sun-shin"],
+                  combo:"2 - 1 - 3 for individual or 1 - 2 - 3 for teamfight",
+                  note:"S2 shock debuff amplifies Ult damage. Always apply debuff before ulting." },
+  "Gord":       { counters:["Kagura","Kadita","Valentina"],
+                  combo:"2 - 1 - 3",
+                  note:"Ult channels — must position safely first. Mystic Projectile stacks debuff." },
+  "Harith":     { counters:["Minsitthar","Obsidia","Phoveus","Khufra","Esmeralda","Roger","Hayabusa"],
+                  combo:"3 - 2 - 1 - 2 - B - 2 - B",
+                  note:"CDR loop gets extremely fast at full build. Ult grants damage shield. Hard to burst." },
+  "Kadita":     { counters:["Ruby","Paquito","Akai","Fredrinn","Dyrroth","Saber","Eudora"],
+                  combo:"1 - stun - 2 - 3",
+                  note:"Ult makes her untargetable — use to dodge burst then re-emerge in enemy backline." },
+  "Kagura":     { counters:["Joy","Minsitthar","Hayabusa","Lancelot"],
+                  combo:"1 - 3 - 1 - 2 - 3",
+                  note:"Umbrella placement is core. Returning S1 deals extra damage. High skill cap." },
+  "Lunox":      { counters:["Valentina","Lolita","Natalia","Kagura","Kadita"],
+                  combo:"(2) - 4 - 1 - 3 - 4",
+                  note:"Balance Chaos/Order stacks for sustained damage. Ult in Chaos form for burst nuke." },
+  "Luo Yi":     { counters:["Julian","Harith","Aurora","Ling","Eudora","Natalia","Hayabusa"],
+                  combo:"1 - 1 - 2 - 1",
+                  note:"Yin and Yang marks must collide to stun. Ult teleports your whole team." },
+  "Lylia":      { counters:["Saber","Silvanna","Eudora"],
+                  combo:"2 - 1 - 2 - 1 - 2 - 1 - 3",
+                  note:"Ult returns her to position 4 sec ago at that HP. Use as safety net." },
+  "Nana":       { counters:["Harley","Kagura","Aurora","Harith"],
+                  combo:"2 - 3 - 1",
+                  note:"S2 turns enemy into helpless molina. Ult bounces 3 times — aim at grouped enemies." },
+  "Novaria":    { counters:["Claude","Saber","Natalia","Harley","Kagura"],
+                  combo:"3 - 1 - 2 - 2",
+                  note:"Ult is a global sniper shot. S2 orb can block enemy skillshots." },
+  "Odette":     { counters:["Vale","Nana","Kadita","Vexana"],
+                  combo:"2 - 1 - 3 - 3 - flicker",
+                  note:"Ult channels — must have tank protection. Devastating AoE in chokepoints." },
+  "Pharsa":     { counters:["Ling","Selena","Valentina","Harley","Franco","Yin","Helcurt"],
+                  combo:"4 - 1 - 3 - 2 - 3 - 3",
+                  note:"Ult throws bombs over walls — great for zoning Turtle and Lord." },
+  "Vale":       { counters:["Kagura","Lylia","Zhuxin","Cyclops"],
+                  combo:"2 - 3 - 1",
+                  note:"Upgrade path at each level matters. Choose stun or knockback on S1 per situation." },
+  "Valentina":  { counters:["Hanabi","Faramis","Hayabusa","Natalia","Hanzo"],
+                  combo:"3 - 1 - 2 - 1 - 2 - 1 - 3",
+                  note:"Ult copies enemy Ult — prioritize heroes with powerful Ults like Aldous or Odette." },
+  "Valir":      { counters:["Saber","Eudora","Hayabusa","Cici"],
+                  combo:"3 - 2 - flicker - 1",
+                  note:"Ult removes all CC and purifies. Use it reactively when caught in crowd control." },
+  "Vexana":     { counters:["Lukas","Hayabusa","Diggie","Helcurt","Nana","Novaria"],
+                  combo:"3 - 1 - 2 or 1 - 2 - 3",
+                  note:"Ult creates puppet of killed enemy — kill their carry for best puppet." },
+  "Xavier":     { counters:["Fanny","Helcurt","Lolita","Silvanna","Brody"],
+                  combo:"2 - 1 - 3",
+                  note:"Ult is a long-range global beam. Mobile heroes can dodge his skill combinations." },
+  "Yve":        { counters:["Natalia","Kaja","Franco","Helcurt","Nana"],
+                  combo:"1 - 2 - 2 - 3(drag and click)",
+                  note:"Ult lets you freely aim squares on the map. Cover escape routes and objectives." },
+  "Zetian":     { counters:["Kadita","Zhuxin","Lylia","Khaleed","Harley","Yu Zhong","Hayabusa","Jawhead","Aldous"],
+                  combo:"2 - 3 - 2 - 1 or 2 - 1 - 3 - 2 or 1 - 2 - 3 - 2",
+                  note:"Valentina 56.2% WR counter (verified). Ult silences nearby enemies — position centrally." },
+  "Zhask":      { counters:["Dyrroth","Helcurt","Vexana","Claude","Fanny","Natalia"],
+                  combo:"1 - 2 - 4 - 2 - 3",
+                  note:"Spawn is your main damage source — protect it. Merge with Spawn via Ult for burst form." },
+  "Zhuxin":     { counters:["Kagura","Lunox","Gusion","Hayabusa","Eudora","Saber"],
+                  combo:"3 - 2 - 1 - 2",
+                  note:"Mobile assassins exploit her positioning. 53.03% WR in current meta — high priority pick." },
+
+  // ── Marksmen ──
+  "Beatrix":    { counters:["Gusion","Kaja","Irithel","Franco"],
+                  combo:"Setting needed,2 - 3 - 1 - 3",
+                  note:"Renner (sniper) for poke, Nibiru (shotgun) for burst. Read range and switch accordingly." },
+  "Brody":      { counters:["Kaja","Wanwan","Arlott"],
+                  combo:"1 - 2 - b - 3",
+                  note:"Never Ult at 0 stacks. 4 Abyss stacks maximize Ult damage. Build crit." },
+  "Bruno":      { counters:["Karina","Alpha","Karrie","Freya","Moskov"],
+                  combo:"Double ball: 1 - (wait)1",
+                  note:"Ult bounces between enemies — strong in teamfights. Fanny counter #2 at 52.2% WR." },
+  "Claude":     { counters:["Lesley","Natalia","Clint"],
+                  combo:"1 - 2 - 2 - 3 - 1",
+                  note:"Dexter mirrors your movements — positioning matters. Ult scales with attack speed." },
+  "Clint":      { counters:["Irithel","Melissa","Brody"],
+                  combo:"2 - B - 1 - B - 3 - B",
+                  note:"AA procs shotgun shells for bonus damage. High burst but low mobility — needs peel." },
+  "Granger":    { counters:["Irithel","Wanwan","Harith","Aurora","Gusion"],
+                  combo:"3 - 3 - 3 - 1 - 2 - 1",
+                  note:"Last bullet of Ult deals maximum damage — save it for the kill. Reload window is his weakness." },
+  "Hanabi":     { counters:["Brody","Beatrix","Melissa"],
+                  combo:"2 - 3 - 1",
+                  note:"Ult root chains across nearby enemies. Strong in grouped fights. Zero mobility — needs tank." },
+  "Irithel":    { counters:["Natalia","Kagura","Aamon","Karrie","Cyclops"],
+                  combo:"3 - 2 - 1 - speed - B",
+                  note:"Mounted form fires 3 arrows per attack — heavy AoE damage. Slow but powerful." },
+  "Ixia":       { counters:["Lolita","Claude","Joy","Brody","Clint"],
+                  combo:"3 - 2 - 1 - B",
+                  note:"Ult creates a persistent damage aura. Stay behind frontline while it ticks." },
+  "Karrie":     { counters:["Karina","Chou","Natalia","Freya","Moskov"],
+                  combo:"1 - 3 - B - 2 - B",
+                  note:"True damage passive destroys tanks. Best pick vs heavy tank compositions. Build attack speed." },
+  "Kimmy":      { counters:["Natan","Lesley","Granger"],
+                  combo:"3 - 2 - 1 - B",
+                  note:"Post-rework: enhanced agility and CC. Long-range poke heroes counter her now." },
+  "Layla":      { counters:["Clint","Granger","Melissa"],
+                  combo:"1 - 2 - B - 3",
+                  note:"Damage scales with distance — always stay at max range. Zero mobility, must be protected." },
+  "Lesley":     { counters:["Lolita","Kaja","Saber","Moskov","Eudora"],
+                  combo:"B - 2 - Flicker - B - 1 - B - 3 - 1",
+                  note:"Ult tracks a specific target with 4 bullets — use to secure kills." },
+  "Melissa":    { counters:["Hayabusa","Claude","Yu Zhong","Belerick","Clint","Martis"],
+                  combo:"2 - 1(reverse direction)",
+                  note:"Ult barrier blocks enemies from entering or exiting. Isolate and delete one target." },
+  "Miya":       { counters:["Hanabi","Granger","Natan","Irithel"],
+                  combo:"3 - 1 - inspire - 2",
+                  note:"Balmond 57.0% WR counter (verified). Ult makes her invisible and resets position." },
+  "Moskov":     { counters:["Layla","Clint","Popol and Kupa"],
+                  combo:"3 - 3 - 2 - b - 1 - b",
+                  note:"AAs pierce through enemies — aim at groups in a line. Ult is a global execute." },
+  "Natan":      { counters:["Melissa","Harley","Lolita"],
+                  combo:"3 - 2 - 1 - 3 - B",
+                  note:"Mirror image copies attacks. Position mirror for maximum hits during Ult." },
+  "Obsidia":    { counters:["Diggie","Wanwan","Tigreal","Baxia","Belerick"],
+                  combo:"3 - 1 - 2 - 2 - B",
+                  note:"Terrain manipulation gives map control. Use S2 to block paths in teamfights." },
+  "Popol and Kupa":{ counters:["Clint","Melissa","Badang","Nolan","Esmeralda"],
+                  combo:"1 - 4 - 3 - B - 2",
+                  note:"Kupa is your main damage unit — keep it alive. Don't overextend without Kupa." },
+  "Wanwan":     { counters:["Phoveus","Lolita","Clint","Popol and Kupa"],
+                  combo:"B - 1 - 3",
+                  note:"Must hit all 4 weakpoints to activate Ult. Weakpoints appear at corners — aim precisely." },
+
+  // ── Tanks ──
+  "Akai":       { counters:["Valentina","Diggie","Karrie","Karina","Hanabi","Valir","Odette"],
+                  combo:"1 - B - 2 - B - 3",
+                  note:"Ult rolls into enemies and pins them to wall. Coordinate with burst teammates." },
+  "Atlas":      { counters:["Valir","Diggie","Minsitthar"],
+                  combo:"2 - flicker - 3 - 1",
+                  note:"Ult chains nearby enemies then pulls them together. Best teamfight initiator in game." },
+  "Baxia":      { counters:["X-borg","Alpha","Dyrroth"],
+                  combo:"1 - 3 - 2 - B",
+                  note:"Passive reduces enemy shields and regen — counter to lifesteal/regen comps." },
+  "Belerick":   { counters:["Lesley","Lylia","Valir","X-borg","Dyrroth","Thamuz"],
+                  combo:"3 - 1 - 2 - B",
+                  note:"Passive redirects ally damage to himself then counterattacks. Protect carries." },
+  "Carmilla":   { counters:["Akai","Diggie","Belerick"],
+                  combo:"2 - 3 - 1",
+                  note:"Ult links multiple enemies — damage one and it spreads to all linked." },
+  "Chip":       { counters:["Tigreal","Aurora","Barats","Yi Sun-shin","Valir"],
+                  combo:"2 - B - 1 - 3",
+                  note:"S2 creates a portal for allies to teleport through. Creative portal use for surprise picks." },
+  "Edith":      { counters:["Lapu-Lapu","Martis","Natan"],
+                  combo:"2 - 1 - 3 - 2 - 1 - B",
+                  note:"Ult launches her out of Phylax as a flying marksman. Phylax stays as a turret on field." },
+  "Franco":     { counters:["Chou","Sun","Karrie","Benedetta"],
+                  combo:"1 - flicker - 3 - 2",
+                  note:"Hook is the most important skill — practice landing it. Fanny counter #1 at 55.2% WR." },
+  "Gatotkaca":  { counters:["Diggie","Ruby","Karrie"],
+                  combo:"2 - 3 - 1 - B or 3 - 2 - 1 - B",
+                  note:"Ult jumps to target location globally — great initiation. Passive damage increases at low HP." },
+  "Gloo":       { counters:["Vexana","Faramis","Alice","Carmilla"],
+                  combo:"1 - 2 - 3 - 1 - 2 - 1",
+                  note:"Ult attaches to enemy and follows them. Ling and Fanny beat Gloo easily (55.5% WR)." },
+  "Grock":      { counters:["Lunox","Dyrroth","Karrie"],
+                  combo:"2 - 3 - 1",
+                  note:"Wall blocks paths and boosts his own stats when near it. Use wall to split enemy team." },
+  "Hylos":      { counters:["Karrie","Valir","Lunox","Kimmy","Baxia"],
+                  combo:"3 - 1 - 2",
+                  note:"Ult trail slows enemies and speeds allies. 54.83% WR tank. Karrie true damage is hardest counter." },
+  "Johnson":    { counters:["Akai","Grock","Diggie","Chip"],
+                  combo:"3 - 2 - 1",
+                  note:"Ult carries one ally as passenger — coordinate before casting. Wall collision extends stun." },
+  "Khufra":     { counters:["Esmeralda","Wanwan","Selena","Karrie","Helcurt"],
+                  combo:"3 - 1 - flicker - 2",
+                  note:"S1 blocks all dashes and blinks — use against mobile heroes. Hard CC machine." },
+  "Lolita":     { counters:["Khufra","Diggie","Dyrroth"],
+                  combo:"3 - flicker - 1 - 2",
+                  note:"S2 blocks all projectiles for allies behind her — hard counter to poke teams." },
+  "Minotaur":   { counters:["Akai","Claude","Chou"],
+                  combo:"1 - flicker - 3 - 1",
+                  note:"Rage mode heals allies when hitting enemies. Build pure tank — team needs the healing." },
+  "Tigreal":    { counters:["Kagura","Helcurt","Lunox","Chou","Esmeralda"],
+                  combo:"3 - flicker - 1 - 2 - 2",
+                  note:"Ult pulls nearby enemies to center. Best combo with Odette or Atlas. X.Borg counters (50.4% WR)." },
+  "Uranus":     { counters:["Thamuz","Karrie","Sun","Odette","Terizla","Irithel"],
+                  combo:"3 - 2 - 1",
+                  note:"Passive stacks give massive regen — longer fights make him unkillable. Great split pusher." },
+
+  // ── Supports ──
+  "Angela":     { counters:["Yin","Esmeralda","Valentina","Ruby","Natalia","Lancelot"],
+                  combo:"3 - 1 - 2",
+                  note:"Ult attaches globally to ally — use on hypercarry. Angela items are shared with attached ally. Lancelot counter #1 (50.9% WR)." },
+  "Diggie":     { counters:["Karina","Selena","Natalia","Helcurt","Saber"],
+                  combo:"2 - 1",
+                  note:"Ult grants team CC immunity — use proactively before enemy Ults. Counters Helcurt silence." },
+  "Estes":      { counters:["Carmilla","Tigreal","Atlas","Saber","Yin","Baxia"],
+                  combo:"1 - 3 - 1",
+                  note:"Ult dramatically boosts healing — use before fights, not after allies die. Zetian counter #3." },
+  "Faramis":    { counters:["Franco","Saber","Chou","Jawhead","Yin","Akai","Valentina"],
+                  combo:"1 - 2 - b - 1 - 2",
+                  note:"Ult creates a zone where dead allies revive temporarily. Crucial in late-game teamfights." },
+  "Floryn":     { counters:["Baxia","Lunox","Yin","X-borg"],
+                  combo:"2 - 1",
+                  note:"Ult heals all allies globally — use when multiple allies are low simultaneously." },
+  "Kalea":      { counters:["Khufra","Martis","Chou","Kaja","Franco","Natalia"],
+                  combo:"1 - 2 - 2 - 3 - 1",
+                  note:"Fighter/support hybrid. Knock-up counters mobile assassins. New hero — meta still forming." },
+  "Kaja":       { counters:["Sun","Lunox","Franco","Masha","Nana","Yin"],
+                  combo:"2 - 3 - flicker - 1",
+                  note:"Ult pulls one enemy into your team — target the enemy carry. High single-target impact." },
+  "Marcel":     { counters:["Lunox","Valentina","Diggie"],
+                  combo:"2 - 1 - 2 - 3",
+                  note:"Provides shields and boosts to allies. Coordinate Ult timing with your team." },
+  "Mathilda":   { counters:["Alpha","Ruby","Zilong"],
+                  combo:"1 - 2 - 3 - 1",
+                  note:"Ult lets an ally ride her and dash. Use it to pull carry into or out of fights." },
+  "Rafaela":    { counters:["Natalia","Hayabusa","Harley"],
+                  combo:"2 - 1 - 3",
+                  note:"Ult stuns with a delay — telegraph carefully. S1 heals the lowest HP ally." },
+};
+
+
+// ── Derived maps (auto-built from HEROES) ──
+const COUNTERS      = Object.fromEntries(Object.entries(HEROES).map(([n,d])=>[n, d.counters]));
+const combos        = Object.fromEntries(Object.entries(HEROES).map(([n,d])=>[n, d.combo||""]));
+const notes         = Object.fromEntries(Object.entries(HEROES).map(([n,d])=>[n, d.note||""]));
+const enemyWeights  = Object.fromEntries(Object.keys(HEROES).map(n=>[n, 1]));
+const ALL_ENEMY_NAMES = Object.keys(HEROES);
 let myPos="EXP", enemyPos="ALL", enemyPicks=[];
 
 // ═══════════════════════════════════════════════
-//  ADMIN SETTINGS — Edit only this section
-// ═══════════════════════════════════════════════
+function showPanel(p){
+  document.getElementById("panel-main").style.display          = p==="main"          ? "" : "none";
+  document.getElementById("panel-combobrowser").style.display  = p==="combobrowser"  ? "" : "none";
 
-// Hero Weights: higher = more threatening enemy
-// Default is 1. Increase for hard-to-deal-with heroes.
-const enemyWeights = {
-  "Fanny": 3,
-  "Ling": 2,
-  "Lancelot": 2,
-  "Gusion": 2,
-  "Hayabusa": 2,
-};
-// Fill remaining heroes with default weight 1
-ALL_ENEMY_NAMES.forEach(n => { if(!(n in enemyWeights)) enemyWeights[n] = 1; });
+  document.getElementById("nav-main").classList.toggle("active",          p==="main");
+  document.getElementById("nav-combobrowser").classList.toggle("active",  p==="combobrowser");
 
-// Hero Combos: skill rotation notes shown after picking a hero
-const combos = {
-  "Chou": "Skill 2 → Skill 1 → Ult → Basic Attack repeat",
-  "Ling": "Skill 1 (wall hop) → Skill 2 → Ult → Skill 2 spam",
-  "Fanny": "Cable → Skill 1 → Ult when surrounded",
-  "Gusion": "Skill 2 → Skill 1 → Skill 2 reset → Ult → Skill 1",
-  "Hayabusa": "Skill 1 × 3 → Skill 2 → Ult (track target)",
-};
 
-// ═══════════════════════════════════════════════
+  if(p==="combobrowser")  initComboBrowser();
+}
+
+function renderComboEditor(){
+  const q = (document.getElementById("combo-search")?.value||"").toLowerCase();
+  const allHeroes = Object.keys(COUNTERS).sort();
+  const filtered  = q ? allHeroes.filter(n=>n.toLowerCase().includes(q)) : allHeroes;
+  const list = document.getElementById("combo-editor-list");
+  list.innerHTML = "";
+  filtered.forEach(name=>{
+    const item = document.createElement("div");
+    item.className = "combo-editor-item";
+    const badge = `<span class="combo-saved-badge" id="badge-${name.replace(/[^a-z0-9]/gi,'_')}">✓ Saved</span>`;
+    item.innerHTML = `<label>${name}${badge}</label>
+      <textarea rows="2" placeholder="e.g. Skill 1 → Skill 2 → Ult" data-field="combo">${combos[name]||""}</textarea>
+      <label style="margin-top:6px">Note</label>
+      <textarea rows="2" placeholder="e.g. Tip, matchup advice, item builds..." data-field="note">${notes[name]||""}</textarea>`;
+    const tas = item.querySelectorAll("textarea");
+    tas.forEach(ta => {
+      ta.addEventListener("input", ()=>{
+        if(ta.dataset.field==="combo") combos[name] = ta.value;
+        else notes[name] = ta.value;
+        const b = document.getElementById("badge-"+name.replace(/[^a-z0-9]/gi,'_'));
+        if(b){ b.style.opacity="1"; clearTimeout(b._t); b._t=setTimeout(()=>b.style.opacity="0",1500); }
+      });
+    });
+    list.appendChild(item);
+  });
+}
+
 function setPos(p){
   myPos=p;
   ["EXP","MID","JUNGLE","GOLD","ROAM"].forEach(k=>{
@@ -788,7 +1320,7 @@ function renderSlots(){
     slot.className="slot"+(h?" filled":"");
     if(h){
       const w=enemyWeights[h]??1;
-      slot.innerHTML=`<span class="sname">${h}</span><span class="sw">×${w}</span><span class="remove" onclick="removeEnemy(${i})">×</span>`;
+      slot.innerHTML=`<span class="sname">${h}</span><span class="remove" onclick="removeEnemy(${i})">×</span>`;
     } else {
       slot.innerHTML=`<span>+</span>`;
     }
@@ -879,26 +1411,237 @@ function calcRec(){
           </div>
           <div class="rec-counters">${ct}</div>
         </div>
-        <span style="font-size:10px;color:rgba(200,204,216,0.3)">${combos[name]?"Combo":"—"}</span>
+        <span style="font-size:10px;color:rgba(200,204,216,0.3)">${combos[name]?`<span style="font-size:9px;color:var(--color-accent1)">●</span>`:"—"}</span>
       </div>`;
     }).join("")
   }</div>`;
 }
+
+
+function renderComboIcons(comboStr){
+  if(!comboStr) return "";
+  // Split by "or" into alternatives
+  const alts = comboStr.split(/\bor\b/i).map(s=>s.trim()).filter(Boolean);
+  
+  function parseSegment(seg){
+    // Replace various separators with a standard one
+    let normalized = seg
+      .replace(/→/g," → ")
+      .replace(/[\-–—]+/g," - ")
+      .replace(/\s*-\s*/g," - ")
+      .replace(/\s+/g," ")
+      .trim();
+    
+    const tokens = normalized.split(/\s*-\s*|\s*→\s*/);
+    let html = `<div class="combo-icons">`;
+    let first = true;
+    tokens.forEach(tok=>{
+      tok = tok.trim();
+      if(!tok) return;
+      if(!first) html += `<span class="ci-arrow">›</span>`;
+      first = false;
+      
+      const low = tok.toLowerCase();
+      // Skill numbers
+      if(/^s?1$/.test(low) || /^skill\s*1$/i.test(low)) {
+        html += `<span class="ci-skill s1">S1</span>`;
+      } else if(/^s?2$/.test(low) || /^skill\s*2$/i.test(low)) {
+        html += `<span class="ci-skill s2">S2</span>`;
+      } else if(/^s?3$/.test(low) || /^skill\s*3$/i.test(low) || /^ult$/i.test(low)) {
+        html += `<span class="ci-skill s3">S3</span>`;
+      } else if(/^s?4$/.test(low) || /^4$/.test(low)) {
+        html += `<span class="ci-skill s4">S4</span>`;
+      } else if(/^d$/.test(low)) {
+        html += `<span class="ci-skill sD">D</span>`;
+      } else if(/^b$/.test(low) || /^aa$/.test(low)) {
+        html += `<span class="ci-skill sB" title="Basic Attack">AA</span>`;
+      } else if(/flick/i.test(low)) {
+        html += `<span class="ci-badge flicker">⚡ Flicker</span>`;
+      } else if(/inspire/i.test(low)) {
+        html += `<span class="ci-badge inspire">⚡ Inspire</span>`;
+      } else if(/speed/i.test(low)) {
+        html += `<span class="ci-badge speed">▶ Speed</span>`;
+      } else if(/stun/i.test(low)) {
+        html += `<span class="ci-badge stun">⊗ Stun</span>`;
+      } else if(/freeze/i.test(low)) {
+        html += `<span class="ci-badge freeze">❄ Freeze</span>`;
+      } else if(/^move$/i.test(low) || /^dash$/i.test(low)) {
+        html += `<span class="ci-badge dash">↗ Move</span>`;
+      } else {
+        // Generic badge for anything else (target, wait, etc.)
+        html += `<span class="ci-badge special">${tok}</span>`;
+      }
+    });
+    html += `</div>`;
+    return html;
+  }
+  
+  if(alts.length===1) return parseSegment(alts[0]);
+  
+  let html = "";
+  alts.forEach((alt,i)=>{
+    if(i===0){
+      html += parseSegment(alt);
+    } else {
+      html += `<div class="combo-alt-row"><span class="combo-alt-label">or</span>${parseSegment(alt).replace('<div class="combo-icons">','<div class="combo-icons" style="display:inline-flex;margin:0">')}</div>`;
+    }
+  });
+  return html;
+}
+
 function showCombo(hero){
   const area=document.getElementById("combo-area");
   const combo=combos[hero];
+  const note=notes[hero];
   area.innerHTML=`<div class="combo-box">
     <div class="combo-hero">${hero} Combo</div>
     ${combo
-      ?`<div class="combo-text">${combo}</div>`
-      :`<div class="combo-empty">No combo saved — add one in the Settings tab.</div>`}
+      ?renderComboIcons(combo)
+      :`<div class="combo-empty">No combo saved — add one in the Combos tab.</div>`}
+    <div class="combo-note-title">Note</div>
+    ${note
+      ?`<div class="combo-note-text">${note}</div>`
+      :`<div class="combo-empty">No note saved — add one in the Combos tab.</div>`}
   </div>`;
 }
-// Nav highlight
-window.addEventListener('scroll', ()=>{
-  const links=document.querySelectorAll('#nav a');
-  links.forEach(a=>a.classList.toggle('active', a.getAttribute('href')==='#banbuck'));
-});
+
+
+
+// ═══════════════════════════════════════════════
+// COMBO BROWSER
+// ═══════════════════════════════════════════════
+const CLASS_MAP = {
+  "Fighter":  ["Alucard","Alpha","Aldous","Argus","Arlott","Aulus","Badang","Balmond","Bane",
+               "Chou","Cici","Dyrroth","Esmeralda","Fredrinn","Freya","Guinevere","Hilda",
+               "Jawhead","Julian","Khaleed","Lapu-Lapu","Leomord","Lukas","Martis","Masha",
+               "Minsitthar","Paquito","Phoveus","Roger","Ruby","Silvanna","Sora","Sun",
+               "Terizla","Thamuz","X.Borg","Yin","Yu Zhong","Zilong"],
+  "Assassin": ["Aamon","Benedetta","Fanny","Gusion","Hanzo","Harley","Hayabusa","Helcurt",
+               "Joy","Karina","Lancelot","Ling","Natalia","Nolan","Saber","Selena",
+               "Suyou","Yi Sun-shin"],
+  "Mage":     ["Alice","Aurora","Cecilion","Chang'e","Cyclops","Eudora","Gord","Harith",
+               "Kadita","Kagura","Lunox","Luo Yi","Lylia","Nana","Novaria","Odette",
+               "Pharsa","Vale","Valentina","Valir","Vexana","Xavier","Yve","Zetian",
+               "Zhask","Zhuxin"],
+  "Marksman": ["Beatrix","Brody","Bruno","Claude","Clint","Granger","Hanabi","Irithel",
+               "Ixia","Karrie","Kimmy","Layla","Lesley","Melissa","Miya","Moskov",
+               "Natan","Obsidia","Popol and Kupa","Wanwan"],
+  "Tank":     ["Akai","Atlas","Baxia","Belerick","Carmilla","Chip","Edith","Franco",
+               "Gatotkaca","Gloo","Grock","Hylos","Johnson","Khufra","Lolita",
+               "Minotaur","Tigreal","Uranus"],
+  "Support":  ["Angela","Diggie","Estes","Faramis","Floryn","Kalea","Kaja","Marcel",
+               "Mathilda","Rafaela"],
+};
+
+const ROLE_ICON = {
+  Fighter:"⚔️", Assassin:"🗡️", Mage:"🔮", Marksman:"🏹", Tank:"🛡️", Support:"💚"
+};
+
+let cbActiveClass = "All";
+let cbActiveHero  = null;
+
+function initComboBrowser(){
+  // Build class tabs only once
+  const tabsEl = document.getElementById("cb-class-tabs");
+  if(!tabsEl.children.length){
+    const classes = ["All", "Fighter","Assassin","Mage","Marksman","Tank","Support"];
+    classes.forEach(cls=>{
+      const btn = document.createElement("button");
+      btn.className = "cb-tab" + (cls==="All"?" active":"");
+      btn.dataset.cls = cls;
+      btn.textContent = cls==="All" ? "All" : (ROLE_ICON[cls]||"")+" "+cls;
+      btn.onclick = ()=>{ cbActiveClass=cls; cbActiveHero=null; renderCbTabs(); renderCbGrid(); document.getElementById("cb-detail").innerHTML=""; };
+      tabsEl.appendChild(btn);
+    });
+  }
+  renderCbGrid();
+}
+
+function renderCbTabs(){
+  document.querySelectorAll(".cb-tab").forEach(t=>{
+    t.classList.toggle("active", t.dataset.cls===cbActiveClass);
+  });
+}
+
+function cbFilter(){
+  cbActiveHero=null;
+  document.getElementById("cb-detail").innerHTML="";
+  renderCbGrid();
+}
+
+function renderCbGrid(){
+  const q = (document.getElementById("cb-search")?.value||"").toLowerCase();
+  const grid = document.getElementById("cb-hero-grid");
+  grid.innerHTML="";
+
+  // Determine hero list
+  let heroes;
+  if(cbActiveClass==="All"){
+    heroes = Object.keys(HEROES).sort();
+  } else {
+    heroes = (CLASS_MAP[cbActiveClass]||[]).filter(n=> n in HEROES).sort();
+  }
+  if(q) heroes = heroes.filter(n=>n.toLowerCase().includes(q));
+
+  // Determine role for each hero
+  const roleOf = {};
+  Object.entries(CLASS_MAP).forEach(([cls, arr])=>arr.forEach(n=>{ if(!roleOf[n]) roleOf[n]=cls; }));
+
+  heroes.forEach(name=>{
+    const btn = document.createElement("button");
+    btn.className = "cb-hero-btn" + (name===cbActiveHero?" active":"");
+    btn.dataset.role = roleOf[name]||"";
+    const hasCombo = !!(combos[name]);
+    btn.innerHTML = `<span class="cb-hname">${name}</span><span class="cb-hrole">${roleOf[name]||""}</span>`;
+    btn.onclick = ()=>{ cbActiveHero=name; renderCbGrid(); showCbDetail(name); };
+    grid.appendChild(btn);
+  });
+}
+
+function showCbDetail(hero){
+  const combo = combos[hero]||"";
+  const note  = notes[hero]||"";
+  const counters = (COUNTERS[hero]||[]);
+  const roleOf = {};
+  Object.entries(CLASS_MAP).forEach(([cls,arr])=>arr.forEach(n=>{ if(!roleOf[n]) roleOf[n]=cls; }));
+  const role = roleOf[hero]||"";
+  const icon = ROLE_ICON[role]||"🎮";
+
+  const counterChips = counters.length
+    ? counters.map(c=>`<span class="cb-counter-chip" onclick="cbJumpHero('${c}')">${c}</span>`).join("")
+    : `<span class="cb-empty">—</span>`;
+
+  document.getElementById("cb-detail").innerHTML = `
+    <div class="cb-detail-card">
+      <div class="cb-detail-header">
+        <div class="cb-detail-avatar">${icon}</div>
+        <div>
+          <div class="cb-detail-name">${hero}</div>
+          <div class="cb-detail-role">${role}</div>
+        </div>
+      </div>
+      <div class="cb-section-title combo-label">Skill Combo</div>
+      ${combo ? renderComboIcons(combo) : '<div class="cb-empty">No combo data.</div>'}
+      <div class="cb-section-title note-label" style="margin-top:12px">Tips & Notes</div>
+      ${note ? `<div class="cb-note-text">${note}</div>` : '<div class="cb-empty">No notes.</div>'}
+      <div class="cb-section-title" style="color:rgba(200,204,216,0.5);margin-top:12px">Countered By</div>
+      <div class="cb-counters-row">${counterChips}</div>
+    </div>`;
+  // Scroll detail into view smoothly
+  document.getElementById("cb-detail").scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+
+function cbJumpHero(name){
+  if(!(name in HEROES)) return;
+  cbActiveHero = name;
+  // Switch to correct class tab
+  const roleOf = {};
+  Object.entries(CLASS_MAP).forEach(([cls,arr])=>arr.forEach(n=>{ if(!roleOf[n]) roleOf[n]=cls; }));
+  const cls = roleOf[name];
+  if(cls){ cbActiveClass=cls; renderCbTabs(); }
+  renderCbGrid();
+  showCbDetail(name);
+}
 
 renderSlots();
 filterEnemyHeroes();
