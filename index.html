@@ -463,6 +463,48 @@
     .combo-note-text { font-size: 13px; color: var(--color-text); line-height: 1.7; white-space: pre-wrap; }
 
 
+
+    /* ── Search wrap ── */
+    .search-wrap {
+      position: relative;
+      margin-bottom: 6px;
+    }
+    .search-wrap input {
+      width: 100%;
+      height: 36px;
+      padding: 0 32px 0 32px;
+      margin-bottom: 0;
+    }
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(200,204,216,0.35);
+      pointer-events: none;
+    }
+    .search-clear {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      color: rgba(200,204,216,0.4);
+      cursor: pointer;
+      line-height: 1;
+      padding: 2px 4px;
+    }
+    .search-clear:hover { color: var(--color-accent2); }
+
+    /* hero-btn match highlight */
+    .hero-btn.match {
+      background: rgba(73,191,157,0.18);
+      border-color: rgba(73,191,157,0.6);
+      color: #fff;
+      font-weight: 700;
+    }
+    .hero-btn.match .hl { color: var(--color-primary); }
+
     /* ── 콤보 아이콘 렌더링 ── */
     .combo-icons {
       display: flex;
@@ -763,7 +805,11 @@
             <button class="epos-btn"        id="epos-ROAM"    onclick="setEnemyPos('ROAM')">Roam</button>
           </div>
 
-          <input type="search" id="search" placeholder="Search enemy hero..." oninput="filterEnemyHeroes()">
+          <div class="search-wrap">
+            <svg class="search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="search" id="search" placeholder="Type hero name to filter..." oninput="filterEnemyHeroes()" autocomplete="off">
+            <span id="search-clear" class="search-clear" onclick="clearSearch()" style="display:none">×</span>
+          </div>
           <div class="hero-grid" id="enemy-hero-grid"></div>
 
           <button class="calc-btn" onclick="calcRec()">Calculate Counter Score</button>
@@ -881,7 +927,7 @@ const HEROES = {
   "Alucard":    { counters:["Argus","Khufra","Wanwan","Valir"],
                   combo:"3 - 1 - 2 - 3",
                   note:"Lifesteal hero. Avoid long 1v1 trades after lv4. CC interrupts his combo." },
-  "Alpha":      { counters:["Argus","Thamuz","Wanwan","Valir"],
+  "Alpha":      { counters:["Argus","Thamuz","Wanwan","Valir","Ling","Phoveus","Chou","Khufra","Kaja","Baxia"],
                   combo:"3 - 1 - 2",
                   note:"Build Beta passive stacks before Ult. Ling hard counters Alpha." },
   "Aldous":     { counters:["Argus","Akai","Obsidia","Julian"],
@@ -971,7 +1017,7 @@ const HEROES = {
   "Silvanna":   { counters:["Ling","Zhask","Argus","Akai","Kadita","Yu Zhong","Kagura"],
                   combo:"3 - 1 - 2 - stun - freeze",
                   note:"Ult creates a prison — target can't leave until she's killed or time expires." },
-  "Sora":       { counters:["Jawhead","Uranus","Yu Zhong"],
+  "Sora":       { counters:["Jawhead","Uranus","Yu Zhong","Phoveus","Khufra","Franco","Minsitthar","Chou","Kaja"],
                   combo:"2 - 3 - 2 - 1 - 3 or 2 - 3 - 1 - 2 - 3",
                   note:"Paired summon mechanic. Ult gap closes then follow with S1+S2." },
   "Sun":        { counters:["Ruby","Paquito","Martis","Dyrroth","X-borg"],
@@ -1369,28 +1415,48 @@ function addEnemy(name){
   }
 }
 function filterEnemyHeroes(){
-  const q=document.getElementById("search").value.toLowerCase();
+  const raw=document.getElementById("search").value;
+  const q=raw.toLowerCase();
   const grid=document.getElementById("enemy-hero-grid");
+  const clearBtn=document.getElementById("search-clear");
+  if(clearBtn) clearBtn.style.display = q ? "" : "none";
   grid.innerHTML="";
-  // 포지션별 enemy 영웅 목록 (POOLS 기반)
   const posNames = enemyPos==="ALL"
     ? ALL_ENEMY_NAMES
     : (POOLS[enemyPos]||[]).map(h=>h.n).filter(n=>n in COUNTERS);
-  posNames
-    .filter(n=>!enemyPicks.includes(n)&&(!q||n.toLowerCase().includes(q)))
-    .forEach(n=>{
-      const btn=document.createElement("button");
-      btn.className="hero-btn";
+
+  // Sort: matches first, then rest
+  const matched = posNames.filter(n=>!enemyPicks.includes(n) && q && n.toLowerCase().includes(q));
+  const others  = posNames.filter(n=>!enemyPicks.includes(n) && !matched.includes(n));
+  const list = q ? [...matched, ...others] : posNames.filter(n=>!enemyPicks.includes(n));
+
+  list.forEach(n=>{
+    const btn=document.createElement("button");
+    const isMatch = q && n.toLowerCase().includes(q);
+    btn.className="hero-btn" + (isMatch?" match":"");
+    if(isMatch && q){
+      // highlight matched chars
+      const idx = n.toLowerCase().indexOf(q);
+      btn.innerHTML = n.slice(0,idx)
+        + `<span class="hl">${n.slice(idx, idx+q.length)}</span>`
+        + n.slice(idx+q.length);
+    } else {
       btn.textContent=n;
-      btn.onclick=()=>addEnemy(n);
-      grid.appendChild(btn);
-    });
+    }
+    btn.onclick=()=>addEnemy(n);
+    grid.appendChild(btn);
+  });
+}
+function clearSearch(){
+  document.getElementById("search").value=""; const sc=document.getElementById("search-clear"); if(sc) sc.style.display="none";
+  filterEnemyHeroes();
+  document.getElementById("search").focus();
 }
 function resetAll(){
   enemyPicks=[];
   enemyPos="ALL";
   myPos="EXP";
-  document.getElementById("search").value="";
+  document.getElementById("search").value=""; const sc=document.getElementById("search-clear"); if(sc) sc.style.display="none";
   ["EXP","MID","JUNGLE","GOLD","ROAM"].forEach(k=>{
     document.getElementById("pos-"+k).classList.toggle("active",k==="EXP");
   });
@@ -1428,7 +1494,7 @@ function calcRec(){
   const area=document.getElementById("rec-area");
   document.getElementById("combo-area").innerHTML="";
   if(!top8.length||topScore===0){
-    area.innerHTML=`<div class="empty-msg">No counter data available.</div>`;
+    area.innerHTML=`<div class="empty-msg">No counter matches found for your role.<br><span style="font-size:11px;opacity:0.6">Try switching your role or check the Combo Guide tab.</span></div>`;
     return;
   }
   area.innerHTML=`<div class="section-label" style="margin-bottom:6px">${posLabel} Recommendations — tap to view combo</div><div class="rec-list">${
