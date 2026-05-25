@@ -9,6 +9,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
   <title>MLBB Counter Pick Helper</title>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     /* ── Stellar 기반 전역 스타일 ── */
@@ -894,6 +902,38 @@
     .cb-counter-chip:hover { background: rgba(226,118,137,0.25); }
     .cb-empty { font-size: 12px; color: rgba(200,204,216,0.4); font-style: italic; }
 
+
+    /* ── Visitor Counter ── */
+    .visitor-counter {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(73,191,157,0.08);
+      border: 1px solid rgba(73,191,157,0.2);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 12px;
+      color: rgba(200,204,216,0.6);
+      margin-bottom: 1rem;
+    }
+    .visitor-counter .vc-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      animation: vcPulse 2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    @keyframes vcPulse {
+      0%,100% { opacity:1; transform:scale(1); }
+      50%      { opacity:0.4; transform:scale(0.7); }
+    }
+    .visitor-counter .vc-num {
+      font-weight: 700;
+      color: var(--color-primary);
+      font-size: 13px;
+    }
+    .visitor-counter .vc-label { color: rgba(200,204,216,0.45); }
+
     /* ── 푸터 ── */
     #footer {
       background: var(--color-bg2);
@@ -938,6 +978,13 @@
     <div class="logo"><i class="fas fa-crosshairs"></i></div>
     <h1>MLBB Counter Pick Helper</h1>
     <p>Counter pick recommendations &amp; combo guide by role</p>
+    <div class="visitor-counter">
+      <span class="vc-dot"></span>
+      <span class="vc-num" id="vc-today">—</span>
+      <span class="vc-label">today &nbsp;·&nbsp;</span>
+      <span class="vc-num" id="vc-total">—</span>
+      <span class="vc-label">total visits</span>
+    </div>
     <button id="landscape-btn" onclick="toggleLandscape()" title="Lock Landscape">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:5px"><rect x="1" y="6" width="22" height="15" rx="2"/><polyline points="8 6 8 4"/><polyline points="16 6 16 4"/><line x1="12" y1="4" x2="12" y2="2"/><circle cx="18" cy="13.5" r="1.5" fill="currentColor"/></svg>Lock Landscape
     </button>
@@ -2045,6 +2092,36 @@ document.addEventListener("fullscreenchange", ()=>{
     if(btn){ btn.classList.remove("active"); btn.innerHTML = ICON_LAND; }
   }
 });
+
+
+// ── Visitor Counter (CountAPI) ──
+(async function(){
+  const NS  = "mlbb-counter-pick"; // 고유 네임스페이스
+  const KEY_TOTAL = "total";
+  const KEY_TODAY = "today-" + new Date().toISOString().slice(0,10); // e.g. today-2026-05-25
+
+  async function hit(key){
+    try {
+      const r = await fetch("https://api.countapi.xyz/hit/" + NS + "/" + key);
+      const d = await r.json();
+      return d.value;
+    } catch(e){ return null; }
+  }
+  async function get(key){
+    try {
+      const r = await fetch("https://api.countapi.xyz/get/" + NS + "/" + key);
+      const d = await r.json();
+      return d.value;
+    } catch(e){ return null; }
+  }
+
+  // Hit both counters on load
+  const [total, today] = await Promise.all([hit(KEY_TOTAL), hit(KEY_TODAY)]);
+  const fmtEl = document.getElementById("vc-today");
+  const totEl = document.getElementById("vc-total");
+  if(fmtEl && today !== null)  fmtEl.textContent = today.toLocaleString();
+  if(totEl && total !== null)  totEl.textContent = total.toLocaleString();
+})();
 
 renderSlots();
 filterEnemyHeroes();
