@@ -903,36 +903,6 @@
     .cb-empty { font-size: 12px; color: rgba(200,204,216,0.4); font-style: italic; }
 
 
-    /* ── Visitor Counter ── */
-    .visitor-counter {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(73,191,157,0.08);
-      border: 1px solid rgba(73,191,157,0.2);
-      border-radius: 20px;
-      padding: 4px 12px;
-      font-size: 12px;
-      color: rgba(200,204,216,0.6);
-      margin-bottom: 1rem;
-    }
-    .visitor-counter .vc-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--color-primary);
-      animation: vcPulse 2s ease-in-out infinite;
-      flex-shrink: 0;
-    }
-    @keyframes vcPulse {
-      0%,100% { opacity:1; transform:scale(1); }
-      50%      { opacity:0.4; transform:scale(0.7); }
-    }
-    .visitor-counter .vc-num {
-      font-weight: 700;
-      color: var(--color-primary);
-      font-size: 13px;
-    }
-    .visitor-counter .vc-label { color: rgba(200,204,216,0.45); }
 
     /* ── 푸터 ── */
     #footer {
@@ -978,13 +948,6 @@
     <div class="logo"><i class="fas fa-crosshairs"></i></div>
     <h1>MLBB Counter Pick Helper</h1>
     <p>Counter pick recommendations &amp; combo guide by role</p>
-    <div class="visitor-counter">
-      <span class="vc-dot"></span>
-      <span class="vc-num" id="vc-today">—</span>
-      <span class="vc-label">today &nbsp;·&nbsp;</span>
-      <span class="vc-num" id="vc-total">—</span>
-      <span class="vc-label">total visits</span>
-    </div>
     <button id="landscape-btn" onclick="toggleLandscape()" title="Lock Landscape">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:5px"><rect x="1" y="6" width="22" height="15" rx="2"/><polyline points="8 6 8 4"/><polyline points="16 6 16 4"/><line x1="12" y1="4" x2="12" y2="2"/><circle cx="18" cy="13.5" r="1.5" fill="currentColor"/></svg>Lock Landscape
     </button>
@@ -1070,6 +1033,7 @@
       <li><a href="#" class="icon brands"><i class="fab fa-github"></i></a></li>
     </ul>
     <p class="copyright">&copy; MLBB Counter Pick Helper &nbsp;|&nbsp; Design based on <a href="https://html5up.net">HTML5 UP Stellar</a></p>
+    <p style="font-size:0.75rem;color:rgba(200,204,216,0.3);margin-top:0.4rem">Last updated: May 25, 2026 &nbsp;·&nbsp; Made by <span style="color:rgba(73,191,157,0.6);font-weight:600">SH</span>, Korea</p>
   </footer>
 
 </div><!-- /#wrapper -->
@@ -2094,28 +2058,7 @@ document.addEventListener("fullscreenchange", ()=>{
 });
 
 
-// ── Visitor Counter (counterapi.dev) ──
-(async function(){
-  const NS        = "mlbb-counter-pick";
-  const TODAY     = new Date().toISOString().slice(0,10);
-  const KEY_TOTAL = NS + "-total";
-  const KEY_TODAY = NS + "-" + TODAY;
-  const BASE      = "https://api.counterapi.dev/v1/";
 
-  async function hit(key){
-    try {
-      const r = await fetch(BASE + key + "/up");
-      const d = await r.json();
-      return d.count ?? null;
-    } catch(e){ return null; }
-  }
-
-  const [total, today] = await Promise.all([hit(KEY_TOTAL), hit(KEY_TODAY)]);
-  const todayEl = document.getElementById("vc-today");
-  const totalEl = document.getElementById("vc-total");
-  if(todayEl && today !== null) todayEl.textContent = today.toLocaleString();
-  if(totalEl && total !== null) totalEl.textContent = total.toLocaleString();
-})();
 
 renderSlots();
 filterEnemyHeroes();
