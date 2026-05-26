@@ -1033,7 +1033,12 @@
       <li><a href="#" class="icon brands"><i class="fab fa-github"></i></a></li>
     </ul>
     <p class="copyright">&copy; MLBB Counter Pick Helper &nbsp;|&nbsp; Design based on <a href="https://html5up.net">HTML5 UP Stellar</a></p>
-    <p style="font-size:0.75rem;color:rgba(200,204,216,0.3);margin-top:0.4rem">Last updated: May 25, 2026 &nbsp;·&nbsp; Made by <span style="color:rgba(73,191,157,0.6);font-weight:600">SH</span>, Korea</p>
+    <p style="font-size:0.75rem;color:rgba(200,204,216,0.3);margin-top:0.4rem">Last updated: <span id="last-updated"></span> &nbsp;·&nbsp; Made by <span style="color:rgba(73,191,157,0.6);font-weight:600">SH</span>, Korea</p>
+    <script>
+      const d = new Date(document.lastModified);
+      document.getElementById("last-updated").textContent =
+        d.toLocaleDateString("en-US", { year:"numeric", month:"long", day:"numeric" });
+    </script>
   </footer>
 
 </div><!-- /#wrapper -->
