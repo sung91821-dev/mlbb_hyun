@@ -1703,6 +1703,12 @@ function calcRec(){
     top8.map(({name,role,score,countered},i)=>{
       const isTop=i<3&&score>0;
       const ct=countered.length?`Counters: ${countered.join(", ")}`:`No counters`;
+      // 이 추천 영웅을 적 픽이 카운터하는지 체크
+      const heroCounters = (HEROES[name]||{}).counters||[];
+      const vulnerableTo = enemyPicks.filter(ep => heroCounters.includes(ep));
+      const vulHtml = vulnerableTo.length
+        ? `<div class="rec-counters" style="color:rgba(226,118,137,0.75)">⚠ Countered by: ${vulnerableTo.join(", ")}</div>`
+        : "";
       return `<div class="rec-item${isTop?" top":""}" onclick="showCombo('${name}')">
         <div class="rec-score">+${score}</div>
         <div style="flex:1;min-width:0">
@@ -1711,6 +1717,7 @@ function calcRec(){
             <span class="rec-role">${role}</span>
           </div>
           <div class="rec-counters">${ct}</div>
+          ${vulHtml}
         </div>
         <span style="font-size:10px;color:rgba(200,204,216,0.3)">${combos[name]?`<span style="font-size:9px;color:var(--color-accent1)">●</span>`:"—"}</span>
       </div>`;
@@ -1794,6 +1801,16 @@ function showCombo(hero){
   const area=document.getElementById("combo-area");
   const combo=combos[hero];
   const note=notes[hero];
+
+  // 이 영웅을 카운터하는 영웅 목록 (HEROES[hero].counters 에 직접 저장됨)
+  const counteredBy = (HEROES[hero]||{}).counters || [];
+
+  const counteredByHtml = counteredBy.length
+    ? `<div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:4px">${
+        counteredBy.map(c=>`<span class="cb-counter-chip" style="cursor:default">${c}</span>`).join("")
+      }</div>`
+    : `<div class="combo-empty">No known counters.</div>`;
+
   area.innerHTML=`<div class="combo-box">
     <div class="combo-hero">${hero} Combo</div>
     ${combo
@@ -1803,6 +1820,8 @@ function showCombo(hero){
     ${note
       ?`<div class="combo-note-text">${note}</div>`
       :`<div class="combo-empty">No note saved — add one in the Combos tab.</div>`}
+    <div class="combo-note-title" style="color:rgba(226,118,137,0.85);margin-top:10px">⚠ Countered By</div>
+    ${counteredByHtml}
   </div>`;
 }
 
