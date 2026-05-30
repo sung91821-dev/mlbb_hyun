@@ -1679,7 +1679,7 @@ function filterEnemyHeroes(){
     } else {
       btn.textContent=n;
     }
-    btn.onclick=()=>addEnemy(n);
+    btn.onclick=()=>{ addEnemy(n); document.getElementById("search").blur(); };
     grid.appendChild(btn);
   });
 }
@@ -1721,9 +1721,22 @@ function calcRec(){
         countered.push(`${enemy}(×${enemyWeights[enemy]??1})`);
       }
     });
-    results.push({name:h.n, role:h.r, score, countered});
+
+    // 이 영웅이 적 픽에게 카운터당하는지 체크 (점수 차감 없이 정렬 우선순위만 낮춤)
+    const heroCounters = (HEROES[h.n]||{}).counters||[];
+    const vulnerableTo = enemyPicks.filter(ep => heroCounters.includes(ep));
+    const isCountered = vulnerableTo.length > 0;
+
+    results.push({name:h.n, role:h.r, score, countered, vulnerableTo, isCountered});
   });
-  results.sort((a,b)=>b.score-a.score);
+  // 정렬: 동일 score면 카운터 안 당하는 영웅 우선, 다른 score면 score 높은 쪽 우선
+  // (카운터당해도 score 0보다는 위에 오도록 score 자체는 유지)
+  results.sort((a,b)=>{
+    if(b.score !== a.score) return b.score - a.score;
+    // score 같을 때만 카운터 여부로 순서 결정
+    if(a.isCountered !== b.isCountered) return a.isCountered ? 1 : -1;
+    return 0;
+  });
   const top8=results.slice(0,8);
   const topScore=top8[0]?.score||0;
   const posLabel={"EXP":"EXP Lane","MID":"MID Lane","JUNGLE":"Jungle","GOLD":"GOLD Lane","ROAM":"Roam"}[myPos];
@@ -1734,17 +1747,18 @@ function calcRec(){
     return;
   }
   area.innerHTML=`<div class="section-label" style="margin-bottom:6px">${posLabel} Recommendations — tap to view combo</div><div class="rec-list">${
-    top8.map(({name,role,score,countered},i)=>{
-      const isTop=i<3&&score>0;
+    top8.map(({name,role,score,countered,vulnerableTo,isCountered},i)=>{
+      const isTop=i<3&&score>0&&!isCountered;
       const ct=countered.length?`Counters: ${countered.join(", ")}`:`No counters`;
-      // 이 추천 영웅을 적 픽이 카운터하는지 체크
-      const heroCounters = (HEROES[name]||{}).counters||[];
-      const vulnerableTo = enemyPicks.filter(ep => heroCounters.includes(ep));
       const vulHtml = vulnerableTo.length
         ? `<div class="rec-counters" style="color:rgba(226,118,137,0.75)">⚠ Countered by: ${vulnerableTo.join(", ")}</div>`
         : "";
-      return `<div class="rec-item${isTop?" top":""}" onclick="showCombo('${name}')">
-        <div class="rec-score">+${score}</div>
+      const scoreColor = isCountered ? "color:rgba(200,204,216,0.35)" : score === 0 ? "color:rgba(200,204,216,0.4)" : "";
+      const scoreLabel = score > 0 ? `+${score}` : `${score}`;
+      return `<div class="rec-item${isTop?" top":""}" style="${isCountered?"opacity:0.55;":""}" onclick="showCombo('${name}')">
+        <div class="rec-score" style="${scoreColor}">
+          ${scoreLabel}
+        </div>
         <div style="flex:1;min-width:0">
           <div style="display:flex;align-items:center;gap:6px">
             <span class="rec-name">${name}</span>
@@ -1753,7 +1767,7 @@ function calcRec(){
           <div class="rec-counters">${ct}</div>
           ${vulHtml}
         </div>
-        <span style="font-size:10px;color:rgba(200,204,216,0.3)">${combos[name]?`<span style="font-size:9px;color:var(--color-accent1)">●</span>`:"—"}</span>
+        <span style="font-size:10px;color:rgba(200,204,216,0.3)">${combos[name]?'<span style="font-size:9px;color:var(--color-accent1)">●</span>':"—"}</span>
       </div>`;
     }).join("")
   }</div>`;
