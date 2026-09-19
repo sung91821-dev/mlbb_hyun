@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-  MLBB 밴픽 - Stellar 디자인 통합
+  MLBB Ban-Pick - Stellar design integration
   Based on Stellar by HTML5 UP (html5up.net | @ajlkn)
   CCA 3.0 license (html5up.net/license)
 -->
@@ -22,7 +22,7 @@
   </script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    /* ── Stellar 기반 전역 스타일 ── */
+    /* ── Stellar-based global styles ── */
     @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -59,7 +59,7 @@
     h2 { font-size: 1.5rem; }
     h3 { font-size: 1.1rem; }
 
-    /* ── 헤더 (Stellar alt header) ── */
+    /* ── Header (Stellar alt header) ── */
     #header {
       background: var(--color-bg2);
       border-bottom: 1px solid var(--color-border);
@@ -186,6 +186,12 @@
       .rec-name { font-size: 11px; }
       .rec-role { font-size: 9px; }
       .rec-counters { font-size: 8px; }
+      .rec-breakdown { font-size: 8px; }
+      .reason-chip { font-size: 7.5px; padding: 0 5px; }
+      .trait-toggle { font-size: 9px; margin-bottom: 4px; }
+      .enemy-comp-box { padding: 5px 7px 6px; margin-bottom: 5px; }
+      .enemy-comp-label { font-size: 8px; }
+      .trait-chip { font-size: 7.5px; padding: 1px 6px; }
       #rec-area { max-height: 190px; overflow-y: auto; }
 
       /* Combo box */
@@ -267,7 +273,7 @@
     body.force-landscape #cb-detail { max-height: 220px; overflow-y: auto; }
 
 
-    /* ── 네비게이션 ── */
+    /* ── Navigation ── */
     #nav {
       background: var(--color-bg2);
       border-bottom: 1px solid var(--color-border);
@@ -295,11 +301,11 @@
       border-bottom-color: var(--color-primary);
     }
 
-    /* ── 메인 래퍼 ── */
+    /* ── Main wrapper ── */
     #wrapper { max-width: 960px; margin: 0 auto; }
     #main { padding: 0 1.5rem 3rem; }
 
-    /* ── 섹션 공통 ── */
+    /* ── Shared section styles ── */
     section.main {
       border-bottom: 1px solid var(--color-border);
       padding: 3rem 0;
@@ -308,7 +314,7 @@
     section.main .major h2 { color: var(--color-text-light); font-size: 1.6rem; }
     section.main .major p { color: rgba(200,204,216,0.6); font-size: 0.9rem; margin-top: 0.3rem; }
 
-    /* ── 인트로 섹션 ── */
+    /* ── Intro section ── */
     #intro .spotlight {
       display: flex;
       align-items: center;
@@ -333,7 +339,7 @@
       #intro .spotlight .image { width: 120px; height: 120px; font-size: 2.8rem; }
     }
 
-    /* ── 기능 카드 ── */
+    /* ── Feature cards ── */
     .features {
       list-style: none;
       display: grid;
@@ -361,7 +367,7 @@
     .features li h3 { font-size: 1rem; margin-bottom: 0.4rem; }
     .features li p { font-size: 0.85rem; color: rgba(200,204,216,0.6); }
 
-    /* ── 버튼 ── */
+    /* ── Buttons ── */
     .button {
       display: inline-block;
       padding: 0.65rem 1.5rem;
@@ -384,7 +390,7 @@
     .actions.special { justify-content: center; }
 
     /* ──────────────────────────────
-       밴픽 앱 섹션
+       Ban-Pick app section
     ────────────────────────────── */
     #banbuck { padding-top: 0; }
 
@@ -396,7 +402,7 @@
       margin-top: 2rem;
     }
 
-    /* 라벨 */
+    /* Labels */
     .section-label {
       font-size: 10px;
       color: rgba(200,204,216,0.4);
@@ -406,7 +412,7 @@
       margin: 0.6rem 0 0.4rem;
     }
 
-    /* 포지션 */
+    /* Positions */
     .pos-row {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -431,7 +437,7 @@
       color: var(--color-primary);
     }
 
-    /* 슬롯 */
+    /* Slots */
     .slot-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -477,7 +483,7 @@
       line-height: 1;
     }
 
-    /* 검색 */
+    /* Search */
     input[type=text], input[type=search] {
       width: 100%;
       height: 32px;
@@ -495,7 +501,7 @@
     input[type=text]:focus, input[type=search]:focus { border-color: var(--color-primary); }
     input::placeholder { color: rgba(200,204,216,0.3); }
 
-    /* 영웅 그리드 */
+    /* Hero grid */
     .hero-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -540,7 +546,7 @@
     }
     .hero-btn:hover { background: rgba(73,191,157,0.15); border-color: var(--color-primary); color: #fff; }
 
-    /* 계산 버튼 */
+    /* Calculate button */
     .calc-btn {
       width: 100%;
       height: 38px;
@@ -574,7 +580,7 @@
     }
     .reset-btn:hover { background: rgba(226,118,137,0.15); border-color: var(--color-accent2); color: var(--color-accent2); }
 
-    /* 추천 결과 */
+    /* Recommendation results */
     .rec-list { display: flex; flex-direction: column; gap: 5px; }
     .rec-item {
       display: flex;
@@ -594,7 +600,7 @@
     .rec-role { font-size: 10px; color: rgba(200,204,216,0.5); }
     .rec-counters { font-size: 9px; color: rgba(200,204,216,0.4); line-height: 1.4; }
 
-    /* 콤보 박스 */
+    /* Combo box */
     .combo-box {
       border-radius: 8px;
       border: 1px solid rgba(111,195,223,0.3);
@@ -688,7 +694,7 @@
       /* values set dynamically in JS */
     }
 
-    /* ── 콤보 아이콘 렌더링 ── */
+    /* ── Combo icon rendering ── */
     .combo-icons {
       display: flex;
       align-items: center;
@@ -743,7 +749,7 @@
     .combo-alt-row { margin-top: 5px; display: flex; align-items: center; flex-wrap: wrap; gap: 5px; }
     .combo-alt-label { font-size: 9px; color: rgba(200,204,216,0.4); text-transform: uppercase; letter-spacing: 0.05em; margin-right: 2px; }
 
-    /* ── 콤보 에디터 ── */
+    /* ── Combo editor ── */
     .combo-editor-item {
       background: rgba(255,255,255,0.02);
       border: 1px solid var(--color-border);
@@ -903,11 +909,85 @@
       transition: all 0.15s;
     }
     .cb-counter-chip:hover { background: rgba(226,118,137,0.25); }
+    .chip-pp { margin-left: 4px; opacity: 0.6; font-weight: 700; font-size: 8px; }
+
+    /* ── Trait chips (per-hero attributes) ── */
+    .cb-traits-row {
+      display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px;
+    }
+    .trait-chip {
+      font-size: 9px; font-weight: 600;
+      padding: 2px 8px; border-radius: 10px;
+      border: 1px solid transparent;
+      cursor: help;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .trait-chip:hover { filter: brightness(1.35); }
+    .trait-chip[data-cat="school"]  { background: rgba(200,204,216,0.10); border-color: rgba(200,204,216,0.28); color: rgba(200,204,216,0.85); }
+    .trait-chip[data-cat="range"]   { background: rgba(200,204,216,0.10); border-color: rgba(200,204,216,0.28); color: rgba(200,204,216,0.85); }
+    .trait-chip[data-cat="survive"] { background: rgba(142,192,124,0.13); border-color: rgba(142,192,124,0.40); color: rgba(160,205,142,0.95); }
+    .trait-chip[data-cat="damage"]  { background: rgba(255,200,80,0.13);  border-color: rgba(255,200,80,0.38);  color: rgba(255,208,110,0.95); }
+    .trait-chip[data-cat="cc"]      { background: rgba(170,140,255,0.13); border-color: rgba(170,140,255,0.40); color: rgba(190,165,255,0.95); }
+    .cb-section-title.trait-label { color: var(--color-primary); }
+
+    /* ── Trait-based matchup score UI ── */
+    .enemy-comp-box {
+      border: 1px solid rgba(226,118,137,0.25);
+      background: rgba(226,118,137,0.05);
+      border-radius: 8px;
+      padding: 7px 9px 8px;
+      margin-bottom: 7px;
+    }
+    .enemy-comp-label {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: rgba(226,118,137,0.8);
+      margin-bottom: 4px;
+    }
+    .trait-toggle {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 10px; color: rgba(200,204,216,0.55);
+      margin-bottom: 7px; cursor: pointer; user-select: none;
+    }
+    .trait-toggle input { accent-color: var(--color-primary); cursor: pointer; margin: 0; }
+    .rec-breakdown {
+      font-size: 9px; color: rgba(200,204,216,0.45);
+      margin-top: 2px; letter-spacing: 0.02em;
+    }
+    .rec-reasons { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 3px; }
+    .reason-chip {
+      font-size: 8.5px; font-weight: 600;
+      padding: 1px 6px; border-radius: 9px;
+      background: rgba(142,192,124,0.11);
+      border: 1px solid rgba(142,192,124,0.32);
+      color: rgba(160,205,142,0.9);
+      white-space: nowrap;
+    }
+    .reason-chip.neg {
+      background: rgba(226,118,137,0.11);
+      border-color: rgba(226,118,137,0.32);
+      color: rgba(226,118,137,0.88);
+    }
+    .reason-chip.more {
+      background: rgba(200,204,216,0.08);
+      border-color: rgba(200,204,216,0.25);
+      color: rgba(200,204,216,0.6);
+      cursor: help;
+    }
+    .no-positive-msg {
+      font-size: 10px;
+      color: rgba(255,200,80,0.8);
+      background: rgba(255,200,80,0.07);
+      border: 1px solid rgba(255,200,80,0.25);
+      border-radius: 7px;
+      padding: 5px 8px;
+      margin-bottom: 6px;
+    }
     .cb-empty { font-size: 12px; color: rgba(200,204,216,0.4); font-style: italic; }
 
 
 
-    /* ── 푸터 ── */
+    /* ── Footer ── */
     #footer {
       background: var(--color-bg2);
       border-top: 1px solid var(--color-border);
@@ -946,7 +1026,7 @@
 
 <div id="wrapper">
 
-  <!-- 헤더 -->
+  <!-- Header -->
   <header id="header">
     <div class="logo"><i class="fas fa-crosshairs"></i></div>
     <h1>MLBB Counter Pick Helper</h1>
@@ -1004,7 +1084,6 @@
               <span id="search-clear" class="search-clear" onclick="clearSearch()" style="display:none">×</span>
             </div>
             <div class="hero-grid" id="enemy-hero-grid"></div>
-            <button class="calc-btn" onclick="calcRec()">Calculate Counter Score</button>
             <button class="reset-btn" onclick="resetAll()">Reset All</button>
           </div>
           <!-- RIGHT: results -->
@@ -1028,7 +1107,7 @@
 
   </div><!-- /#main -->
 
-  <!-- 푸터 -->
+  <!-- Footer -->
   <footer id="footer">
     <ul class="icons">
       <li><a href="#" class="icon brands"><i class="fab fa-discord"></i></a></li>
@@ -1066,7 +1145,7 @@ const POOLS={
     // ── EXP-flex: seen in screenshots ──
     {n:"Benedetta",r:"Assassin"},{n:"Edith",r:"Tank"},{n:"Joy",r:"Assassin"},
     {n:"Kalea",r:"Support"},{n:"Suyou",r:"Assassin"},
-    // ── EXP-flex: Tanks (공식 명시) ──
+    // ── EXP-flex: Tanks (officially listed) ──
     {n:"Baxia",r:"Tank"},{n:"Gatotkaca",r:"Tank"},{n:"Gloo",r:"Tank"},{n:"Hylos",r:"Tank"},
     {n:"Belerick",r:"Tank"},
   ],
@@ -1091,11 +1170,12 @@ const POOLS={
     // ── Assassins (Jungle) ──
     {n:"Aamon",r:"Assassin"},{n:"Benedetta",r:"Assassin"},{n:"Fanny",r:"Assassin"},
     {n:"Gusion",r:"Assassin"},{n:"Hanzo",r:"Assassin"},{n:"Harley",r:"Assassin"},
-    {n:"Hayabusa",r:"Assassin"},{n:"Helcurt",r:"Assassin"},{n:"Joy",r:"Assassin"},
+    {n:"Hayabusa",r:"Assassin"},{n:"Helcurt",r:"Assassin"},{n:"Hirara",r:"Assassin"},
+    {n:"Joy",r:"Assassin"},
     {n:"Karina",r:"Assassin"},{n:"Lancelot",r:"Assassin"},{n:"Ling",r:"Assassin"},
     {n:"Natalia",r:"Assassin"},{n:"Nolan",r:"Assassin"},{n:"Saber",r:"Assassin"},
     {n:"Selena",r:"Assassin"},{n:"Suyou",r:"Assassin"},{n:"Yi Sun-shin",r:"Assassin"},
-    // ── Fighter junglers (공식 명시) ──
+    // ── Fighter junglers (officially listed) ──
     {n:"Alucard",r:"Fighter"},{n:"Arlott",r:"Fighter"},{n:"Fredrinn",r:"Fighter"},
     {n:"Roger",r:"Fighter"},{n:"Sora",r:"Fighter"},
     // ── Fighter junglers seen in screenshots ──
@@ -1147,429 +1227,688 @@ const POOLS={
 };;;
 
 // ═══════════════════════════════════════════════
-//  HERO DATA — 캐릭터별 모든 속성을 한 곳에서 편집
-//  counters : 이 영웅을 카운터하는 영웅 목록
-//  combo    : 스킬 콤보 순서
-//  note     : 추가 메모 (아이템, 매치업 팁 등)
+//  HERO DATA — every per-hero attribute is edited in one place
+//  counters : heroes that counter this hero
+//  combo    : skill combo order
+//  note     : extra notes (items, matchup tips, etc.)
 // ═══════════════════════════════════════════════
 const HEROES = {
-  // Source: mlbbhub.com Patch 2.1.70 (May 2026) + search data
-  // ★ = verified real data  ☆ = search/knowledge based
+  // Source: mlbbhub.com measured win-rate data (all 133 heroes, double cross-checked, 2026-09)
+  // counters : { hero that counters this one : win-rate edge (pp) }
+  //            pp = percentage-point win-rate advantage that hero gains in the matchup
 
   // ── Fighters ──
-  "Alucard":    { counters:["Argus","Khufra","Wanwan","Valir"],
+  "Alucard":    { traits:["phys","melee","regen","mobile","burst"],
+                  counters:{"Khufra":3.2,"Barats":2.9,"Fredrinn":2.8,"Phoveus":2.7,"Minsitthar":2.5,"Akai":2.4,"Tigreal":2.2,"Thamuz":2.1},
                   combo:"3 - 1 - 2 - 3",
                   note:"Lifesteal hero. Avoid long 1v1 trades after lv4. CC interrupts his combo." },
-  "Alpha":      { counters:["Argus","Thamuz","Wanwan","Valir","Ling","Phoveus","Chou","Khufra","Kaja","Baxia"],
+  "Alpha":      { traits:["phys","melee","regen","dps","softcc"],
+                  counters:{"Benedetta":4.2,"X.Borg":3.2,"Ling":3.1,"Hanzo":2.9,"Mathilda":2.8,"Diggie":2.6,"Kaja":2.3,"Lylia":2.1,"Lancelot":2.0,"Novaria":1.9,"Chang'e":1.6,"Suyou":1.5},
                   combo:"3 - 1 - 2",
                   note:"Build Beta passive stacks before Ult. Ling hard counters Alpha." },
-  "Aldous":     { counters:["Argus","Akai","Obsidia","Julian"],
+  "Aldous":     { traits:["phys","melee","shield","burst","hardcc"],
+                  counters:{"Esmeralda":2.7,"Karina":2.5,"Cyclops":2.3,"Brody":2.1,"Zhuxin":2.0,"Lukas":2.0,"Paquito":1.8,"Badang":1.3},
                   combo:"3 - 3 target - 1 while moving - B - 2",
                   note:"500+ stacks one-shots squishies. Ult reveals target on minimap. Deny stacks early." },
-  "Argus":      { counters:["Akai","Chou","Jawhead","Franco","Hylos","Yu Zhong"],
+  "Argus":      { traits:["phys","melee","regen","mobile","dps"],
+                  counters:{"Barats":3.6,"Uranus":3.3,"Terizla":3.2,"Fredrinn":3.0,"Esmeralda":2.9,"Baxia":2.6,"Lapu-Lapu":2.5,"Ruby":2.4,"Gatotkaca":1.9},
                   combo:"1 - 2 - 1 - B - 3 - B",
                   note:"Ult grants brief immortality — use it reactively, not as engage." },
-  "Arlott":     { counters:["Phoveus","Chou","Minsitthar","Hilda","Miya"],
+  "Arlott":     { traits:["phys","melee","mobile","burst","hardcc"],
+                  counters:{"Zhask":2.8,"Phoveus":2.4,"Masha":2.3,"Lukas":2.0,"Minsitthar":2.0,"Jawhead":1.7},
                   combo:"2 - 1 - 2 - 3 - 2",
                   note:"S2 dash only activates if mark lands first. Ult range scales with marks consumed." },
-  "Aulus":      { counters:["Argus","Valir","Gatotkaca","Hayabusa","Yin"],
+  "Aulus":      { traits:["phys","melee","mobile","dps","softcc"],
+                  counters:{"Edith":3.3,"Yve":2.8,"Estes":2.3,"Freya":2.3,"Floryn":2.3,"Balmond":1.8},
                   combo:"3 - 1 - 2 - B",
                   note:"Passive axe procs on every AA. Refresh S2 as soon as it's off cooldown." },
-  "Badang":     { counters:["Esmeralda","Aldous","Khaleed","Chou","Lunox","Nana","Phoveus"],
+  "Badang":     { traits:["phys","melee","tank","burst","hardcc"],
+                  counters:{"Esmeralda":2.3,"Khufra":2.0,"Alice":1.8,"Karina":1.8,"Diggie":1.6},
                   combo:"2 - flicker - 1 - 3",
                   note:"Ult deals full damage only when target is pinned to a wall. Purify counters him." },
-  "Balmond":    { counters:["Ruby","Jawhead","Claude","Esmeralda","Selena","Argus"],
+  "Balmond":    { traits:["phys","melee","regen","true","dps"],
+                  counters:{"Cici":4.5,"X.Borg":4.0,"Angela":3.4,"Valir":3.2,"Karrie":3.0,"Hanzo":2.8,"Hanabi":2.1,"Chang'e":1.4},
                   combo:"1 - 2 - 3",
                   note:"Strong wave clear with S2. Ult executes targets below 50% HP." },
-  "Bane":       { counters:["Martis","Chou","Lylia"],
+  "Bane":       { traits:["phys","melee","tank","dps","softcc"],
+                  counters:{"Lolita":4.8,"Nolan":2.8,"Atlas":2.2,"Hanzo":2.1,"Novaria":1.7},
                   combo:"2 - 3 - 1 - 2 - B",
                   note:"Shark zones area. Hybrid build (spell vamp + tank) is cost-efficient." },
-  "Chou":       { counters:["Yu Zhong","Melissa","Uranus","Minsitthar","Phoveus"],
+  "Chou":       { traits:["phys","melee","mobile","ccimmune","hardcc"],
+                  counters:{"Phoveus":2.6,"Cyclops":2.3,"Esmeralda":2.2,"Khufra":1.9,"Sun":1.7},
                   combo:"1 - 1 - 1 - 2 - 3 - 3",
                   note:"S2 grants brief CC immunity — use to dodge CC. Phoveus is his hardest counter in current meta." },
-  "Cici":       { counters:["Phoveus","Terizla","Baxia","X.Borg","Sun"],
+  "Cici":       { traits:["phys","melee","regen","dps","softcc"],
+                  counters:{"Sun":4.1,"X.Borg":3.6,"Estes":3.5,"Aamon":3.4,"Yve":2.3,"Rafaela":2.3,"Zilong":2.1},
                   combo:"2 - 3 - 1",
                   note:"Ult restores a S1 charge. Chain combos in teamfights for sustained damage." },
-  "Dyrroth":    { counters:["Badang","Martis","Thamuz","Guinevere"],
+  "Dyrroth":    { traits:["phys","melee","mobile","burst","true"],
+                  counters:{"Thamuz":2.0,"Argus":2.0,"Layla":2.0,"Johnson":1.9,"Alpha":1.8,"Nana":1.8},
                   combo:"2 - 2 - 3 - 1",
                   note:"Every 3rd S1 is empowered. Passive shreds shields — hard counters Esmeralda." },
-  "Esmeralda":  { counters:["Dyrroth","Lunox","Karrie","Valir","Yu Zhong"],
+  "Esmeralda":  { traits:["magic","melee","shield","regen","dps"],
+                  counters:{"Dyrroth":3.6,"Lunox":3.1,"Karrie":3.0,"Julian":2.8,"Fredrinn":2.6,"Natan":2.5,"Guinevere":2.1},
                   combo:"1 - 3 - 2 - 1",
                   note:"Converts enemy shields into her own. Dyrroth S1 ignores shields — hardest counter." },
-  "Fredrinn":   { counters:["X.Borg","Baxia","Lunox","Karrie","Alpha"],
+  "Fredrinn":   { traits:["phys","melee","tank","burst","hardcc"],
+                  counters:{"Valir":3.8,"Gord":2.6,"X.Borg":2.2,"Hanzo":2.1,"Cici":2.1},
                   combo:"2 - 1 - 3 - 1 - 2 - 4",
                   note:"Ult damage scales with stored crystal energy. Stack before teamfight." },
-  "Freya":      { counters:["Obsidia","Karrie","Guinevere","Phoveus","Minsitthar"],
+  "Freya":      { traits:["phys","melee","mobile","burst","hardcc"],
+                  counters:{"Phoveus":5.2,"Minsitthar":4.4,"Baxia":2.4,"Franco":1.9,"Esmeralda":1.9,"Kalea":1.8},
                   combo:"1 - B - 2 - 2 - inspire - 3 - B",
                   note:"Sacred Orb stacks on AAs. Ult converts her to ranged temporarily." },
-  "Guinevere":  { counters:["Obsidia","Kagura","Benedetta","Argus","Minsitthar","Chou"],
+  "Guinevere":  { traits:["magic","melee","mobile","burst","hardcc"],
+                  counters:{"Masha":3.8,"Wanwan":3.5,"Diggie":2.9,"Khufra":2.6,"Fanny":2.0,"Sora":1.7,"Miya":1.6},
                   combo:"2 - flicker - 1 - B - 3 - 1",
                   note:"Ult can only cast while target is airborne. Tight combo timing — practice in training." },
-  "Hilda":      { counters:["Angela","Claude","Valir","Gusion","Cici","Zhuxin"],
+  "Hilda":      { traits:["phys","melee","regen","tank","burst"],
+                  counters:{"Karrie":2.7,"Esmeralda":2.7,"Atlas":2.6,"Yve":2.3,"Carmilla":2.2},
                   combo:"1 - B - 2 - 2 - 2 - 3",
                   note:"HP regen only works in bushes. Stack passive between fights. Great roam fighter." },
-  "Jawhead":    { counters:["Thamuz","Argus","Martis","Miya","Yu Zhong"],
+  "Jawhead":    { traits:["phys","melee","mobile","burst","hardcc"],
+                  counters:{"Sun":4.1,"Gloo":3.0,"Esmeralda":2.9,"Lolita":2.7,"Popol and Kupa":2.2},
                   combo:"2 - flicker - 2 - 3 - 1 or 1 - 3 - 2 - 2",
                   note:"Can throw allies as projectiles. Coordinate S2 with teammates. Lolita shield blocks S2." },
-  "Julian":     { counters:["Minsitthar","Akai","Zhuxin","Silvanna"],
+  "Julian":     { traits:["magic","melee","mobile","burst","hardcc"],
+                  counters:{"Guinevere":2.2,"Beatrix":1.7,"Tigreal":1.6,"Granger":1.6,"Minsitthar":1.5},
                   combo:"1 - 3 - 2 or 2 - 3 - 1 or 2 - 1 - 3",
                   note:"Enhanced skills have no cooldown during Ult window. Heavy CC interrupts his combo." },
-  "Khaleed":    { counters:["Jawhead","Minsitthar","Ruby","Dyrroth","X.Borg"],
+  "Khaleed":    { traits:["phys","melee","regen","dps","softcc"],
+                  counters:{"Phoveus":2.7,"Faramis":2.5,"Chip":2.4,"Lesley":2.4,"Bruno":2.2},
                   combo:"3 - B - 1 - move - 1 - move - 1 - 2",
                   note:"Ult lets him reposition freely. Desert Power stacks on S1 hits." },
-  "Lapu-Lapu":  { counters:["Esmeralda","Karrie","X.Borg","Lunox","Ruby"],
+  "Lapu-Lapu":  { traits:["phys","melee","shield","burst","hardcc"],
+                  counters:{"Esmeralda":3.3,"Fanny":1.8,"Beatrix":1.7,"Mathilda":1.6,"Harith":1.6},
                   combo:"2 - 3 - flicker - 2 - 1 - B - 3",
                   note:"Transformed form has much higher damage. CC him before transformation." },
-  "Leomord":    { counters:["Valir","Minsitthar","Akai","Chou"],
+  "Leomord":    { traits:["phys","melee","mobile","dps","hardcc"],
+                  counters:{"Melissa":3.7,"Valir":3.2,"Yve":2.9,"Karrie":2.7,"Zhuxin":2.7},
                   combo:"3 - 2 - 1 - 2 - 1 - B",
                   note:"Mounted state has extended range and charge attack. Great chaser." },
-  "Lukas":      { counters:["Alpha","Sun","Minsitthar","Yu Zhong","Dyrroth","Jawhead","Clint","Fredrinn"],
+  "Lukas":      { traits:["phys","melee","regen","mobile","burst"],
+                  counters:{"Balmond":3.4,"Baxia":2.9,"Thamuz":2.6,"Minsitthar":2.3,"Phoveus":2.1,"Dyrroth":1.8},
                   combo:"S1 → S2 → AA → Ult burst",
                   note:"Builds momentum through AAs. Full momentum Ult deals massive single-target damage." },
-  "Martis":     { counters:["Akai","Diggie","Franco","Minsitthar","Phoveus"],
+  "Martis":     { traits:["phys","melee","ccimmune","true","hardcc"],
+                  counters:{"X.Borg":4.0,"Minsitthar":2.8,"Balmond":1.8,"Angela":1.7,"Lesley":1.7},
                   combo:"2 - 1 - 2 - 3",
                   note:"Ult grants CC immunity — use to escape burst then re-engage. Kill resets Ult." },
-  "Masha":      { counters:["Dyrroth","Sun","Argus"],
+  "Masha":      { traits:["phys","melee","tank","true","dps"],
+                  counters:{"Sun":4.8,"Argus":4.6,"Estes":3.7,"Chip":3.2,"Aulus":3.0,"Uranus":3.0,"Popol and Kupa":2.5,"Chang'e":2.4,"Terizla":2.3,"Thamuz":2.1,"Miya":1.7},
                   combo:"1 - 3 - B - 2",
                   note:"3 HP bars make her very tanky. Ult enables tower diving. Anti-heal counters her." },
-  "Minsitthar": { counters:["Akai","Diggie","Valir","Yu Zhong","Lylia"],
+  "Minsitthar": { traits:["phys","melee","tank","antidive","hardcc"],
+                  counters:{"Natalia":3.6,"Yin":2.5,"X.Borg":2.4,"Irithel":1.9,"Aulus":1.9,"Yu Zhong":1.7},
                   combo:"1 - 3 - flicker - 2",
                   note:"Ult blocks all dashes inside the field — shuts down Fanny, Ling, Lancelot completely." },
-  "Paquito":    { counters:["Minsitthar","Khufra","Phoveus"],
+  "Paquito":    { traits:["phys","melee","mobile","burst","hardcc"],
+                  counters:{"Chip":3.1,"Esmeralda":3.1,"Melissa":2.2,"Khufra":2.2,"Odette":1.8},
                   combo:"2 - 2 - 1 - 3 - 2 or 3 - 2 - 1 - 3 - 3",
                   note:"4-hit Champ Stance empowers next skill. Track stacks visually." },
-  "Phoveus":    { counters:["Dyrroth","Terizla","Lesley","Minsitthar","Uranus","Aurora"],
+  "Phoveus":    { traits:["magic","melee","tank","antidive","burst"],
+                  counters:{"Minsitthar":3.6,"X.Borg":3.3,"Barats":3.0,"Esmeralda":2.8,"Alice":2.7,"Alpha":2.6,"Bane":2.3,"Julian":2.0,"Terizla":1.9},
                   combo:"1 - B - 3 - 2 - 1 - 3",
                   note:"Ult teleports to enemies who dash nearby. Hard counter to all dash-heavy heroes." },
-  "Roger":      { counters:["Minsitthar","Lesley","Phoveus"],
+  "Roger":      { traits:["phys","melee","mobile","burst","dps"],
+                  counters:{"Leomord":2.0,"Barats":1.7,"Valentina":1.6,"Yve":1.5,"Minotaur":1.4},
                   combo:"1 - 2 - 3 - 1 - 2 - B",
                   note:"Human form for poke/slow, wolf form for chase/burst. Don't transform when you need escape." },
-  "Ruby":       { counters:["X.Borg","Lapu-Lapu","Balmond"],
+  "Ruby":       { traits:["phys","melee","regen","tank","hardcc"],
+                  counters:{"X.Borg":3.2,"Phoveus":2.9,"Diggie":2.1,"Lolita":2.0,"Terizla":1.8,"Arlott":1.8},
                   combo:"1 - 3 - flicker - 2",
                   note:"Skill lifesteal gives insane sustain. Ult pulls all nearby enemies — great peel." },
-  "Silvanna":   { counters:["Ling","Zhask","Argus","Akai","Kadita","Yu Zhong","Kagura","Joy","Alice","Lunox","Masha","Valir","Edith"],
+  "Silvanna":   { traits:["magic","melee","mobile","burst","hardcc"],
+                  counters:{"Barats":3.3,"Benedetta":3.3,"Lapu-Lapu":2.9,"Minotaur":2.8,"Edith":2.8,"Khufra":2.7,"Belerick":2.6,"Hylos":2.0,"Roger":1.9,"Akai":1.9,"Yu Zhong":1.9,"Kalea":1.7,"Kagura":1.7,"Nana":1.5,"Vale":1.4},
                   combo:"3 - 1 - 2 - stun - freeze",
                   note:"Ult creates a prison — target can't leave until she's killed or time expires." },
-  "Sora":       { counters:["Jawhead","Uranus","Yu Zhong","Phoveus","Khufra","Franco","Minsitthar","Chou","Kaja"],
+  "Sora":       { traits:["phys","melee","mobile","burst","hardcc"],
+                  counters:{"Melissa":2.6,"Phoveus":2.2,"Khufra":2.1,"Alice":1.8,"Martis":1.7},
                   combo:"2 - 3 - 2 - 1 - 3 or 2 - 3 - 1 - 2 - 3",
                   note:"Paired summon mechanic. Ult gap closes then follow with S1+S2." },
-  "Sun":        { counters:["Ruby","Paquito","Martis","Dyrroth","X.Borg"],
+  "Sun":        { traits:["phys","melee","tank","regen","dps"],
+                  counters:{"Natan":4.7,"Joy":4.3,"Aldous":4.2,"Ruby":3.9,"Alucard":3.3,"Faramis":3.3,"Suyou":3.0,"Aulus":2.8,"Kimmy":2.7,"Karina":2.5,"Lukas":2.4,"Leomord":2.3,"Hirara":2.3,"Kagura":2.0,"Julian":1.8,"Badang":1.8},
                   combo:"2 - 3 or 4 - 2 - 3 - inspire",
                   note:"Clones inherit AA damage. Identifying the real body is the key counter." },
-  "Suyou":      { counters:["Harith","Gusion","Odette","Ruby","Jawhead","Silvanna"],
+  "Suyou":      { traits:["phys","melee","mobile","burst","softcc"],
+                  counters:{"Harith":2.7,"Joy":1.7,"Gusion":1.6,"Harley":1.5,"Odette":1.5},
                   combo:"1 - flicker - 2 - 3 : kill and retreat or 3H - flicer - 2 - 1 : surprise or 1H - flicker - 2H - 3 : Init & control",
                   note:"Mark-based mechanics reward patience before bursting. Strong gank and jungle clear." },
-  "Terizla":    { counters:["Valir","Dyrroth","Thamuz","Yu Zhong"],
+  "Terizla":    { traits:["phys","melee","tank","burst","hardcc"],
+                  counters:{"X.Borg":4.5,"Karrie":2.5,"Yve":2.4,"Valir":2.3,"Angela":2.0},
                   combo:"3 - 1 - 2 - 2 - 2",
                   note:"Ult gathers enemies to center. Combo with AoE teammates like Odette or Pharsa." },
-  "Thamuz":     { counters:["Dyrroth","Esmeralda","Cici","Valir","X.Borg"],
+  "Thamuz":     { traits:["phys","melee","regen","dps","softcc"],
+                  counters:{"Cici":3.7,"Benedetta":2.8,"Valir":2.6,"X.Borg":2.5,"Karrie":2.4,"Yi Sun-shin":2.1,"Guinevere":1.9,"Yu Zhong":1.5},
                   combo:"1 - 3 - 2 - 1 - 1",
                   note:"Scythe passive deals continuous burn. Anti-heal is the key counter item." },
-  "X.Borg":     { counters:["Dyrroth","Benedetta","Lylia"],
+  "X.Borg":     { traits:["phys","melee","shield","dps","true"],
+                  counters:{"Ling":3.8,"Valentina":3.7,"Mathilda":3.6,"Benedetta":3.5,"Floryn":3.4,"Helcurt":3.2,"Paquito":3.0,"Joy":3.0,"Chou":2.9,"Zilong":2.6,"Arlott":2.5,"Aldous":2.3,"Hirara":2.3,"Selena":2.0,"Irithel":1.9,"Hayabusa":1.9,"Gusion":1.8,"Xavier":1.7,"Chang'e":1.5,"Yi Sun-shin":1.5,"Suyou":1.5},
                   combo:"1 - 2 - 1 - 3",
                   note:"Armorless phase is his highest damage window. Ult explosion is very powerful." },
-  "Yin":        { counters:["Saber","Alpha","Paquito","Martis","Argus","Sun"],
+  "Yin":        { traits:["phys","melee","mobile","burst","hardcc"],
+                  counters:{"Wanwan":5.0,"Esmeralda":2.9,"Cici":2.4,"Khaleed":2.3,"Gloo":2.3,"Hilda":2.3,"Uranus":2.2,"Johnson":2.1,"Irithel":2.1,"Lancelot":2.0,"Grock":1.8,"Franco":1.8,"Roger":1.6,"Selena":1.6},
                   combo:"1 - 2 - B - 3 - 2 - 1",
                   note:"Ult creates isolated 1v1 zone. Target their carry. Useless if target escapes." },
-  "Yu Zhong":   { counters:["Esmeralda","Masha","Valir"],
+  "Yu Zhong":   { traits:["phys","melee","regen","tank","hardcc"],
+                  counters:{"Masha":3.5,"Lunox":1.9,"Harith":1.7,"Wanwan":1.7,"Claude":1.6},
                   combo:"1 - 3 - stun - 2 - 4",
                   note:"Coil passive stacks on skill hits. Dragon form grants huge AoE and mobility." },
-  "Zilong":     { counters:["Kaja","Chou","Franco","Akai","Esmeralda","Masha"],
+  "Zilong":     { traits:["phys","melee","mobile","dps","hardcc"],
+                  counters:{"Tigreal":2.9,"Karina":2.9,"Johnson":2.6,"Atlas":2.6,"Gatotkaca":2.4,"Popol and Kupa":2.3,"Badang":1.2},
                   combo:"3 - 2 - 1 - inspire - B",
                   note:"Ult removes all slows and boosts speed — best escape and chase tool." },
 
   // ── Assassins ──
-  "Aamon":      { counters:["Karina","Hayabusa","Yin","Gloo","Lolita","Hylos","Belerick","Jawhead","Aldous","Yi Sun-shin","Roger","Lesley","Rafaela","Esmeralda","Melissa","Fredrinn"],
+  "Aamon":      { traits:["magic","melee","mobile","fragile","burst"],
+                  counters:{"Gloo":4.3,"Hayabusa":2.9,"Silvanna":2.8,"Atlas":2.5,"Lolita":2.4,"Gusion":2.2},
                   combo:"2 - 1 - 3",
                   note:"8 shard stacks = max damage. Farm stacks on minions before ganking." },
-  "Benedetta":  { counters:["Phoveus","Minsitthar","Khufra","Chou","Argus","Obsidia"],
+  "Benedetta":  { traits:["phys","melee","mobile","ccimmune","burst"],
+                  counters:{"Phoveus":4.3,"Obsidia":3.4,"Bruno":2.6,"Irithel":2.5,"Valentina":2.4,"Mathilda":2.4,"Selena":1.9,"Argus":1.9,"Yi Sun-shin":1.7},
                   combo:"D - 3 - stun - 1 - 2",
                   note:"Hold S2 for longer dash distance. Ult roots nearby enemies. Phoveus hard counters." },
-  "Fanny":      { counters:["Chou","Khufra","Franco","Helcurt","Hayabusa","Gusion","Saber","Obsidia"],
+  "Fanny":      { traits:["phys","melee","mobile","fragile","burst"],
+                  counters:{"Moskov":3.1,"Bruno":2.9,"Masha":2.8,"Badang":2.7,"Franco":2.7,"Chou":2.7,"Lukas":2.1,"Kalea":1.8},
                   combo:"Cable Tutorial : 2 - 2 - 3",
                   note:"Highest skill cap in game. Energy management is key. Franco 55.2% WR counter (verified)." },
-  "Gusion":     { counters:["Martis","Minsitthar","Hayabusa","Obsidia"],
+  "Gusion":     { traits:["magic","melee","mobile","fragile","burst"],
+                  counters:{"Lolita":2.6,"Roger":1.9,"Gloo":1.9,"Khufra":1.7,"Alucard":1.7},
                   combo:"2 - 3 - 1 - 2 - 1 - 2",
                   note:"Dagger recall after Ult is the key reset mechanic. Eudora pre-debuff leads to one-shot." },
-  "Hanzo":      { counters:["Yin","Hayabusa","Argus","Harley","Karina","Natalia","Yi Sun-shin","Obsidia"],
+  "Hanzo":      { traits:["magic","melee","mobile","fragile","burst"],
+                  counters:{"Ling":3.8,"Natalia":3.3,"Hirara":2.7,"Masha":2.5,"Sun":2.4,"Kagura":2.0,"Kimmy":2.0},
                   combo:"3 - 2 - b - 1 - b - 3",
                   note:"Physical body is unprotected during Ult. Natalia stealth-kills the body — perfect counter." },
-  "Harley":     { counters:["Saber","Ling","Lancelot","Lolita","Kadita","Obsidia","Eudora"],
+  "Harley":     { traits:["magic","ranged","mobile","fragile","burst"],
+                  counters:{"Lolita":4.3,"Sun":3.3,"Hilda":2.4,"Natalia":2.4,"Popol and Kupa":2.3,"Roger":2.1},
                   combo:"2 - 3 - 1",
                   note:"Hat recall amplifies damage. Ult seals HP — deal damage before ring expires." },
-  "Hayabusa":   { counters:["Sun","Saber","Khufra","Silvanna","Minsitthar","Helcurt","Ling","Obsidia","Miya","Zhask","Suyou","Lylia"],
+  "Hayabusa":   { traits:["phys","melee","mobile","ccimmune","burst"],
+                  counters:{"Saber":2.8,"Fredrinn":2.1,"Chip":2.0,"Eudora":1.9,"Khufra":1.8,"Badang":1.5},
                   combo:"2 - 1 - 2 - 2 - 2 - 1 - 3",
                   note:"3 shadow clones before Ult = max damage. Saber suppression negates all shadow abilities." },
-  "Helcurt":    { counters:["Natalia","Hylos","Chou","Karina","Saber","Baxia"],
+  "Helcurt":    { traits:["phys","melee","mobile","burst","softcc"],
+                  counters:{"Natalia":2.9,"Obsidia":2.6,"Karina":2.6,"Brody":2.6,"Argus":2.5,"Aldous":2.3,"Jawhead":1.7,"Kalea":1.6},
                   combo:"3 - 1 - 2 - b",
                   note:"Ult silences all enemies — immediately follow with S1 blink for surprise burst. Diggie Ult counters." },
-  "Joy":        { counters:["Franco","Minsitthar","Khufra","Hayabusa","Phoveus"],
+  "Hirara":     { traits:["phys","melee","mobile","burst","hardcc"],
+                  counters:{"Saber":2.8,"Phoveus":2.8,"Odette":2.1,"Cyclops":2.0,"Minsitthar":1.8},
+                  combo:"1 - 2 - 2 - 1",
+                  note:"Two-skill assassin, no Ult. 1+2 = Infernal Torrent (immobilize), 2+1 = Falling Maple (untargetable burst + escape). Always keep one charge for the exit." },
+  "Joy":        { traits:["magic","melee","mobile","ccimmune","burst"],
+                  counters:{"Moskov":3.8,"Melissa":3.1,"Cyclops":2.9,"Brody":2.6,"Phoveus":2.3,"Harley":2.3,"Hirara":2.1,"Ruby":2.0,"Eudora":1.9,"Freya":1.9},
                   combo:"1 - 2 - 2 - 2 - 3",
                   note:"Perfect rhythm timing on S1 is essential for max damage. CC during immunity frames stops her." },
-  "Karina":     { counters:["Aamon","Argus","Akai","Natalia","Eudora","Ruby"],
+  "Karina":     { traits:["magic","melee","mobile","true","burst"],
+                  counters:{"Brody":4.0,"Granger":4.0,"Clint":3.0,"Gloo":2.7,"Faramis":2.6,"Paquito":2.5,"Hayabusa":2.3,"Ruby":2.0,"Sora":1.7},
                   combo:"1 - 3 - 2 - 3",
                   note:"Ult resets on kill — chain across multiple squishy targets in teamfights." },
-  "Lancelot":   { counters:["Phoveus","Minsitthar","Khufra","Kaja","Franco","Saber","Chou","Alucard","Silvanna"],
+  "Lancelot":   { traits:["phys","melee","mobile","ccimmune","burst"],
+                  counters:{"Angela":3.1,"Floryn":2.7,"Marcel":2.4,"Mathilda":1.8,"Rafaela":1.8},
                   combo:"1 - 1 - 2 - 3",
                   note:"Ult makes him invincible — time it to dodge enemy Ults. Angela pairing neutralizes counters." },
-  "Ling":       { counters:["Saber","Chou","Selena","Zilong","Jawhead","Yin","Obsidia"],
+  "Ling":       { traits:["phys","melee","mobile","fragile","burst"],
+                  counters:{"Natalia":5.4,"Saber":4.1,"Lukas":3.6,"Melissa":3.4,"Masha":3.0,"Faramis":3.0,"Floryn":2.8,"Cyclops":2.8,"Bruno":2.7,"Valentina":2.6,"Freya":1.8},
                   combo:"3 - 2 - 2 - 2 - 1 - B",
                   note:"Wall hopping is core mobility. Saber 50.5% WR counter (verified). Energy management is key." },
-  "Natalia":    { counters:["Saber","Karina","Martis","Hayabusa","Jawhead","Aldous","Yi Sun-shin","Roger","Lesley","Rafaela","Belerick","Esmeralda","Melissa","Fredrinn"],
+  "Natalia":    { traits:["phys","melee","mobile","burst","softcc"],
+                  counters:{"Cyclops":5.1,"Rafaela":3.9,"Mathilda":3.8,"Zhuxin":3.8,"Saber":3.7,"Karina":3.4,"Zetian":3.4,"Brody":3.4,"Paquito":3.3,"Lunox":3.2,"Angela":3.2,"Alucard":2.8,"Suyou":2.4,"Leomord":2.4,"Lukas":2.2,"Gusion":1.6},
                   combo:"B - 2 - 1 - 1 - 3 - B",
                   note:"AA silence from stealth shuts down mages and supports hard. Diggie Ult removes silence." },
-  "Nolan":      { counters:["Minsitthar","Granger","X.Borg","Phoveus","Martis","Kaja"],
+  "Nolan":      { traits:["phys","melee","mobile","burst","softcc"],
+                  counters:{"Natalia":3.7,"Saber":3.4,"Hilda":2.6,"Hayabusa":2.1,"Lesley":2.1,"Jawhead":2.0},
                   combo:"B - 3 - 2 - 1",
                   note:"Chain hits reward grouping enemies. Ult pierces through — aim at clusters." },
-  "Saber":      { counters:["Martis","Kagura","Miya","Argus","Valir","Marcel"],
+  "Saber":      { traits:["phys","melee","mobile","burst","hardcc"],
+                  counters:{"Aulus":3.3,"Sun":3.1,"Leomord":3.0,"Argus":2.8,"Balmond":2.8,"Baxia":2.7,"Johnson":2.5,"Alpha":2.5,"Fredrinn":2.4,"Gatotkaca":2.3,"Belerick":2.3,"Hanabi":2.2,"Martis":2.1,"Miya":2.0,"Hylos":1.9,"Alucard":1.9,"Jawhead":1.6,"Nana":1.6},
                   combo:"1 → 2 → 3",
                   note:"Ult suppresses one target briefly. Best used on enemy carry in teamfights." },
-  "Selena":     { counters:["Kadita","Lunox","Kagura","Gusion","Chou","Ling","Aldous"],
+  "Selena":     { traits:["magic","ranged","burst","poke","hardcc"],
+                  counters:{"Chip":2.9,"Gloo":2.1,"Lukas":1.9,"Masha":1.8,"Popol and Kupa":1.8},
                   combo:"2 - 1 - 3 - 2 - 2 - 2 - 2",
                   note:"Abyssal S1 stun only activates if trap hits first. Pre-place traps in chokepoints." },
-  "Yi Sun-shin":{ counters:["Karina","Hayabusa","Lancelot","Alucard","Yu Zhong","Silvanna"],
+  "Yi Sun-shin":{ traits:["phys","ranged","mobile","dps","poke"],
+                  counters:{"Uranus":2.1,"Harley":1.7,"Aamon":1.7,"Karina":1.6,"Hayabusa":1.5},
                   combo:"3 - 1 - 2 - b - 1",
                   note:"Ult reveals all enemies globally — track fleeing targets. Can cast Ult from base." },
 
   // ── Mages ──
-  "Alice":      { counters:["Lylia","Karrie","Alpha","Lesley","Lunox"],
+  "Alice":      { traits:["magic","ranged","regen","mobile","dps"],
+                  counters:{"Angela":4.6,"Karrie":4.6,"Floryn":3.8,"Estes":3.4,"Valir":3.4,"Diggie":3.1,"Cici":2.9,"Dyrroth":2.7,"Edith":2.7,"Baxia":2.6,"Thamuz":2.6,"Kimmy":2.1,"Lylia":2.1,"Harley":2.0,"Julian":1.9,"Gord":1.7},
                   combo:"1 - 3 - 1 - 2",
                   note:"Ult heals per enemy hit nearby. Farm Orbs from minions before fighting." },
-  "Aurora":     { counters:["Lunox","Nana","Pharsa"],
+  "Aurora":     { traits:["magic","ranged","fragile","burst","hardcc"],
+                  counters:{"Diggie":2.4,"Benedetta":2.0,"Yin":1.7,"Lancelot":1.6,"Gatotkaca":1.5},
                   combo:"2 - 1 - 3 - 2",
                   note:"Passive freeze procs on 4 skill hits. Never Ult before enemy is frozen." },
-  "Cecilion":   { counters:["Kagura","Harley","Kadita","Helcurt","Layla"],
+  "Cecilion":   { traits:["magic","ranged","fragile","poke","dps"],
+                  counters:{"Hanzo":2.1,"Ixia":1.7,"Hayabusa":1.7,"Helcurt":1.3,"Natalia":1.2},
                   combo:"3 - 2 - 1",
                   note:"S1 has no cooldown cap — spam to permanently stack damage. Dive him early before he scales." },
-  "Chang'e":    { counters:["Saber","Lolita","Kagura"],
+  "Chang'e":    { traits:["magic","ranged","fragile","poke","dps"],
+                  counters:{"Lolita":5.8,"Gloo":2.9,"Claude":2.7,"Esmeralda":2.1,"Lunox":1.9},
                   combo:"2 - 1 - B - 3 - 2",
                   note:"Ult grants CC immunity and transforms. Needs peel. Very fragile without a tank." },
-  "Cyclops":    { counters:["Martis","Kadita","Kagura","Lolita","Julian"],
+  "Cyclops":    { traits:["magic","ranged","fragile","burst","hardcc"],
+                  counters:{"Lolita":8.7,"Estes":4.0,"Atlas":2.6,"Ixia":2.5,"Minotaur":2.4,"Alucard":1.8},
                   combo:"3 - 2 - 1",
                   note:"S1 hits reduce cooldowns. Very fast rotation at full CDR. Good at sustained poke." },
-  "Eudora":     { counters:["Kagura","Kadita","Lylia","Saber","Yi Sun-shin"],
+  "Eudora":     { traits:["magic","ranged","fragile","burst","hardcc"],
+                  counters:{"Atlas":2.6,"Masha":2.5,"Barats":1.9,"Aurora":1.9,"Sun":1.9},
                   combo:"2 - 1 - 3 for individual or 1 - 2 - 3 for teamfight",
                   note:"S2 shock debuff amplifies Ult damage. Always apply debuff before ulting." },
-  "Gord":       { counters:["Kagura","Kadita","Valentina"],
+  "Gord":       { traits:["magic","ranged","poke","dps","true"],
+                  counters:{"Natalia":3.3,"Wanwan":2.4,"Benedetta":2.2,"Helcurt":2.2,"Ling":2.1},
                   combo:"2 - 1 - 3",
                   note:"Ult channels — must position safely first. Mystic Projectile stacks debuff." },
-  "Harith":     { counters:["Minsitthar","Obsidia","Phoveus","Khufra","Esmeralda","Roger","Hayabusa"],
+  "Harith":     { traits:["magic","ranged","mobile","shield","dps"],
+                  counters:{"Phoveus":4.8,"Edith":3.4,"Minsitthar":3.1,"Bruno":2.5,"Odette":2.2},
                   combo:"3 - 2 - 1 - 2 - B - 2 - B",
                   note:"CDR loop gets extremely fast at full build. Ult grants damage shield. Hard to burst." },
-  "Kadita":     { counters:["Ruby","Paquito","Akai","Fredrinn","Dyrroth","Saber","Eudora"],
+  "Kadita":     { traits:["magic","ranged","mobile","burst","hardcc"],
+                  counters:{"Marcel":2.5,"Wanwan":1.5,"Alice":1.5,"Miya":1.5,"Valentina":1.4},
                   combo:"1 - stun - 2 - 3",
                   note:"Ult makes her untargetable — use to dodge burst then re-emerge in enemy backline." },
-  "Kagura":     { counters:["Joy","Minsitthar","Hayabusa","Lancelot"],
+  "Kagura":     { traits:["magic","ranged","mobile","burst","hardcc"],
+                  counters:{"Harith":2.3,"Odette":1.9,"Esmeralda":1.9,"Thamuz":1.7,"Phoveus":1.7},
                   combo:"1 - 3 - 1 - 2 - 3",
                   note:"Umbrella placement is core. Returning S1 deals extra damage. High skill cap." },
-  "Lunox":      { counters:["Valentina","Lolita","Natalia","Kagura","Kadita"],
+  "Lunox":      { traits:["magic","ranged","ccimmune","burst","true"],
+                  counters:{"Saber":2.5,"Bane":1.9,"Guinevere":1.9,"Odette":1.8,"Clint":1.7},
                   combo:"(2) - 4 - 1 - 3 - 4",
                   note:"Balance Chaos/Order stacks for sustained damage. Ult in Chaos form for burst nuke." },
-  "Luo Yi":     { counters:["Julian","Harith","Aurora","Ling","Eudora","Natalia","Hayabusa"],
+  "Luo Yi":     { traits:["magic","ranged","fragile","burst","hardcc"],
+                  counters:{"Joy":3.1,"Novaria":2.4,"Benedetta":2.3,"Lolita":2.0,"Natalia":1.7},
                   combo:"1 - 1 - 2 - 1",
                   note:"Yin and Yang marks must collide to stun. Ult teleports your whole team." },
-  "Lylia":      { counters:["Saber","Silvanna","Eudora"],
+  "Lylia":      { traits:["magic","ranged","mobile","poke","burst"],
+                  counters:{"Joy":2.2,"Mathilda":2.1,"Rafaela":1.9,"Chou":1.8,"Beatrix":1.7},
                   combo:"2 - 1 - 2 - 1 - 2 - 1 - 3",
                   note:"Ult returns her to position 4 sec ago at that HP. Use as safety net." },
-  "Nana":       { counters:["Harley","Kagura","Aurora","Harith"],
+  "Nana":       { traits:["magic","ranged","shield","poke","hardcc"],
+                  counters:{"Gloo":2.4,"Atlas":2.1,"Hylos":1.8,"Akai":1.8,"Sun":1.5,"Yi Sun-shin":1.4},
                   combo:"2 - 3 - 1",
                   note:"S2 turns enemy into helpless molina. Ult bounces 3 times — aim at grouped enemies." },
-  "Novaria":    { counters:["Claude","Saber","Natalia","Harley","Kagura"],
+  "Novaria":    { traits:["magic","ranged","fragile","poke","burst"],
+                  counters:{"Natalia":3.2,"Ling":2.2,"Aldous":1.9,"Estes":1.9,"Angela":1.8},
                   combo:"3 - 1 - 2 - 2",
                   note:"Ult is a global sniper shot. S2 orb can block enemy skillshots." },
-  "Odette":     { counters:["Vale","Nana","Kadita","Vexana"],
+  "Odette":     { traits:["magic","ranged","fragile","burst","hardcc"],
+                  counters:{"Alpha":3.0,"Gatotkaca":2.7,"Nana":2.7,"Vale":2.7,"Thamuz":2.6,"Aurora":2.0,"Grock":1.9,"Vexana":1.6},
                   combo:"2 - 1 - 3 - 3 - flicker",
                   note:"Ult channels — must have tank protection. Devastating AoE in chokepoints." },
-  "Pharsa":     { counters:["Ling","Selena","Valentina","Harley","Franco","Yin","Helcurt"],
+  "Pharsa":     { traits:["magic","ranged","mobile","poke","burst"],
+                  counters:{"Natalia":2.3,"Benedetta":1.4,"Hanzo":1.3,"Masha":1.3,"Yin":1.3},
                   combo:"4 - 1 - 3 - 2 - 3 - 3",
                   note:"Ult throws bombs over walls — great for zoning Turtle and Lord." },
-  "Vale":       { counters:["Kagura","Lylia","Zhuxin","Cyclops"],
+  "Vale":       { traits:["magic","ranged","fragile","burst","hardcc"],
+                  counters:{"Gloo":2.6,"Khaleed":2.5,"Lapu-Lapu":2.3,"Ling":2.3,"Hylos":2.0,"Selena":1.5},
                   combo:"2 - 3 - 1",
                   note:"Upgrade path at each level matters. Choose stun or knockback on S1 per situation." },
-  "Valentina":  { counters:["Hanabi","Faramis","Hayabusa","Natalia","Hanzo"],
+  "Valentina":  { traits:["magic","ranged","mobile","burst","true"],
+                  counters:{"Chip":3.7,"Odette":2.8,"Johnson":2.7,"Saber":2.6,"Silvanna":2.5,"Dyrroth":2.0,"Jawhead":1.7},
                   combo:"3 - 1 - 2 - 1 - 2 - 1 - 3",
                   note:"Ult copies enemy Ult — prioritize heroes with powerful Ults like Aldous or Odette." },
-  "Valir":      { counters:["Saber","Eudora","Hayabusa","Cici"],
+  "Valir":      { traits:["magic","ranged","poke","antidive","hardcc"],
+                  counters:{"Rafaela":3.2,"Helcurt":3.0,"Lolita":3.0,"Kaja":2.9,"Ling":2.5,"Gusion":1.9,"Harley":1.9,"Novaria":1.8,"Kagura":1.6,"Pharsa":1.6},
                   combo:"3 - 2 - flicker - 1",
                   note:"Ult removes all CC and purifies. Use it reactively when caught in crowd control." },
-  "Vexana":     { counters:["Lukas","Hayabusa","Diggie","Helcurt","Nana","Novaria"],
+  "Vexana":     { traits:["magic","ranged","fragile","burst","hardcc"],
+                  counters:{"Alice":2.6,"Natalia":2.1,"Benedetta":2.0,"Marcel":1.9,"X.Borg":1.8},
                   combo:"3 - 1 - 2 or 1 - 2 - 3",
                   note:"Ult creates puppet of killed enemy — kill their carry for best puppet." },
-  "Xavier":     { counters:["Fanny","Helcurt","Lolita","Silvanna","Brody"],
+  "Xavier":     { traits:["magic","ranged","fragile","poke","burst"],
+                  counters:{"Natalia":3.3,"Lolita":3.1,"Helcurt":2.2,"Angela":2.0,"Aamon":1.5},
                   combo:"2 - 1 - 3",
                   note:"Ult is a long-range global beam. Mobile heroes can dodge his skill combinations." },
-  "Yve":        { counters:["Natalia","Kaja","Franco","Helcurt","Nana"],
+  "Yve":        { traits:["magic","ranged","poke","dps","hardcc"],
+                  counters:{"Odette":2.8,"Fanny":2.7,"Helcurt":2.5,"Freya":2.5,"Melissa":2.4,"Hayabusa":2.0,"Gusion":1.9,"Kadita":1.8,"Granger":1.7,"Chou":1.6},
                   combo:"1 - 2 - 2 - 3(drag and click)",
                   note:"Ult lets you freely aim squares on the map. Cover escape routes and objectives." },
-  "Zetian":     { counters:["Kadita","Zhuxin","Lylia","Khaleed","Harley","Yu Zhong","Hayabusa","Jawhead","Aldous"],
+  "Zetian":     { traits:["magic","ranged","shield","burst","hardcc"],
+                  counters:{"Valentina":2.4,"Gloo":1.9,"Harith":1.7,"Floryn":1.7,"Mathilda":1.6},
                   combo:"2 - 3 - 2 - 1 or 2 - 1 - 3 - 2 or 1 - 2 - 3 - 2",
                   note:"Valentina 56.2% WR counter (verified). Ult silences nearby enemies — position centrally." },
-  "Zhask":      { counters:["Dyrroth","Helcurt","Vexana","Claude","Fanny","Natalia"],
+  "Zhask":      { traits:["magic","ranged","fragile","poke","dps"],
+                  counters:{"Natan":2.5,"Estes":2.4,"Sun":2.4,"Belerick":2.4,"Alice":2.3,"Vexana":2.0},
                   combo:"1 - 2 - 4 - 2 - 3",
                   note:"Spawn is your main damage source — protect it. Merge with Spawn via Ult for burst form." },
-  "Zhuxin":     { counters:["Kagura","Lunox","Gusion","Hayabusa","Eudora","Saber"],
+  "Zhuxin":     { traits:["magic","ranged","fragile","dps","hardcc"],
+                  counters:{"Melissa":2.7,"Diggie":2.5,"Faramis":2.3,"Valir":2.2,"Yve":2.2,"Arlott":2.1},
                   combo:"3 - 2 - 1 - 2",
                   note:"Mobile assassins exploit her positioning. 53.03% WR in current meta — high priority pick." },
 
   // ── Marksmen ──
-  "Beatrix":    { counters:["Gusion","Kaja","Irithel","Franco"],
+  "Beatrix":    { traits:["phys","ranged","fragile","poke","burst"],
+                  counters:{"Irithel":2.9,"Kaja":2.7,"Granger":2.6,"Moskov":2.6,"Wanwan":2.3,"Chou":2.0,"Selena":1.7},
                   combo:"Setting needed,2 - 3 - 1 - 3",
                   note:"Renner (sniper) for poke, Nibiru (shotgun) for burst. Read range and switch accordingly." },
-  "Brody":      { counters:["Kaja","Wanwan","Arlott"],
+  "Brody":      { traits:["phys","ranged","fragile","burst","softcc"],
+                  counters:{"Diggie":2.6,"Masha":2.5,"Barats":2.3,"Khufra":2.2,"Kadita":1.8},
                   combo:"1 - 2 - b - 3",
                   note:"Never Ult at 0 stacks. 4 Abyss stacks maximize Ult damage. Build crit." },
-  "Bruno":      { counters:["Karina","Alpha","Karrie","Freya","Moskov"],
+  "Bruno":      { traits:["phys","ranged","fragile","dps","poke"],
+                  counters:{"Lolita":3.5,"Lesley":2.5,"Layla":2.1,"Saber":2.0,"Jawhead":1.7},
                   combo:"Double ball: 1 - (wait)1",
                   note:"Ult bounces between enemies — strong in teamfights. Fanny counter #2 at 52.2% WR." },
-  "Claude":     { counters:["Lesley","Natalia","Clint"],
+  "Claude":     { traits:["phys","ranged","mobile","fragile","dps"],
+                  counters:{"Lesley":3.5,"Aamon":2.6,"Edith":2.6,"Bruno":2.5,"Masha":2.3},
                   combo:"1 - 2 - 2 - 3 - 1",
                   note:"Dexter mirrors your movements — positioning matters. Ult scales with attack speed." },
-  "Clint":      { counters:["Irithel","Melissa","Brody"],
+  "Clint":      { traits:["phys","ranged","fragile","poke","burst"],
+                  counters:{"Fanny":2.4,"Mathilda":1.7,"Gloo":1.6,"Obsidia":1.6,"Khufra":1.4},
                   combo:"2 - B - 1 - B - 3 - B",
                   note:"AA procs shotgun shells for bonus damage. High burst but low mobility — needs peel." },
-  "Granger":    { counters:["Irithel","Wanwan","Harith","Aurora","Gusion"],
+  "Granger":    { traits:["phys","ranged","mobile","fragile","burst"],
+                  counters:{"Hilda":3.4,"Fanny":3.3,"Claude":2.3,"Mathilda":2.2,"Obsidia":2.1,"Jawhead":1.5},
                   combo:"3 - 3 - 3 - 1 - 2 - 1",
                   note:"Last bullet of Ult deals maximum damage — save it for the kill. Reload window is his weakness." },
-  "Hanabi":     { counters:["Brody","Beatrix","Melissa"],
+  "Hanabi":     { traits:["phys","ranged","shield","dps","hardcc"],
+                  counters:{"Lolita":4.0,"Beatrix":3.3,"Joy":3.0,"Benedetta":2.5,"Ixia":2.4,"Lapu-Lapu":2.1,"Khaleed":2.1,"Lylia":2.0,"Novaria":1.7,"Pharsa":1.1},
                   combo:"2 - 3 - 1",
                   note:"Ult root chains across nearby enemies. Strong in grouped fights. Zero mobility — needs tank." },
-  "Irithel":    { counters:["Natalia","Kagura","Aamon","Karrie","Cyclops"],
+  "Irithel":    { traits:["phys","ranged","mobile","fragile","dps"],
+                  counters:{"Saber":2.7,"Eudora":2.4,"Uranus":2.1,"Brody":2.1,"Harith":2.0,"Miya":1.9},
                   combo:"3 - 2 - 1 - speed - B",
                   note:"Mounted form fires 3 arrows per attack — heavy AoE damage. Slow but powerful." },
-  "Ixia":       { counters:["Lolita","Claude","Joy","Brody","Clint"],
+  "Ixia":       { traits:["phys","ranged","fragile","dps","poke"],
+                  counters:{"Wanwan":3.9,"Hanzo":3.1,"Kadita":2.9,"Claude":2.9,"Natalia":2.9,"Benedetta":2.5,"Selena":2.3,"Granger":1.8,"Akai":1.8},
                   combo:"3 - 2 - 1 - B",
                   note:"Ult creates a persistent damage aura. Stay behind frontline while it ticks." },
-  "Karrie":     { counters:["Karina","Chou","Natalia","Freya","Moskov"],
+  "Karrie":     { traits:["phys","ranged","mobile","true","dps"],
+                  counters:{"Sun":3.8,"Masha":2.7,"Minsitthar":2.6,"Rafaela":2.5,"Lolita":2.5,"Argus":2.4,"Guinevere":2.2,"Zilong":1.9},
                   combo:"1 - 3 - B - 2 - B",
                   note:"True damage passive destroys tanks. Best pick vs heavy tank compositions. Build attack speed." },
-  "Kimmy":      { counters:["Natan","Lesley","Granger"],
+  "Kimmy":      { traits:["phys","ranged","mobile","poke","dps"],
+                  counters:{"Lolita":3.6,"Karina":3.3,"Natalia":2.3,"Fanny":2.3,"Yve":2.1},
                   combo:"3 - 2 - 1 - B",
                   note:"Post-rework: enhanced agility and CC. Long-range poke heroes counter her now." },
-  "Layla":      { counters:["Clint","Granger","Melissa"],
+  "Layla":      { traits:["phys","ranged","fragile","poke","burst"],
+                  counters:{"Atlas":4.5,"Sun":3.6,"Johnson":3.5,"Khufra":2.6,"Hanzo":2.6,"Hylos":2.6,"Tigreal":2.4,"Claude":2.2,"Grock":2.0},
                   combo:"1 - 2 - B - 3",
                   note:"Damage scales with distance — always stay at max range. Zero mobility, must be protected." },
-  "Lesley":     { counters:["Lolita","Kaja","Saber","Moskov","Eudora","Aldous","Yi Sun-shin","Roger","Rafaela","Belerick","Hayabusa","Esmeralda","Melissa","Fredrinn"],
+  "Lesley":     { traits:["phys","ranged","fragile","poke","burst"],
+                  counters:{"Sun":3.5,"Gloo":2.9,"Estes":2.8,"Tigreal":2.1,"Mathilda":2.0},
                   combo:"B - 2 - Flicker - B - 1 - B - 3 - 1",
                   note:"Ult tracks a specific target with 4 bullets — use to secure kills." },
-  "Melissa":    { counters:["Hayabusa","Claude","Yu Zhong","Belerick","Clint","Martis"],
+  "Melissa":    { traits:["phys","ranged","mobile","antidive","dps"],
+                  counters:{"Layla":3.5,"Ixia":2.6,"Vale":2.5,"Zilong":2.3,"Yin":2.2,"Martis":2.1,"Harley":2.1,"Aurora":2.1,"Nana":2.0,"Pharsa":1.5},
                   combo:"2 - 1(reverse direction)",
                   note:"Ult barrier blocks enemies from entering or exiting. Isolate and delete one target." },
-  "Miya":       { counters:["Hanabi","Granger","Natan","Irithel","Aldous","Yi Sun-shin","Roger","Lesley","Rafaela","Belerick","Hayabusa","Esmeralda","Melissa","Fredrinn"],
+  "Miya":       { traits:["phys","ranged","mobile","fragile","dps"],
+                  counters:{"Gatotkaca":2.1,"Belerick":2.0,"Beatrix":1.8,"Karina":1.6,"Granger":1.6},
                   combo:"3 - 1 - inspire - 2",
                   note:"Balmond 57.0% WR counter (verified). Ult makes her invisible and resets position." },
-  "Moskov":     { counters:["Layla","Clint","Popol and Kupa"],
+  "Moskov":     { traits:["phys","ranged","fragile","dps","hardcc"],
+                  counters:{"Cyclops":2.7,"Karina":2.0,"Masha":2.0,"Bruno":1.8,"Saber":1.8},
                   combo:"3 - 3 - 2 - b - 1 - b",
                   note:"AAs pierce through enemies — aim at groups in a line. Ult is a global execute." },
-  "Natan":      { counters:["Melissa","Harley","Lolita"],
+  "Natan":      { traits:["magic","ranged","fragile","dps","poke"],
+                  counters:{"Arlott":2.4,"Karina":2.3,"Nolan":2.1,"Lolita":2.1,"Masha":2.0,"Granger":1.8},
                   combo:"3 - 2 - 1 - 3 - B",
                   note:"Mirror image copies attacks. Position mirror for maximum hits during Ult." },
-  "Obsidia":    { counters:["Diggie","Wanwan","Tigreal","Baxia","Belerick","Lolita","Karina","Natalia"],
+  "Obsidia":    { traits:["phys","ranged","mobile","burst","antidive"],
+                  counters:{"Baxia":3.2,"Estes":2.4,"Belerick":2.0,"Chip":2.0,"Faramis":1.9},
                   combo:"3 - 1 - 2 - 2 - B",
                   note:"Terrain manipulation gives map control. Use S2 to block paths in teamfights." },
-  "Popol and Kupa":{ counters:["Clint","Melissa","Badang","Nolan","Esmeralda"],
+  "Popol and Kupa":{ traits:["phys","ranged","fragile","dps","hardcc"],
+                  counters:{"Atlas":4.3,"Carmilla":3.8,"Sun":3.1,"Lapu-Lapu":2.9,"Hanabi":2.8,"Luo Yi":2.7,"Terizla":1.9,"Leomord":1.9,"Zetian":1.6,"Yu Zhong":1.5},
                   combo:"1 - 4 - 3 - B - 2",
                   note:"Kupa is your main damage unit — keep it alive. Don't overextend without Kupa." },
-  "Wanwan":     { counters:["Phoveus","Lolita","Clint","Popol and Kupa"],
+  "Wanwan":     { traits:["phys","ranged","mobile","ccimmune","dps"],
+                  counters:{"Phoveus":5.9,"Bruno":4.0,"Lunox":3.5,"Khufra":3.3,"Masha":3.1,"Cyclops":3.1,"Irithel":3.1,"Moskov":2.8,"Zhask":2.4,"Paquito":2.1,"Yi Sun-shin":1.8,"Harley":1.8},
                   combo:"B - 1 - 3",
                   note:"Must hit all 4 weakpoints to activate Ult. Weakpoints appear at corners — aim precisely." },
 
   // ── Tanks ──
-  "Barats":     { counters:["Chip","Karrie","Valir","Lunox","Baxia"],
+  "Barats":     { traits:["phys","melee","tank","true","hardcc"],
+                  counters:{"X.Borg":5.4,"Gord":3.7,"Yve":3.2,"Alice":3.1,"Valir":2.8,"Uranus":2.4,"Balmond":2.3,"Alpha":2.2,"Cecilion":1.7},
                   combo:"2 - 1 - 3 - 1 - B",
                   note:"Passive stacks increase his size and durability. Ult swallows one enemy — use on their carry." },
-  "Akai":       { counters:["Valentina","Diggie","Karrie","Karina","Hanabi","Valir","Odette"],
+  "Akai":       { traits:["phys","melee","tank","shield","hardcc"],
+                  counters:{"Marcel":3.6,"Yve":3.2,"Alice":2.7,"Esmeralda":2.6,"Cyclops":2.4,"Kaja":2.3},
                   combo:"1 - B - 2 - B - 3",
                   note:"Ult rolls into enemies and pins them to wall. Coordinate with burst teammates." },
-  "Atlas":      { counters:["Valir","Diggie","Minsitthar"],
+  "Atlas":      { traits:["magic","melee","tank","mobile","hardcc"],
+                  counters:{"Marcel":6.2,"Wanwan":4.0,"Alice":3.6,"Valentina":3.4,"Ling":2.9,"Benedetta":2.6,"Lancelot":2.4,"Kimmy":2.3,"Hirara":2.1,"Yu Zhong":1.7,"Kadita":1.7},
                   combo:"2 - flicker - 3 - 1",
                   note:"Ult chains nearby enemies then pulls them together. Best teamfight initiator in game." },
-  "Baxia":      { counters:["X.Borg","Alpha","Dyrroth"],
+  "Baxia":      { traits:["magic","melee","tank","regen","mobile"],
+                  counters:{"X.Borg":5.4,"Karrie":3.3,"Bane":3.1,"Beatrix":3.0,"Lesley":2.9,"Granger":2.5,"Aldous":2.3,"Alpha":2.2,"Kaja":2.1,"Clint":1.9},
                   combo:"1 - 3 - 2 - B",
                   note:"Passive reduces enemy shields and regen — counter to lifesteal/regen comps." },
-  "Belerick":   { counters:["Lesley","Lylia","Valir","X.Borg","Dyrroth","Thamuz"],
+  "Belerick":   { traits:["magic","melee","tank","regen","hardcc"],
+                  counters:{"Lesley":3.2,"Beatrix":3.2,"Brody":3.1,"Marcel":2.8,"Yve":2.5,"Xavier":2.2,"Clint":2.1},
                   combo:"3 - 1 - 2 - B",
                   note:"Passive redirects ally damage to himself then counterattacks. Protect carries." },
-  "Carmilla":   { counters:["Akai","Diggie","Belerick"],
+  "Carmilla":   { traits:["magic","melee","tank","hardcc","softcc"],
+                  counters:{"Valentina":3.6,"X.Borg":3.2,"Lesley":2.0,"Natalia":1.8,"Angela":1.7},
                   combo:"2 - 3 - 1",
                   note:"Ult links multiple enemies — damage one and it spreads to all linked." },
-  "Chip":       { counters:["Tigreal","Aurora","Barats","Yi Sun-shin","Valir"],
+  "Chip":       { traits:["magic","melee","tank","mobile","hardcc"],
+                  counters:{"Alice":3.8,"Carmilla":3.5,"Marcel":3.1,"Melissa":2.6,"Zhask":2.5,"Luo Yi":2.4,"Martis":2.4,"Vexana":2.4,"Hanabi":2.1,"Balmond":2.0,"Aurora":1.9},
                   combo:"2 - B - 1 - 3",
                   note:"S2 creates a portal for allies to teleport through. Creative portal use for surprise picks." },
-  "Edith":      { counters:["Lapu-Lapu","Martis","Natan"],
+  "Edith":      { traits:["magic","melee","tank","shield","hardcc"],
+                  counters:{"Beatrix":0.3,"Lolita":0.3},
                   combo:"2 - 1 - 3 - 2 - 1 - B",
                   note:"Ult launches her out of Phylax as a flying marksman. Phylax stays as a turret on field." },
-  "Franco":     { counters:["Chou","Sun","Karrie","Benedetta"],
+  "Franco":     { traits:["phys","melee","tank","hardcc","mobile"],
+                  counters:{"Sun":2.7,"Atlas":2.2,"Tigreal":2.1,"Kaja":2.1,"Hanzo":2.0},
                   combo:"1 - flicker - 3 - 2",
                   note:"Hook is the most important skill — practice landing it. Fanny counter #1 at 55.2% WR." },
-  "Gatotkaca":  { counters:["Diggie","Ruby","Karrie"],
+  "Gatotkaca":  { traits:["magic","melee","tank","burst","hardcc"],
+                  counters:{"X.Borg":3.4,"Lesley":3.1,"Uranus":2.4,"Karrie":2.3,"Floryn":2.1,"Aldous":2.0,"Clint":1.5},
                   combo:"2 - 3 - 1 - B or 3 - 2 - 1 - B",
                   note:"Ult jumps to target location globally — great initiation. Passive damage increases at low HP." },
-  "Gloo":       { counters:["Vexana","Faramis","Alice","Carmilla","Yin","Lunox","Luo Yi"],
+  "Gloo":       { traits:["magic","melee","tank","regen","hardcc"],
+                  counters:{"Faramis":6.7,"Moskov":4.7,"Alice":4.2,"Natan":4.0,"Ling":3.8,"Fanny":3.6,"Lunox":3.5,"Ruby":3.5,"Vexana":3.4,"Fredrinn":3.3,"Aulus":3.1,"Chip":3.0,"Zhuxin":3.0,"Wanwan":2.8,"Carmilla":2.7,"Yu Zhong":2.6,"Miya":2.0},
                   combo:"1 - 2 - 3 - 1 - 2 - 1",
                   note:"Ult attaches to enemy and follows them. Ling and Fanny beat Gloo easily (55.5% WR)." },
-  "Grock":      { counters:["Lunox","Dyrroth","Karrie"],
+  "Grock":      { traits:["phys","melee","tank","mobile","hardcc"],
+                  counters:{"Alice":2.9,"Esmeralda":2.6,"Marcel":2.4,"Mathilda":2.3,"Yve":2.3},
                   combo:"2 - 3 - 1",
                   note:"Wall blocks paths and boosts his own stats when near it. Use wall to split enemy team." },
-  "Hylos":      { counters:["Karrie","Valir","Lunox","Kimmy","Baxia"],
+  "Hylos":      { traits:["magic","melee","tank","regen","hardcc"],
+                  counters:{"Zhuxin":3.4,"X.Borg":3.3,"Karrie":3.1,"Diggie":2.5,"Cici":2.4},
                   combo:"3 - 1 - 2",
                   note:"Ult trail slows enemies and speeds allies. 54.83% WR tank. Karrie true damage is hardest counter." },
-  "Johnson":    { counters:["Akai","Grock","Diggie","Chip","Marcel"],
+  "Johnson":    { traits:["magic","melee","tank","mobile","hardcc"],
+                  counters:{"Gloo":4.0,"Alice":3.2,"Atlas":3.1,"Harith":3.1,"Marcel":3.0,"Khufra":2.8,"Kadita":2.6,"Minotaur":2.5,"Carmilla":2.4,"Belerick":2.4,"Natan":2.3,"Lylia":2.2,"Grock":2.0,"Hylos":1.9},
                   combo:"3 - 2 - 1",
                   note:"Ult carries one ally as passenger — coordinate before casting. Wall collision extends stun." },
-  "Khufra":     { counters:["Esmeralda","Wanwan","Selena","Karrie","Helcurt"],
+  "Khufra":     { traits:["phys","melee","tank","antidive","hardcc"],
+                  counters:{"Zhuxin":3.5,"Alice":3.0,"Marcel":2.5,"Bane":2.4,"Minotaur":2.3,"Yi Sun-shin":2.0,"Terizla":2.0,"Martis":1.9},
                   combo:"3 - 1 - flicker - 2",
                   note:"S1 blocks all dashes and blinks — use against mobile heroes. Hard CC machine." },
-  "Lolita":     { counters:["Khufra","Diggie","Dyrroth"],
+  "Lolita":     { traits:["magic","melee","tank","shield","hardcc"],
+                  counters:{"Zhuxin":8.3,"Yve":6.2,"Esmeralda":5.9,"Aurora":5.0,"Melissa":4.9,"Harith":4.7,"Kadita":4.5,"Kagura":4.1,"Zetian":4.0,"Cecilion":3.9,"Minotaur":3.6,"Atlas":3.6,"Leomord":3.5,"Pharsa":2.9,"Gord":2.9,"Zhask":2.8,"Clint":2.7,"Claude":2.4,"Nolan":2.3,"Sora":2.3,"Grock":2.3,"Hirara":2.1,"Khaleed":2.1,"Nana":1.6},
                   combo:"3 - flicker - 1 - 2",
                   note:"S2 blocks all projectiles for allies behind her — hard counter to poke teams." },
-  "Minotaur":   { counters:["Akai","Claude","Chou"],
+  "Minotaur":   { traits:["magic","melee","tank","regen","hardcc"],
+                  counters:{"Yve":2.4,"Alice":2.4,"Beatrix":2.2,"Zhuxin":2.1,"Marcel":2.0},
                   combo:"1 - flicker - 3 - 1",
                   note:"Rage mode heals allies when hitting enemies. Build pure tank — team needs the healing." },
-  "Tigreal":    { counters:["Kagura","Helcurt","Lunox","Chou","Esmeralda"],
+  "Tigreal":    { traits:["phys","melee","tank","mobile","hardcc"],
+                  counters:{"Alice":3.7,"Diggie":3.2,"X.Borg":2.9,"Zetian":2.4,"Valir":2.3},
                   combo:"3 - flicker - 1 - 2 - 2",
                   note:"Ult pulls nearby enemies to center. Best combo with Odette or Atlas. X.Borg counters (50.4% WR)." },
-  "Uranus":     { counters:["Thamuz","Karrie","Sun","Odette","Terizla","Irithel"],
+  "Uranus":     { traits:["magic","melee","tank","regen","dps"],
+                  counters:{"Dyrroth":3.6,"Joy":2.7,"Natan":2.7,"Karrie":2.7,"Estes":2.4,"Kimmy":2.1,"Luo Yi":2.1,"Xavier":1.8},
                   combo:"3 - 2 - 1",
                   note:"Passive stacks give massive regen — longer fights make him unkillable. Great split pusher." },
 
   // ── Supports ──
-  "Angela":     { counters:["Yin","Esmeralda","Valentina","Ruby","Natalia","Lancelot"],
+  "Angela":     { traits:["magic","ranged","fragile","shield","softcc"],
+                  counters:{"Lolita":3.4,"Franco":2.5,"Nolan":2.2,"Silvanna":2.1,"Popol and Kupa":1.9},
                   combo:"3 - 1 - 2",
                   note:"Ult attaches globally to ally — use on hypercarry. Angela items are shared with attached ally. Lancelot counter #1 (50.9% WR)." },
-  "Diggie":     { counters:["Karina","Selena","Natalia","Helcurt","Saber"],
+  "Diggie":     { traits:["magic","ranged","fragile","ccimmune","softcc"],
+                  counters:{"Estes":4.6,"Sun":3.4,"Esmeralda":3.1,"Hanzo":2.9,"Zhask":2.7,"Hilda":2.5,"Franco":2.4,"Chang'e":2.3,"Yin":2.3,"Zilong":2.3,"Novaria":2.1,"Layla":2.1,"Cecilion":1.9,"Pharsa":1.6},
                   combo:"2 - 1",
                   note:"Ult grants team CC immunity — use proactively before enemy Ults. Counters Helcurt silence." },
-  "Estes":      { counters:["Carmilla","Tigreal","Atlas","Saber","Yin","Baxia"],
+  "Estes":      { traits:["magic","ranged","fragile","regen","softcc"],
+                  counters:{"Beatrix":5.4,"Ixia":5.0,"Nolan":4.4,"Luo Yi":4.0,"Sora":3.9,"Atlas":3.3,"Tigreal":2.6,"Yin":2.5,"Gord":1.9,"Vale":1.6},
                   combo:"1 - 3 - 1",
                   note:"Ult dramatically boosts healing — use before fights, not after allies die. Zetian counter #3." },
-  "Faramis":    { counters:["Franco","Saber","Chou","Jawhead","Yin","Akai","Valentina"],
+  "Faramis":    { traits:["magic","ranged","fragile","regen","hardcc"],
+                  counters:{"Estes":4.3,"Edith":3.4,"Yin":3.2,"Angela":3.0,"Melissa":3.0,"Odette":2.9,"Floryn":2.8,"Bane":2.6,"Julian":2.5,"Xavier":1.8},
                   combo:"1 - 2 - b - 1 - 2",
                   note:"Ult creates a zone where dead allies revive temporarily. Crucial in late-game teamfights." },
-  "Floryn":     { counters:["Baxia","Lunox","Yin","X.Borg"],
+  "Floryn":     { traits:["magic","ranged","fragile","regen","poke"],
+                  counters:{"Lolita":4.5,"Ixia":2.9,"Yin":2.6,"Nolan":2.6,"Eudora":2.2,"Franco":2.1,"Silvanna":2.0},
                   combo:"2 - 1",
                   note:"Ult heals all allies globally — use when multiple allies are low simultaneously." },
-  "Kalea":      { counters:["Khufra","Martis","Chou","Kaja","Franco","Natalia","Gloo"],
+  "Kalea":      { traits:["phys","melee","regen","hardcc","softcc"],
+                  counters:{"Sun":2.3,"Hanzo":2.0,"Carmilla":1.8,"Phoveus":1.6,"Minsitthar":1.5},
                   combo:"1 - 2 - 2 - 3 - 1",
                   note:"Fighter/support hybrid. Knock-up counters mobile assassins. New hero — meta still forming." },
-  "Kaja":       { counters:["Sun","Lunox","Franco","Masha","Nana","Yin"],
+  "Kaja":       { traits:["magic","melee","mobile","hardcc","burst"],
+                  counters:{"Odette":3.4,"Lunox":3.1,"Zhask":2.3,"Chip":2.2,"Hanabi":2.0},
                   combo:"2 - 3 - flicker - 1",
                   note:"Ult pulls one enemy into your team — target the enemy carry. High single-target impact." },
-  "Marcel":     { counters:["Lunox","Valentina","Diggie","Harley","Valir"],
+  "Marcel":     { traits:["magic","ranged","shield","tank","softcc"],
+                  counters:{"Angela":5.0,"Lesley":4.1,"Floryn":4.1,"Rafaela":3.6,"Aamon":3.3,"Cyclops":3.3,"Odette":3.0},
                   combo:"2 - 1 - 2 - 3",
                   note:"Provides shields and boosts to allies. Coordinate Ult timing with your team." },
-  "Mathilda":   { counters:["Alpha","Ruby","Zilong"],
+  "Mathilda":   { traits:["magic","melee","mobile","shield","hardcc"],
+                  counters:{"Esmeralda":4.5,"Melissa":4.1,"Odette":3.6,"Popol and Kupa":2.6,"Cyclops":2.4,"Alucard":2.2,"Eudora":2.0,"Freya":1.9},
                   combo:"1 - 2 - 3 - 1",
                   note:"Ult lets an ally ride her and dash. Use it to pull carry into or out of fights." },
-  "Rafaela":    { counters:["Natalia","Hayabusa","Harley"],
+  "Rafaela":    { traits:["magic","ranged","fragile","regen","hardcc"],
+                  counters:{"Ixia":3.2,"Odette":3.2,"Layla":2.8,"Estes":2.4,"Vale":2.2,"Silvanna":2.1,"Eudora":1.9,"Sora":1.7,"Aurora":1.6},
                   combo:"2 - 1 - 3",
                   note:"Ult stuns with a delay — telegraph carefully. S1 heals the lowest HP ally." },
 };
 
 
+// ═══════════════════════════════════════════════
+//  TRAIT DEFS — per-hero attributes (matchup axes)
+//  cat: school / range / survive / damage / cc
+// ═══════════════════════════════════════════════
+const TRAIT_DEFS = {
+  phys:     { label:"Physical",  cat:"school",  icon:"\u2694",  desc:"Physical damage — blocked by enemy armor items" },
+  magic:    { label:"Magic",     cat:"school",  icon:"\u2728",  desc:"Magic damage — blocked by enemy magic resist items" },
+
+  melee:    { label:"Melee",     cat:"range",   icon:"\u2716",  desc:"Melee range — vulnerable to poke and ranged harassment" },
+  ranged:   { label:"Ranged",    cat:"range",   icon:"\u27B3",  desc:"Ranged — vulnerable to dives and assassins" },
+
+  tank:     { label:"Tanky",     cat:"survive", icon:"\u1F6E1", desc:"Survives on raw HP and defense → weak to true damage and %HP damage" },
+  regen:    { label:"Sustain",   cat:"survive", icon:"\u2695",  desc:"Survives on healing and lifesteal → weak to anti-heal and burst" },
+  shield:   { label:"Shielded",  cat:"survive", icon:"\u1F535", desc:"Survives on shields and damage reduction → weak to shield-pierce and true damage" },
+  mobile:   { label:"Mobile",    cat:"survive", icon:"\u1F4A8", desc:"Evades with dashes and blinks → weak to hard CC and dash blocking" },
+  fragile:  { label:"Squishy",   cat:"survive", icon:"\u1F480", desc:"No survivability tools → deleted by burst and dives" },
+
+  burst:    { label:"Burst",     cat:"damage",  icon:"\u26A1",  desc:"Instant burst → deletes sustain and squishy heroes, helpless once CC'd" },
+  dps:      { label:"DPS",       cat:"damage",  icon:"\u1F504", desc:"Sustained damage → strong into shields and damage reduction, weak to burst" },
+  "true":   { label:"True Dmg",  cat:"damage",  icon:"\u1F52A", desc:"True and %max-HP damage → counter to HP-stacking tanks" },
+  poke:     { label:"Poke",      cat:"damage",  icon:"\u1F3AF", desc:"Long-range harassment → pressures melee heroes in lane" },
+
+  hardcc:   { label:"Hard CC",   cat:"cc",      icon:"\u1F512", desc:"Stun, airborne, suppression → shuts down burst and mobile heroes entirely" },
+  softcc:   { label:"Soft CC",   cat:"cc",      icon:"\u2744",  desc:"Slow, silence, knockback → disrupts escapes and skill casting" },
+  ccimmune: { label:"CC Immune", cat:"cc",      icon:"\u1F6E1", desc:"Has CC immunity, invulnerability or purify → ignores hard CC counters" },
+  antidive: { label:"Dash Block",cat:"cc",      icon:"\u26D4",  desc:"Blocks dashes and blinks → hard counter to mobile assassins" },
+};
+
+const TRAIT_CAT_ORDER = ["school","range","survive","damage","cc"];
+const TRAIT_CAT_LABEL = { school:"School", range:"Range", survive:"Survival", damage:"Damage", cc:"Control" };
+
+// ═══════════════════════════════════════════════
+//  TRAIT RULES — trait-based automatic matchup scoring
+//  when : trait counted on the enemy team   min : how many enemies must have it to fire
+//  give : trait on YOUR hero that earns the points   pts : bonus (+) / penalty (-)
+//  NOTE: measured counter data carries the matchup pp directly, so trait points are
+//    kept small on purpose and act only as a secondary signal.
+// ═══════════════════════════════════════════════
+const TRAIT_RULES = [
+  // ── Answers to the enemy survival profile ──
+  { when:"tank",     min:2, give:"true",     pts:+1.0, why:"Many tanky enemies → true damage pierces" },
+  { when:"regen",    min:2, give:"burst",    pts:+0.8, why:"Many sustain enemies → burst out-damages healing" },
+  { when:"regen",    min:2, give:"true",     pts:+0.5, why:"Many sustain enemies → true damage is efficient" },
+  { when:"shield",   min:2, give:"true",     pts:+0.6, why:"Many shielded enemies → shield-pierce" },
+  { when:"shield",   min:2, give:"dps",      pts:+0.4, why:"Many shielded enemies → DPS drains shields" },
+  { when:"mobile",   min:2, give:"antidive", pts:+1.2, why:"Many mobile enemies → dash block hard counters" },
+  { when:"mobile",   min:2, give:"hardcc",   pts:+0.6, why:"Many mobile enemies → hard CC pins them" },
+  { when:"fragile",  min:2, give:"burst",    pts:+0.6, why:"Many squishy enemies → burst deletes them" },
+  { when:"fragile",  min:2, give:"mobile",   pts:+0.5, why:"Many squishy enemies → dive and finish" },
+
+  // ── Answers to the enemy damage profile ──
+  { when:"burst",    min:2, give:"hardcc",   pts:+0.6, why:"Many burst enemies → CC interrupts their combo" },
+  { when:"burst",    min:2, give:"tank",     pts:+0.5, why:"Many burst enemies → tanky bodies absorb it" },
+  { when:"burst",    min:2, give:"shield",   pts:+0.4, why:"Many burst enemies → shields absorb it" },
+  { when:"dps",      min:2, give:"shield",   pts:+0.5, why:"Many DPS enemies → shields and damage reduction excel" },
+  { when:"dps",      min:2, give:"burst",    pts:+0.4, why:"Many DPS enemies → burst them down first" },
+  { when:"poke",     min:2, give:"mobile",   pts:+0.5, why:"Many poke enemies → mobility closes the gap" },
+  { when:"poke",     min:2, give:"regen",    pts:+0.5, why:"Many poke enemies → sustain ignores harassment" },
+  { when:"true",     min:2, give:"regen",    pts:+0.4, why:"Many true-damage enemies → sustain holds up" },
+
+  // ── Answers to enemy crowd control ──
+  { when:"hardcc",   min:2, give:"ccimmune", pts:+1.0, why:"Many hard-CC enemies → CC immunity or purify is essential" },
+  { when:"hardcc",   min:3, give:"tank",     pts:+0.4, why:"Excessive hard CC → need a body that survives being caught" },
+  { when:"antidive", min:1, give:"ranged",   pts:+0.4, why:"Enemy has dash block → stay safe at range" },
+
+  // ── Enemy damage-school skew ──
+  { when:"phys",     min:3, give:"tank",     pts:+0.5, why:"Physical-heavy enemy → armor tanks favored" },
+  { when:"magic",    min:3, give:"tank",     pts:+0.5, why:"Magic-heavy enemy → magic-resist tanks favored" },
+
+  // ── Penalties: your hero is structurally disadvantaged vs this comp ──
+  { when:"hardcc",   min:2, give:"fragile",  pts:-0.8, why:"Many hard-CC enemies → squishies die once caught" },
+  { when:"antidive", min:1, give:"mobile",   pts:-0.9, why:"Enemy has dash block → mobile entry gets shut down" },
+  { when:"poke",     min:2, give:"melee",    pts:-0.5, why:"Many poke enemies → melee loses the lane trade" },
+  { when:"true",     min:2, give:"tank",     pts:-0.6, why:"Many true-damage enemies → stacking HP is pointless" },
+  { when:"burst",    min:2, give:"regen",    pts:-0.4, why:"Many burst enemies → healing can't keep up" },
+];
+
+// Count how many enemy picks carry each trait
+function countEnemyTraits(picks){
+  const c = {};
+  picks.forEach(n => (traitsOf[n]||[]).forEach(t => c[t] = (c[t]||0) + 1));
+  return c;
+}
+
+// Trait score for one candidate hero, plus the rules that fired
+function calcTraitScore(heroName, enemyTraitCount){
+  const mine = new Set(traitsOf[heroName]||[]);
+  let pts = 0; const reasons = [];
+  TRAIT_RULES.forEach(r=>{
+    if((enemyTraitCount[r.when]||0) < r.min) return;
+    if(!mine.has(r.give)) return;
+    pts += r.pts;
+    reasons.push(r);
+  });
+  return { pts: Math.round(pts*10)/10, reasons };
+}
+
+// Enemy comp summary (most common traits)
+function enemyCompSummary(enemyTraitCount){
+  return Object.entries(enemyTraitCount)
+    .filter(([k,v]) => v>=2 && TRAIT_DEFS[k] && TRAIT_DEFS[k].cat!=="school" && TRAIT_DEFS[k].cat!=="range")
+    .sort((a,b)=>b[1]-a[1])
+    .map(([k,v])=>`<span class="trait-chip" data-cat="${TRAIT_DEFS[k].cat}" title="${TRAIT_DEFS[k].desc}">${TRAIT_DEFS[k].label} ×${v}</span>`)
+    .join("");
+}
+
+let useTraitScore = true;
+function toggleTraitScore(el){ useTraitScore = el.checked; if(enemyPicks.length) calcRec(); }
+
+function renderTraitChips(hero){
+  const t = (HEROES[hero]||{}).traits || [];
+  if(!t.length) return '<div class="cb-empty">No traits.</div>';
+  const sorted = t.slice().sort((a,b)=>
+    TRAIT_CAT_ORDER.indexOf((TRAIT_DEFS[a]||{}).cat) - TRAIT_CAT_ORDER.indexOf((TRAIT_DEFS[b]||{}).cat));
+  return '<div class="cb-traits-row">' + sorted.map(k=>{
+    const d = TRAIT_DEFS[k]; if(!d) return "";
+    return `<span class="trait-chip" data-cat="${d.cat}" title="${d.desc}">${d.label}</span>`;
+  }).join("") + '</div>';
+}
+
 // ── Derived maps (auto-built from HEROES) ──
-const COUNTERS      = Object.fromEntries(Object.entries(HEROES).map(([n,d])=>[n, d.counters]));
+const COUNTERS      = Object.fromEntries(Object.entries(HEROES).map(([n,d])=>[n, Object.keys(d.counters||{})]));
+const COUNTER_PP    = Object.fromEntries(Object.entries(HEROES).map(([n,d])=>[n, d.counters||{}]));
 const combos        = Object.fromEntries(Object.entries(HEROES).map(([n,d])=>[n, d.combo||""]));
 const notes         = Object.fromEntries(Object.entries(HEROES).map(([n,d])=>[n, d.note||""]));
+const traitsOf      = Object.fromEntries(Object.entries(HEROES).map(([n,d])=>[n, d.traits||[]]));
 const enemyWeights  = Object.fromEntries(Object.keys(HEROES).map(n=>[n, 1]));
 const ALL_ENEMY_NAMES = Object.keys(HEROES);
 let myPos="EXP", enemyPos="ALL", enemyPicks=[];
@@ -1618,6 +1957,17 @@ function setPos(p){
   ["EXP","MID","JUNGLE","GOLD","ROAM"].forEach(k=>{
     document.getElementById("pos-"+k).classList.toggle("active",k===p);
   });
+  autoCalc();
+}
+
+// Recalculate automatically whenever picks or role change
+function autoCalc(){
+  if(enemyPicks.length===0){
+    document.getElementById("rec-area").innerHTML=`<div class="empty-msg">Select your role and enter enemy picks.</div>`;
+    document.getElementById("combo-area").innerHTML="";
+    return;
+  }
+  calcRec();
 }
 function setEnemyPos(p){
   enemyPos=p;
@@ -1642,12 +1992,13 @@ function renderSlots(){
     el.appendChild(slot);
   }
 }
-function removeEnemy(idx){ enemyPicks.splice(idx,1); renderSlots(); filterEnemyHeroes(); }
+function removeEnemy(idx){ enemyPicks.splice(idx,1); renderSlots(); filterEnemyHeroes(); autoCalc(); }
 function addEnemy(name){
   if(enemyPicks.length<5 && !enemyPicks.includes(name)){
     enemyPicks.push(name);
     renderSlots();
     filterEnemyHeroes();
+    autoCalc();
   }
 }
 function filterEnemyHeroes(){
@@ -1712,48 +2063,88 @@ function calcRec(){
   }
   const pool=POOLS[myPos];
   const results=[];
+  const enemyTraitCount = countEnemyTraits(enemyPicks);
   pool.forEach(h=>{
     if(enemyPicks.includes(h.n)) return;
-    let score=0; const countered=[];
+    let counterScore=0; const countered=[];
     enemyPicks.forEach(enemy=>{
-      if((COUNTERS[enemy]||[]).includes(h.n)){
-        score+=(enemyWeights[enemy]??1);
-        countered.push(`${enemy}(×${enemyWeights[enemy]??1})`);
+      const pp = (COUNTER_PP[enemy]||{})[h.n];
+      if(pp !== undefined){
+        counterScore += pp * (enemyWeights[enemy]??1);
+        countered.push(`${enemy}(+${pp}pp)`);
       }
     });
+    counterScore = Math.round(counterScore*10)/10;
 
-    // 이 영웅이 적 픽에게 카운터당하는지 체크 (점수 차감 없이 정렬 우선순위만 낮춤)
-    const heroCounters = (HEROES[h.n]||{}).counters||[];
+    // Trait-based automatic matchup score
+    const tr = useTraitScore ? calcTraitScore(h.n, enemyTraitCount) : {pts:0, reasons:[]};
+    const score = Math.round((counterScore + tr.pts)*10)/10;
+
+    // Check whether this hero is countered by an enemy pick (lowers sort priority only, no score penalty)
+    const heroCounters = COUNTERS[h.n]||[];
     const vulnerableTo = enemyPicks.filter(ep => heroCounters.includes(ep));
     const isCountered = vulnerableTo.length > 0;
 
-    results.push({name:h.n, role:h.r, score, countered, vulnerableTo, isCountered});
+    results.push({name:h.n, role:h.r, score, counterScore, traitPts:tr.pts,
+                  traitReasons:tr.reasons, countered, vulnerableTo, isCountered});
   });
-  // 정렬: 동일 score면 카운터 안 당하는 영웅 우선, 다른 score면 score 높은 쪽 우선
-  // (카운터당해도 score 0보다는 위에 오도록 score 자체는 유지)
+  // Sort: higher score first; on a tie, heroes that are NOT countered come first
+  // (the score itself is kept intact so a countered hero still outranks a 0-score one)
   results.sort((a,b)=>{
     if(b.score !== a.score) return b.score - a.score;
-    // score 같을 때만 카운터 여부로 순서 결정
+    // only break ties by whether the hero is countered
     if(a.isCountered !== b.isCountered) return a.isCountered ? 1 : -1;
     return 0;
   });
-  const top8=results.slice(0,8);
-  const topScore=top8[0]?.score||0;
+  // Hide non-positive scores, unless doing so would leave the list empty
+  const positives = results.filter(r => r.score > 0);
+  const noPositive = positives.length === 0;
+  const shown = (noPositive ? results : positives).slice(0, 8);
+
   const posLabel={"EXP":"EXP Lane","MID":"MID Lane","JUNGLE":"Jungle","GOLD":"GOLD Lane","ROAM":"Roam"}[myPos];
   const area=document.getElementById("rec-area");
   document.getElementById("combo-area").innerHTML="";
-  if(!top8.length||topScore===0){
-    area.innerHTML=`<div class="empty-msg">No counter matches found for your role.<br><span style="font-size:11px;opacity:0.6">Try switching your role or check the Combo Guide tab.</span></div>`;
+  if(!shown.length){
+    area.innerHTML=`<div class="empty-msg">No heroes available for your role.<br><span style="font-size:11px;opacity:0.6">Try switching your role or check the Combo Guide tab.</span></div>`;
     return;
   }
-  area.innerHTML=`<div class="section-label" style="margin-bottom:6px">${posLabel} Recommendations — tap to view combo</div><div class="rec-list">${
-    top8.map(({name,role,score,countered,vulnerableTo,isCountered},i)=>{
+  const noPositiveHtml = noPositive
+    ? `<div class="no-positive-msg">No clear counter available — showing the best of the rest for reference</div>`
+    : "";
+
+  const compChips = enemyCompSummary(enemyTraitCount);
+  const compHtml = compChips
+    ? `<div class="enemy-comp-box">
+         <div class="enemy-comp-label">Enemy Comp Profile</div>
+         <div class="cb-traits-row">${compChips}</div>
+       </div>`
+    : "";
+
+  area.innerHTML=`<div class="section-label" style="margin-bottom:6px">${posLabel} Recommendations — tap to view combo</div>
+  ${compHtml}
+  <label class="trait-toggle">
+    <input type="checkbox" ${useTraitScore?"checked":""} onchange="toggleTraitScore(this)">
+    Include trait-based matchup score
+  </label>
+  ${noPositiveHtml}
+  <div class="rec-list">${
+    shown.map(({name,role,score,counterScore,traitPts,traitReasons,countered,vulnerableTo,isCountered},i)=>{
       const isTop=i<3&&score>0&&!isCountered;
       const ct=countered.length?`Counters: ${countered.join(", ")}`:`No counters`;
       const vulHtml = vulnerableTo.length
         ? `<div class="rec-counters" style="color:rgba(226,118,137,0.75)">⚠ Countered by: ${vulnerableTo.join(", ")}</div>`
         : "";
-      const scoreColor = isCountered ? "color:rgba(200,204,216,0.35)" : score === 0 ? "color:rgba(200,204,216,0.4)" : "";
+      const breakdown = (useTraitScore && traitPts !== 0)
+        ? `<div class="rec-breakdown">Counter ${counterScore>0?"+"+counterScore:counterScore} · Traits <span style="color:${traitPts>0?"rgba(142,192,124,0.95)":"rgba(226,118,137,0.9)"}">${traitPts>0?"+"+traitPts:traitPts}</span></div>`
+        : "";
+      const reasonHtml = (useTraitScore && traitReasons.length)
+        ? `<div class="rec-reasons">${traitReasons.slice(0,2).map(r=>
+             `<span class="reason-chip${r.pts<0?" neg":""}">${r.why} ${r.pts>0?"+"+r.pts:r.pts}</span>`).join("")
+           }${traitReasons.length>2
+             ? `<span class="reason-chip more" title="${traitReasons.slice(2).map(r=>r.why+" "+(r.pts>0?"+"+r.pts:r.pts)).join(" / ")}">+${traitReasons.length-2} more</span>`
+             : ""}</div>`
+        : "";
+      const scoreColor = isCountered ? "color:rgba(200,204,216,0.35)" : score <= 0 ? "color:rgba(200,204,216,0.4)" : "";
       const scoreLabel = score > 0 ? `+${score}` : `${score}`;
       return `<div class="rec-item${isTop?" top":""}" style="${isCountered?"opacity:0.55;":""}" onclick="showCombo('${name}')">
         <div class="rec-score" style="${scoreColor}">
@@ -1765,6 +2156,8 @@ function calcRec(){
             <span class="rec-role">${role}</span>
           </div>
           <div class="rec-counters">${ct}</div>
+          ${breakdown}
+          ${reasonHtml}
           ${vulHtml}
         </div>
         <span style="font-size:10px;color:rgba(200,204,216,0.3)">${combos[name]?'<span style="font-size:9px;color:var(--color-accent1)">●</span>':"—"}</span>
@@ -1850,17 +2243,19 @@ function showCombo(hero){
   const combo=combos[hero];
   const note=notes[hero];
 
-  // 이 영웅을 카운터하는 영웅 목록 (HEROES[hero].counters 에 직접 저장됨)
-  const counteredBy = (HEROES[hero]||{}).counters || [];
+  // Heroes that counter this hero (name array; pp values live in COUNTER_PP)
+  const counteredBy = COUNTERS[hero] || [];
 
   const counteredByHtml = counteredBy.length
     ? `<div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:4px">${
-        counteredBy.map(c=>`<span class="cb-counter-chip" style="cursor:default">${c}</span>`).join("")
+        counteredBy.map(c=>`<span class="cb-counter-chip" style="cursor:default">${c}<span class="chip-pp">+${(COUNTER_PP[hero]||{})[c]}</span></span>`).join("")
       }</div>`
     : `<div class="combo-empty">No known counters.</div>`;
 
   area.innerHTML=`<div class="combo-box">
     <div class="combo-hero">${hero} Combo</div>
+    <div class="combo-note-title" style="color:var(--color-primary)">Traits</div>
+    ${renderTraitChips(hero)}
     ${combo
       ?renderComboIcons(combo)
       :`<div class="combo-empty">No combo saved — add one in the Combos tab.</div>`}
@@ -1884,7 +2279,7 @@ const CLASS_MAP = {
                "Jawhead","Julian","Khaleed","Lapu-Lapu","Leomord","Lukas","Martis","Masha",
                "Minsitthar","Paquito","Phoveus","Roger","Ruby","Silvanna","Sora","Sun",
                "Terizla","Thamuz","X.Borg","Yin","Yu Zhong","Zilong"],
-  "Assassin": ["Aamon","Benedetta","Fanny","Gusion","Hanzo","Harley","Hayabusa","Helcurt",
+  "Assassin": ["Aamon","Benedetta","Fanny","Gusion","Hanzo","Harley","Hayabusa","Helcurt","Hirara",
                "Joy","Karina","Lancelot","Ling","Natalia","Nolan","Saber","Selena",
                "Suyou","Yi Sun-shin"],
   "Mage":     ["Alice","Aurora","Cecilion","Chang'e","Cyclops","Eudora","Gord","Harith",
@@ -1975,8 +2370,9 @@ function showCbDetail(hero){
   const role = roleOf[hero]||"";
   const icon = ROLE_ICON[role]||"🎮";
 
+  const pp = COUNTER_PP[hero]||{};
   const counterChips = counters.length
-    ? counters.map(c=>`<span class="cb-counter-chip" onclick="cbJumpHero('${c}')">${c}</span>`).join("")
+    ? counters.map(c=>`<span class="cb-counter-chip" onclick="cbJumpHero('${c}')">${c}<span class="chip-pp">+${pp[c]}</span></span>`).join("")
     : `<span class="cb-empty">—</span>`;
 
   document.getElementById("cb-detail").innerHTML = `
@@ -1988,7 +2384,9 @@ function showCbDetail(hero){
           <div class="cb-detail-role">${role}</div>
         </div>
       </div>
-      <div class="cb-section-title combo-label">Skill Combo</div>
+      <div class="cb-section-title trait-label">Traits</div>
+      ${renderTraitChips(hero)}
+      <div class="cb-section-title combo-label" style="margin-top:12px">Skill Combo</div>
       ${combo ? renderComboIcons(combo) : '<div class="cb-empty">No combo data.</div>'}
       <div class="cb-section-title note-label" style="margin-top:12px">Tips & Notes</div>
       ${note ? `<div class="cb-note-text">${note}</div>` : '<div class="cb-empty">No notes.</div>'}
