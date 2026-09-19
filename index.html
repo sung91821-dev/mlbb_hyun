@@ -188,7 +188,6 @@
       .rec-counters { font-size: 8px; }
       .rec-breakdown { font-size: 8px; }
       .reason-chip { font-size: 7.5px; padding: 0 5px; }
-      .trait-toggle { font-size: 9px; margin-bottom: 4px; }
       .enemy-comp-box { padding: 5px 7px 6px; margin-bottom: 5px; }
       .enemy-comp-label { font-size: 8px; }
       .trait-chip { font-size: 7.5px; padding: 1px 6px; }
@@ -944,12 +943,6 @@
       text-transform: uppercase; color: rgba(226,118,137,0.8);
       margin-bottom: 4px;
     }
-    .trait-toggle {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 10px; color: rgba(200,204,216,0.55);
-      margin-bottom: 7px; cursor: pointer; user-select: none;
-    }
-    .trait-toggle input { accent-color: var(--color-primary); cursor: pointer; margin: 0; }
     .rec-breakdown {
       font-size: 9px; color: rgba(200,204,216,0.45);
       margin-top: 2px; letter-spacing: 0.02em;
@@ -1889,8 +1882,12 @@ function enemyCompSummary(enemyTraitCount){
     .join("");
 }
 
-let useTraitScore = true;
-function toggleTraitScore(el){ useTraitScore = el.checked; if(enemyPicks.length) calcRec(); }
+// How hard a reverse counter is punished.
+// 1.0 = fully symmetric (a -5pp matchup hurts exactly as much as a +5pp one helps).
+// Lower it (e.g. 0.6) to make the recommender more aggressive.
+let REVERSE_WEIGHT = 1.0;
+
+// Trait-based matchup scoring is always applied.
 
 function renderTraitChips(hero){
   const t = (HEROES[hero]||{}).traits || [];
@@ -2066,6 +2063,8 @@ function calcRec(){
   const enemyTraitCount = countEnemyTraits(enemyPicks);
   pool.forEach(h=>{
     if(enemyPicks.includes(h.n)) return;
+
+    // (+) this hero counters an enemy pick — measured pp in the ENEMY's counter list
     let counterScore=0; const countered=[];
     enemyPicks.forEach(enemy=>{
       const pp = (COUNTER_PP[enemy]||{})[h.n];
@@ -2076,20 +2075,28 @@ function calcRec(){
     });
     counterScore = Math.round(counterScore*10)/10;
 
-    // Trait-based automatic matchup score
-    const tr = useTraitScore ? calcTraitScore(h.n, enemyTraitCount) : {pts:0, reasons:[]};
-    const score = Math.round((counterScore + tr.pts)*10)/10;
-
-    // Check whether this hero is countered by an enemy pick (lowers sort priority only, no score penalty)
-    const heroCounters = COUNTERS[h.n]||[];
-    const vulnerableTo = enemyPicks.filter(ep => heroCounters.includes(ep));
+    // (−) reverse counter: an enemy pick counters THIS hero — measured pp in this hero's own list
+    const myCounters = COUNTER_PP[h.n]||{};
+    let reverseScore=0; const vulnerableTo=[];
+    enemyPicks.forEach(enemy=>{
+      const pp = myCounters[enemy];
+      if(pp !== undefined){
+        reverseScore -= pp * REVERSE_WEIGHT * (enemyWeights[enemy]??1);
+        vulnerableTo.push(`${enemy}(-${Math.round(pp*REVERSE_WEIGHT*10)/10}pp)`);
+      }
+    });
+    reverseScore = Math.round(reverseScore*10)/10;
     const isCountered = vulnerableTo.length > 0;
 
-    results.push({name:h.n, role:h.r, score, counterScore, traitPts:tr.pts,
+    // Trait-based automatic matchup score
+    const tr = calcTraitScore(h.n, enemyTraitCount);
+    const score = Math.round((counterScore + reverseScore + tr.pts)*10)/10;
+
+    results.push({name:h.n, role:h.r, score, counterScore, reverseScore, traitPts:tr.pts,
                   traitReasons:tr.reasons, countered, vulnerableTo, isCountered});
   });
-  // Sort: higher score first; on a tie, heroes that are NOT countered come first
-  // (the score itself is kept intact so a countered hero still outranks a 0-score one)
+  // Sort: higher score first. The reverse-counter penalty is already inside `score`,
+  // so the isCountered tie-break only decides exact ties.
   results.sort((a,b)=>{
     if(b.score !== a.score) return b.score - a.score;
     // only break ties by whether the hero is countered
@@ -2122,22 +2129,22 @@ function calcRec(){
 
   area.innerHTML=`<div class="section-label" style="margin-bottom:6px">${posLabel} Recommendations — tap to view combo</div>
   ${compHtml}
-  <label class="trait-toggle">
-    <input type="checkbox" ${useTraitScore?"checked":""} onchange="toggleTraitScore(this)">
-    Include trait-based matchup score
-  </label>
   ${noPositiveHtml}
   <div class="rec-list">${
-    shown.map(({name,role,score,counterScore,traitPts,traitReasons,countered,vulnerableTo,isCountered},i)=>{
+    shown.map(({name,role,score,counterScore,reverseScore,traitPts,traitReasons,countered,vulnerableTo,isCountered},i)=>{
       const isTop=i<3&&score>0&&!isCountered;
       const ct=countered.length?`Counters: ${countered.join(", ")}`:`No counters`;
       const vulHtml = vulnerableTo.length
         ? `<div class="rec-counters" style="color:rgba(226,118,137,0.75)">⚠ Countered by: ${vulnerableTo.join(", ")}</div>`
         : "";
-      const breakdown = (useTraitScore && traitPts !== 0)
-        ? `<div class="rec-breakdown">Counter ${counterScore>0?"+"+counterScore:counterScore} · Traits <span style="color:${traitPts>0?"rgba(142,192,124,0.95)":"rgba(226,118,137,0.9)"}">${traitPts>0?"+"+traitPts:traitPts}</span></div>`
-        : "";
-      const reasonHtml = (useTraitScore && traitReasons.length)
+      const parts = [`Counter ${counterScore>0?"+"+counterScore:counterScore}`];
+      if(reverseScore !== 0)
+        parts.push(`Reverse <span style="color:rgba(226,118,137,0.9)">${reverseScore}</span>`);
+      if(traitPts !== 0)
+        parts.push(`Traits <span style="color:${traitPts>0?"rgba(142,192,124,0.95)":"rgba(226,118,137,0.9)"}">${traitPts>0?"+"+traitPts:traitPts}</span>`);
+      const breakdown = parts.length > 1
+        ? `<div class="rec-breakdown">${parts.join(" · ")}</div>` : "";
+      const reasonHtml = traitReasons.length
         ? `<div class="rec-reasons">${traitReasons.slice(0,2).map(r=>
              `<span class="reason-chip${r.pts<0?" neg":""}">${r.why} ${r.pts>0?"+"+r.pts:r.pts}</span>`).join("")
            }${traitReasons.length>2
