@@ -69,7 +69,8 @@ body.quiz .ans.show{filter:none}
 .xq .qt{font-size:15px;line-height:1.6}
 .xq .gz{font-size:12.5px;color:var(--mute);margin-top:4px}
 .xans{margin-top:6px;padding:7px 9px;border-left:3px solid var(--acc);background:var(--accbg);border-radius:0 6px 6px 0;font-size:14px;line-height:1.6;filter:blur(6px);cursor:pointer;user-select:none;transition:filter .15s}
-.xans.show,body.xopen .xans{filter:none;user-select:auto}
+.xq .gz{filter:blur(5px);cursor:pointer;user-select:none;transition:filter .15s}
+.xans.show,body.xopen .xans,.xq .gz.show,body.xopen .xq .gz{filter:none;user-select:auto}
 .xbar{display:flex;gap:6px;align-items:center;margin:0 0 10px;font-size:13px;color:var(--mute)}
 .mode{grid-template-columns:1fr 1fr 1fr}
 </style>
@@ -1579,7 +1580,7 @@ const sb=document.getElementById("star");sb.onclick=()=>{onlyStar=!onlyStar;sb.c
 const ab=document.getElementById("atk");ab.onclick=()=>{onlyAtk=!onlyAtk;ab.classList.toggle("on",onlyAtk);render()};
 const gb=document.getElementById("gc");gb.onclick=()=>{onlyGc=!onlyGc;gb.classList.toggle("on",onlyGc);render()};
 const qb=document.getElementById("quiz");qb.onclick=()=>{document.body.classList.toggle("quiz");qb.classList.toggle("on")};
-out.addEventListener("click",e=>{const a=e.target.closest(".toc a");if(a){e.preventDefault();if(a.dataset.w){setTab("wr");render();window.scrollTo(0,0);return}setTab("all");render();document.getElementById(sid(a.dataset.t)).scrollIntoView();return}const b=e.target.closest(".mb");if(b){const m=b.nextElementSibling;m.hidden=!m.hidden;b.classList.toggle("on",!m.hidden);return}if(e.target.id==="xall"){document.body.classList.toggle("xopen");e.target.textContent=document.body.classList.contains("xopen")?"답 다시 가리기":"답 모두 보기";document.querySelectorAll(".xans.show").forEach(x=>x.classList.remove("show"));return}const xa=e.target.closest(".xans");if(xa){xa.classList.toggle("show");return}const d=e.target.closest(".d,.ans");if(d&&document.body.classList.contains("quiz"))d.classList.toggle("show")});
+out.addEventListener("click",e=>{const a=e.target.closest(".toc a");if(a){e.preventDefault();if(a.dataset.w){setTab("wr");render();window.scrollTo(0,0);return}setTab("all");render();document.getElementById(sid(a.dataset.t)).scrollIntoView();return}const b=e.target.closest(".mb");if(b){const m=b.nextElementSibling;m.hidden=!m.hidden;b.classList.toggle("on",!m.hidden);return}if(e.target.id==="xall"){document.body.classList.toggle("xopen");e.target.textContent=document.body.classList.contains("xopen")?"답 다시 가리기":"답 모두 보기";document.querySelectorAll(".xans.show,.xq .gz.show").forEach(x=>x.classList.remove("show"));return}const xa=e.target.closest(".xans,.xq .gz");if(xa){xa.classList.toggle("show");return}const d=e.target.closest(".d,.ans");if(d&&document.body.classList.contains("quiz"))d.classList.toggle("show")});
 [...modeEl.children].forEach(x=>x.classList.toggle("on",x.dataset.m===mode));buildTabs();render();
 (function(){const el=document.getElementById("dday"),T=new Date("2026-11-14T09:00:00+09:00").getTime();function tick(){const r=T-Date.now();if(r<=0){el.hidden=true;clearInterval(t);return}const m=Math.floor(r/60000),d=Math.floor(m/1440),h=Math.floor(m%1440/60),mi=m%60;el.textContent=`⏰ 11월 14일 9시까지 ${d}일 ${h}시간 ${mi}분`;el.hidden=false}const t=setInterval(tick,20000);tick()})();
 </script>
